@@ -1,0 +1,172 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #000000; 
+    color: white;
+    padding: 20px;
+    text-align: center;
+    height: 10px; 
+}
+
+main {
+    padding: 100px;
+    text-align: center;
+    min-height: 180vh; 
+}
+
+.button-container {
+    position: relative;
+    z-index: 10; 
+    margin: 57px 0; 
+}
+
+.text-btn {
+    height: 40px; 
+    width: 150px; 
+    background-color: #4b4b4b; 
+    color: rgb(255, 255, 255); 
+    border: none; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border-radius: 8px; 
+    margin-bottom: 150px;
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.text-btn:hover {
+    background-color: #646464; 
+}
+
+.fixed-btn {
+    position: fixed; 
+    bottom: 55px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 1000; 
+}
+
+.Profilbild {
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%;
+    position: absolute; 
+    top: 2px; 
+    left: 20px; 
+    z-index: 1;
+}
+
+.Profilbild1 {
+    width: 1500px; 
+    height: 750px; 
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+}
+
+.Profilbild1_2 {
+    width: 700px; 
+    height: 450px; 
+    position: absolute; 
+    top: 260px; 
+    left: 710px; 
+}
+
+.Profilbild2_0 {
+    width: 800px; 
+    height: 1200px; 
+    position: fixed; 
+    top: 1px; 
+    left: -100px; 
+}
+
+.Melvin-Volmar {
+    color: #848484fa; 
+    font-family: 'Comic Sans MS', cursive, sans-serif; 
+    font-size: 55px; 
+    position: absolute; 
+    right: 26px; 
+    top: 15px; 
+    z-index: 1;
+}
+
+.ICT {
+    color: #848484cf; 
+    font-family: 'Comic Sans MS', cursive, sans-serif; 
+    font-size: 18px; 
+    position: absolute; 
+    right: 45px; 
+    top: 28px; 
+    z-index: 1;
+}
+
+#scrollToTopButton {
+    padding: 10px 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: hsl(0, 0%, 100%);
+    background-color: #00000000; 
+    border: none;
+    border-radius: 90px;  
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.home-btn1{
+position: fixed; 
+    bottom: 5px; 
+    left: 50%; 
+}
+
+#scrollToTopButton:hover {
+    background-color: #000000b4; 
+
+}
+
+
+.line {
+    height: 200px; 
+    width: 5px; 
+    background-color: #00ff0d;
+    margin: 0 auto; 
+}
+
+.text {
+    white-space: pre-wrap; 
+    color: rgb(255, 255, 255);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+.Erfahremehr-btn {
+    position: fixed; 
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 1000; 
+    background-color: #000000; /* Hintergrundfarbe */
+    color: rgb(58, 202, 22); /* Schriftfarbe */
+    border: none; /* Kein Rahmen */
+    padding: 15px 30px; /* Innenabstand */
+    font-size: 25px; /* Schriftgröße */
+    border-radius: 0px; /* Abgerundete Ecken */
+    cursor: pointer; /* Handzeiger bei Hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
+}
+
+
+
+#welcome-text {
+    color: white; /* Textfarbe */
+    font-size: 48px; /* Schriftgröße */
+    opacity: 1; /* Anfangszustand sichtbar */
+    transition: opacity 3s ease; /* Langsame Überblendung */
+    text-align: center; /* Zentrieren */
+    position: relative; /* Positionierung */
+    z-index: 1; /* Über dem Overlay */
+}

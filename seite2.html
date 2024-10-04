@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seite 2</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <header>
+        <h1></h1> <!-- Leerer Header -->
+    </header>
+    <main>
+        <img src="https://www.pngitem.com/pimgs/m/214-2145309_blank-profile-picture-circle-hd-png-download.png" alt="Profilbild" class="Profilbild">
+        <p class="Melvin-Volmar">Melvin Volmar</p>
+        <p class="ICT">ICT - Fachmann</p>
+
+
+  
+        <!-- Container für Buttons und Linien -->
+        <div class="button-stripe-container">
+            <div class="button-container">
+                <button class="text-btn" onclick="textAnzeigen('text1')">Über mich</button>
+                <div id="text1" class="text" style="display:none;">Ich bin Melvin, 17 Jahre alt, und im ersten Jahr meiner Ausbildung als ICT-Fachmann. Ich habe 2023 meine Schulbildung in der Schweiz abgeschlossen. In meiner Freizeit gehe ich ins Fitnessstudio, fahre Motorrad und interessiere mich für Programmierung (HTML, CSS, JavaScript).</div>
+            </div>
+
+
+            <div class="button-container">
+                <button class="text-btn" onclick="textAnzeigen('text2')">Bildung</button>
+                <div id="text2" class="text" style="display:none;">Ich habe die obligatorische Schule in der Schweiz abgeschlossen und ein Praktikum als Informatiker von August 2023 bis Juli 2024 absolviert. Seit August 2024 mache ich eine Lehre als ICT-Fachmann EFZ, die bis August 2027 dauert.</div>
+            </div>
+
+
+            <div class="button-container">
+                <button class="text-btn" onclick="textAnzeigen('text3')">Hobbys</button>
+                <div id="text3" class="text" style="display:none;">Ich habe seit Juli 2022 mit Fitness begonnen und mache Kraftsport. Seit Januar 2024 interessiere ich mich für Motorradfahren und plane, mir eine Kawasaki ZX4RR zu kaufen.</div>
+            </div>
+
+            <div class="button-container">
+                <button class="text-btn" onclick="textAnzeigen('text4')">Skills</button>
+                <div id="text4" class="text" style="display:none;">Das ist ein Test für Skills.</div>
+            </div>
+        </div>
+
+        <div style="height: 50px;"></div> <!-- Zusätzlicher Platz, falls benötigt -->
+    </main>
+    <button class="home-btn fixed-btn" id="scrollToTopButton"onclick="window.location.href='index1.html'">Startseite</button>
+    <button class="home-btn1 fixed-btn" id="scrollToTopButton" onclick="scrollToTop()">An den Anfang</button>
+
+    <script src="script1.js"></script>
+    <script>
+        function textAnzeigen(textId) {
+            const textElement = document.getElementById(textId);
+            textElement.style.display = textElement.style.display === "none" ? "block" : "none"; 
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+
+<img src="gymjpg.jpg" alt="Profilbild2_0" class="Profilbild2_0">
+
+</body>
+</html>
