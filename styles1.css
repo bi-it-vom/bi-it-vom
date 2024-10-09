@@ -34,7 +34,7 @@ main {
     padding: 10px 20px; 
     font-size: 16px; 
     border-radius: 8px; 
-    margin-bottom: 150px;
+    margin-bottom: 100px;
     cursor: pointer; 
     transition: background-color 0.3s ease; 
 }
@@ -69,20 +69,31 @@ main {
     left: 0px; 
 }
 
-.Profilbild1_2 {
-    width: 700px; 
-    height: 450px; 
-    position: absolute; 
-    top: 260px; 
-    left: 710px; 
+
+/* Bildanpassung innerhalb des Flexbox-Containers */
+.Profilbild2_0 {
+    width: 100vw; 
+    height: 100vh; 
+    object-fit: cover; 
+    position: absolute;
 }
 
-.Profilbild2_0 {
-    width: 800px; 
-    height: 1200px; 
-    position: fixed; 
-    top: 1px; 
-    left: -100px; 
+/* Flexbox-Container für das Bild */
+.flex-container {
+    display: flex;
+    justify-content: center; /* Bild horizontal zentrieren */
+    align-items: center; /* Bild vertikal zentrieren */
+    height: 100vh; /* Nimmt die volle Höhe des Bildschirms ein */
+    width: 100vw; /* Nimmt die volle Breite des Bildschirms ein */
+    position: fixed; /* Fixiert den Container auf dem Bildschirm */
+    top: 0;
+    left: 0;
+    overflow: hidden; /* Verhindert Überlauf des Bildes */
+    z-index: -1; /* Falls nötig, um im Hintergrund zu bleiben */
+}
+
+header {
+    display: none; /* Oder margin/padding auf 0 setzen */
 }
 
 .Melvin-Volmar {
@@ -142,14 +153,30 @@ position: fixed;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-
-.Erfahremehr-btn {
+.KeinInteresse-btn {
     position: fixed; 
-    bottom: 20px; 
+    bottom: 8px; 
     left: 50%; 
     transform: translateX(-50%); 
     z-index: 1000; 
-    background-color: #000000; /* Hintergrundfarbe */
+    color: rgb(58, 202, 22); /* Schriftfarbe */
+    background-color: #000000a4; /* Hintergrundfarbe */
+    border: none; /* Kein Rahmen */
+    padding: 15px 30px; /* Innenabstand */
+    font-size: 10px; /* Schriftgröße */
+    border-radius: 0px; /* Abgerundete Ecken */
+    cursor: pointer; /* Handzeiger bei Hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
+}
+
+
+.Erfahremehr-btn {
+    position: fixed; 
+    bottom: 40px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 1000; 
+    background-color: #0000002d; /* Hintergrundfarbe */
     color: rgb(58, 202, 22); /* Schriftfarbe */
     border: none; /* Kein Rahmen */
     padding: 15px 30px; /* Innenabstand */
@@ -170,3 +197,5 @@ position: fixed;
     position: relative; /* Positionierung */
     z-index: 1; /* Über dem Overlay */
 }
+
+
