@@ -22,7 +22,7 @@ main {
 .button-container {
     position: relative;
     z-index: 10; 
-    margin: 57px 0; 
+    margin: 150px 0; 
 }
 
 .text-btn {
@@ -34,14 +34,14 @@ main {
     padding: 10px 20px; 
     font-size: 16px; 
     border-radius: 8px; 
-    margin-bottom: 100px;
+    margin-bottom: 4px;
     cursor: pointer; 
-    transition: background-color 0.3s ease; 
 }
 
 .text-btn:hover {
     background-color: #646464; 
 }
+
 
 .fixed-btn {
     position: fixed; 
@@ -97,24 +97,56 @@ header {
 }
 
 .Melvin-Volmar {
-    color: #848484fa; 
+    color: #ffffff; 
     font-family: 'Comic Sans MS', cursive, sans-serif; 
     font-size: 55px; 
     position: absolute; 
     right: 26px; 
     top: 15px; 
     z-index: 1;
+    text-shadow: 
+        0 0 15px #ffffff,  /* Leuchtender Effekt */
+        0 0 30px #000000,
+        0 0 45px #ffffff;  /* Erhöhung der Ausbreitung */
+    transition: text-shadow 0.3s ease; /* Übergangseffekt */
 }
 
+@media (max-width: 768px) {
+    body {
+        font-family: sans-serif;
+    }
+}
+
+.Melvin-Volmar:hover {
+    text-shadow: 
+        0 0 30px #000000,  /* Intensivierter Effekt bei Hover */
+        0 0 60px #ffffff,
+        0 0 90px #000000;  /* Noch hellerer Effekt bei Hover */
+}
+
+
 .ICT {
-    color: #848484cf; 
+    color: #ffffffd0; 
     font-family: 'Comic Sans MS', cursive, sans-serif; 
     font-size: 18px; 
     position: absolute; 
     right: 45px; 
     top: 28px; 
     z-index: 1;
+    text-shadow: 
+        0 0 10px #ffffff,  /* Leuchtender Effekt für ICT */
+        0 0 20px #ffffff,
+        0 0 30px #ffffff;  /* Erhöhung der Ausbreitung */
+    transition: text-shadow 0.3s ease; /* Übergangseffekt */
 }
+
+.ICT:hover {
+    text-shadow: 
+        0 0 20px #000000,  /* Intensivierter Effekt bei Hover für ICT */
+        0 0 40px #ffffff,
+        0 0 60px #000000;  /* Noch hellerer Effekt bei Hover */
+}
+
 
 #scrollToTopButton {
     padding: 10px 15px;
@@ -199,3 +231,44 @@ position: fixed;
 }
 
 
+
+.Fächer-container {
+    width: 400px;
+    margin: 20px auto;
+    background-color: #000000c6;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.skill p {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.progress {
+    background-color: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 15px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #646464;
+    border-radius: 10px;
+}
+
+.Mathe {
+    width: 70%;
+}
+
+.Deutsch {
+    width: 95%;
+}
+
+.Englisch {
+    width: 75%;
+}
