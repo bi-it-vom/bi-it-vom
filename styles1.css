@@ -111,11 +111,6 @@ header {
     transition: text-shadow 0.3s ease; /* Übergangseffekt */
 }
 
-@media (max-width: 768px) {
-    body {
-        font-family: sans-serif;
-    }
-}
 
 .Melvin-Volmar:hover {
     text-shadow: 
@@ -234,7 +229,7 @@ position: fixed;
 
 .Fächer-container {
     width: 400px;
-    margin: 20px auto;
+    margin: -150px auto;
     background-color: #000000c6;
     padding: 20px;
     border-radius: 10px;
