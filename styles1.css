@@ -3,7 +3,6 @@
     src: url(Ldfcomicsans-jj7l.ttf);
 }
 
-
 body {
     margin: 0;
     padding: 0;
@@ -48,7 +47,6 @@ main {
     background-color: #646464; 
 }
 
-
 .fixed-btn {
     position: fixed; 
     bottom: 55px; 
@@ -74,7 +72,6 @@ main {
     top: 0px; 
     left: 0px; 
 }
-
 
 /* Bildanpassung innerhalb des Flexbox-Containers */
 .Profilbild2_0 {
@@ -117,14 +114,12 @@ header {
     transition: text-shadow 0.3s ease; /* Übergangseffekt */
 }
 
-
 .Melvin-Volmar:hover {
     text-shadow: 
         0 0 30px #000000,  /* Intensivierter Effekt bei Hover */
         0 0 60px #ffffff,
         0 0 90px #000000;  /* Noch hellerer Effekt bei Hover */
 }
-
 
 .ICT {
     color: #ffffffd0; 
@@ -148,7 +143,6 @@ header {
         0 0 60px #000000;  /* Noch hellerer Effekt bei Hover */
 }
 
-
 #scrollToTopButton {
     padding: 10px 15px;
     font-size: 20px;
@@ -161,17 +155,15 @@ header {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.home-btn1{
-position: fixed; 
+.home-btn1 {
+    position: fixed; 
     bottom: 5px; 
     left: 50%; 
 }
 
 #scrollToTopButton:hover {
     background-color: #000000b4; 
-
 }
-
 
 .line {
     height: 200px; 
@@ -202,10 +194,9 @@ position: fixed;
     transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
 }
 
-
-Erfahremehr-btn {
+.Erfahremehr-btn {
     position: fixed; 
-    bottom: 200px; /* Erhöhe den Wert, um den Button weiter nach oben zu verschieben */
+    bottom: 40px; 
     left: 50%; 
     transform: translateX(-50%); 
     z-index: 1000; 
@@ -217,10 +208,15 @@ Erfahremehr-btn {
     border-radius: 0px; /* Abgerundete Ecken */
     cursor: pointer; /* Handzeiger bei Hover */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
-}git add .
+}
 
-
-
+/* Mobile Anpassungen */
+@media only screen and (max-width: 768px) { /* Für Handyansicht */
+    .Erfahremehr-btn {
+        bottom: 80px; /* Button weiter unten positionieren */
+        font-size: 20px; /* Optional: Schriftgröße anpassen */
+    }
+}
 
 #welcome-text {
     color: white; /* Textfarbe */
@@ -231,8 +227,6 @@ Erfahremehr-btn {
     position: relative; /* Positionierung */
     z-index: 1; /* Über dem Overlay */
 }
-
-
 
 .Fächer-container {
     width: 400px;
