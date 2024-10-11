@@ -203,9 +203,9 @@ position: fixed;
 }
 
 
-.Erfahremehr-btn {
+Erfahremehr-btn {
     position: fixed; 
-    bottom: 40px; 
+    bottom: 200px; /* Erhöhe den Wert, um den Button weiter nach oben zu verschieben */
     left: 50%; 
     transform: translateX(-50%); 
     z-index: 1000; 
@@ -217,7 +217,8 @@ position: fixed;
     border-radius: 0px; /* Abgerundete Ecken */
     cursor: pointer; /* Handzeiger bei Hover */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
-}
+}git add .
+
 
 
 
