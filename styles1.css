@@ -178,25 +178,9 @@ header {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.KeinInteresse-btn {
-    position: fixed; 
-    bottom: 8px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    z-index: 1000; 
-    color: rgb(58, 202, 22); /* Schriftfarbe */
-    background-color: #000000a4; /* Hintergrundfarbe */
-    border: none; /* Kein Rahmen */
-    padding: 15px 30px; /* Innenabstand */
-    font-size: 10px; /* Schriftgröße */
-    border-radius: 0px; /* Abgerundete Ecken */
-    cursor: pointer; /* Handzeiger bei Hover */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
-}
-
 .Erfahremehr-btn {
     position: fixed; 
-    bottom: 40px; 
+    bottom: 45px; 
     left: 50%; 
     transform: translateX(-50%); 
     z-index: 1000; 
@@ -268,3 +252,4 @@ header {
 .Englisch {
     width: 75%;
 }
+

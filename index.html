@@ -19,9 +19,6 @@
         
         <img src="z6qoo3m2.png" alt="Profilbild1" class="Profilbild1">
 
-        <div class="button-container">
-          <button class="KeinInteresse-btn" id="KeinInteresse-btn">Kein Interesse</button>
-        </div>
 
         <div class="button-container">
           <button class="Erfahremehr-btn" onclick="window.location.href='seite2.html'">Erfahre mehr</button>
@@ -52,13 +49,7 @@
         }, 3000); // 3000 ms = 3 Sekunden
       };
 
-      // Event Listener für den "Kein Interesse"-Button
-      document.getElementById("KeinInteresse-btn").addEventListener("click", function(event) {
-        event.preventDefault(); // Verhindert das Standardverhalten des Buttons
-        var newWindow = window.open("", "_blank"); // Neues Fenster öffnen
-        newWindow.document.write("<h1>Warum haben Sie dann die Seite geöffnet?</h1>"); // Nachricht in das neue Fenster schreiben
-        newWindow.document.close(); // Dokument schließen, um das Rendering abzuschließen
-      });
+
     </script>
 </body>
 </html>
