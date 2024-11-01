@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Verhindert Scrollen */
+            background-color: #000; /* Schwarzer Hintergrund */
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #e0e0e0; /* Hellgrauer Hintergrund für das Spiel */
+            border: 2px solid #222; /* Rand um das Spiel */
+        }
+
+        .exit-button {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Button auf der rechten Seite */
+            padding: 10px 20px;
+            background-color: #ff0000; /* Rote Farbe für den Exit Button */
+            color: #222; /* Dunkelgraue Schriftfarbe */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 10; /* Stellt sicher, dass der Button oben angezeigt wird */
+        }
+
+        .exit-button:hover {
+            background-color: #cc0000; /* Dunkleres Rot bei Hover */
+        }
+
+        .score {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Position der Meteranzeige */
+            font-size: 24px;
+            color: #fff; /* Weiße Schriftfarbe */
+        }
+
+        /* Overlay für Game Over */
+        .game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            display: none; /* Anfangs verborgen */
+            z-index: 20; /* Über dem Canvas */
+            text-align: center; /* Text zentrieren */
+        }
+
+        .game-over .bloody-text {
+            font-family: 'Creepster', cursive; /* Blutige Schrift */
+            color: red; /* Rote Farbe für blutige Schrift */
+            font-size: 48px; /* Größe der blutigen Schrift */
+            text-shadow: 0 0 20px red; /* Glühen-Effekt für blutige Schrift */
+        }
+
+        .game-over button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .game-over button:hover {
+            background-color: #cc0000; /* Dunkleres Rot bei Hover */
+        }
+    </style>
+    <!-- Fügen Sie die Schriftart für die blutige Schrift hinzu -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button class="exit-button" onclick="window.location.href='dinojump.html'">Zurück</button>
+    <div class="score" id="scoreDisplay">Meter: 0</div>
+    <canvas id="gameCanvas" width="1200" height="500"></canvas> <!-- Spielraum etwas tiefer gemacht -->
+    <div class="game-over" id="gameOverOverlay">
+        <div class="bloody-text">Why so serious?</div> <!-- Blutiger Text -->
+        <div id="gameOverText"></div>
+        <button onclick="restartGame()">Nochmal</button>
+        <button onclick="window.location.href='dinojump.html'">Exit</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverOverlay = document.getElementById('gameOverOverlay');
+        const gameOverText = document.getElementById('gameOverText');
+
+        // Dino- und Hindernisvariablen
+        let dinoY = canvas.height - 180; // Position des Dinos am Boden (180 ist die Höhe der Figur)
+        let dinoWidth = 120; // Breite der Dino-Figur (dünner)
+        let dinoHeight = 180; // Höhe der Dino-Figur (größer)
+        let gravity = 5; // Schnelleres Fallen
+        let isJumping = false;
+        let jumpStrength = 40; // Höhere Sprunghöhe
+        let jumpSpeed = 0;
+        let obstacles = [];
+        let distanceInMeters = 0; // Variable für die zurückgelegte Distanz in Metern
+        let highScore = 0; // Variable für die höchste Punktzahl
+        let obstacleSpeed = 5; // Geschwindigkeit der Hindernisse
+        const obstacleWidth = 50; // Feste Breite für Hindernisse
+
+        // Meteranzeige aktualisieren
+        function updateScore() {
+            document.getElementById('scoreDisplay').innerText = 'Meter: ' + distanceInMeters;
+        }
+
+        // Bilder für Dino und Hindernis
+        const dinoImage = new Image();
+        const dinoJumpImage = new Image(); // Neues Bild für den Sprung
+        const obstacleImage = new Image();
+        dinoImage.src = 'image-removebg-preview (20).png'; // Bild für den Dino im Normalzustand
+        dinoJumpImage.src = 'image-removebg-preview (21).png'; // Bild für den Dino im Sprung
+        obstacleImage.src = 'image-removebg-preview (22).png'; // Bild für das spiegelverkehrte Hindernis
+
+        // Hindernis-Klasse
+        class Obstacle {
+            constructor(x, height) {
+                this.x = x;
+                this.y = canvas.height - height; // Hindernisposition am Boden (Höhe 0)
+                this.width = obstacleWidth; // Feste Breite
+                this.height = height;
+            }
+
+            draw() {
+                ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height); // Bild des Hindernisses zeichnen
+            }
+
+            update() {
+                this.x -= obstacleSpeed; // Hindernisse bewegen sich schneller
+            }
+        }
+
+        // Sprungfunktion
+        function jump() {
+            if (!isJumping) {
+                isJumping = true;
+                jumpSpeed = jumpStrength; // Stärkerer Sprung
+                let jumpInterval = setInterval(() => {
+                    if (jumpSpeed > 0) {
+                        dinoY -= jumpSpeed;
+                        jumpSpeed -= gravity; // Schneller fallende Schwerkraft
+                    } else {
+                        clearInterval(jumpInterval);
+                        // Fallbewegung ohne langsames Verlangsamen
+                        let fallInterval = setInterval(() => {
+                            dinoY += gravity + 1; // Erhöhte Fallgeschwindigkeit
+                            if (dinoY >= canvas.height - dinoHeight) { // Wenn der Dino den Boden erreicht
+                                clearInterval(fallInterval);
+                                dinoY = canvas.height - dinoHeight; // Setzt die Höhe zurück
+                                isJumping = false;
+                                // Hindernisse nur seltener hinzufügen
+                                if (Math.random() < 0.5) {
+                                    addObstacle(); // Hindernisse hinzufügen
+                                }
+                            }
+                        }, 20);
+                    }
+                }, 20);
+            }
+        }
+
+        // Neues Hindernis hinzufügen
+        function addObstacle() {
+            const height = Math.random() * 50 + 50; // Hindernishöhe zwischen 50 und 100
+            obstacles.push(new Obstacle(canvas.width, height)); // Hindernisse hinzufügen
+        }
+
+        // Spielupdate-Funktion
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Dinos Zustand abhängig vom Sprung zeichnen
+            if (isJumping) {
+                ctx.drawImage(dinoJumpImage, 50, dinoY, dinoWidth, dinoHeight); // Dino im Sprung zeichnen
+            } else {
+                ctx.drawImage(dinoImage, 50, dinoY, dinoWidth, dinoHeight); // Dino zeichnen
+            }
+
+            // Hindernisse zeichnen und aktualisieren
+            obstacles.forEach((obstacle, index) => {
+                obstacle.update();
+                obstacle.draw();
+                // Kollisionserkennung
+                if (
+                    50 + dinoWidth > obstacle.x &&
+                    dinoY + dinoHeight > obstacle.y &&
+                    50 < obstacle.x + obstacle.width &&
+                    dinoY < canvas.height // Stellt sicher, dass der Dino nicht unter dem Boden ist
+                ) {
+                    gameOver(); // Spiel beenden
+                }
+                // Meter erhöhen und Hindernisse entfernen
+                if (obstacle.x + obstacle.width < 0) {
+                    obstacles.splice(index, 1); // Entfernt Hindernisse, die den Bildschirm verlassen haben
+                    distanceInMeters++; // Erhöht die zurückgelegte Distanz
+                    updateScore(); // Punktzahl aktualisieren
+                }
+            });
+
+            requestAnimationFrame(update); // Spielupdate wiederholen
+        }
+
+        // Game Over-Funktion
+        function gameOver() {
+            gameOverOverlay.style.display = 'flex'; // Overlay anzeigen
+            gameOverText.innerText = 'Spiel beendet!'; // Text anzeigen
+            highScore = Math.max(highScore, distanceInMeters); // Höchste Punktzahl aktualisieren
+            updateScore(); // Punktzahl aktualisieren
+            cancelAnimationFrame(update); // Spiel anhalten
+        }
+
+        // Neuanfang des Spiels
+        function restartGame() {
+            dinoY = canvas.height - 180; // Position des Dinos zurücksetzen
+            obstacles = []; // Hindernisse zurücksetzen
+            distanceInMeters = 0; // Distanz zurücksetzen
+            updateScore(); // Punktzahl zurücksetzen
+            gameOverOverlay.style.display = 'none'; // Overlay ausblenden
+            update(); // Spiel aktualisieren
+        }
+
+        // Steuerung für Sprung
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                jump(); // Sprung auslösen
+            }
+        });
+
+        // Starte das Spiel
+        update(); // Spiel starten
+    </script>
+</body>
+</html>

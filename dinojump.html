@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bat Jump</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #ff0000; /* Rote Schriftfarbe */
+            margin-bottom: 10px;
+        }
+
+        .product-container {
+            display: flex;
+            max-width: 900px; /* Maximale Breite */
+            background-color: #333; /* Hintergrundfarbe der Verpackung */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .product-image {
+            flex: 1; /* Bild nimmt den verfügbaren Platz ein */
+            position: relative; /* Positionierung für das Bild */
+        }
+
+        .product-image img {
+            width: 100%; /* Bild auf die volle Breite des Containers */
+            height: 100%; /* Bild auf die volle Höhe des Containers */
+            object-fit: cover; /* Bildfüllung */
+        }
+
+        .product-details {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Abstand zwischen Elementen */
+            flex: 1; /* Nimmt den restlichen Platz ein */
+            margin-left: 20px; /* Abstand zwischen Bild und Text */
+        }
+
+        .description {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: rgba(255, 0, 0, 0.2); /* Rote Hintergrundfarbe */
+            border-radius: 5px;
+            flex-grow: 1; /* Füllt den verfügbaren Raum */
+        }
+
+        .button-container {
+            text-align: center; /* Zentriert den Button */
+            margin-top: 10px; /* Abstand über den Buttons */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff0000; /* Rote Farbe für den Button */
+            color: #222; /* Dunkelgraue Schriftfarbe */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%; /* Button nimmt volle Breite ein */
+            margin-bottom: 10px; /* Abstand zwischen den Buttons */
+        }
+
+        button:hover {
+            background-color: #cc0000; /* Dunkleres Rot bei Hover */
+        }
+
+        .back-button {
+            margin-top: 20px; /* Abstand über dem zurück Button */
+            padding: 10px 20px;
+            background-color: #616161; /* Grau für den zurück Button */
+            color: white; /* Weiße Schriftfarbe */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%; /* Button nimmt volle Breite ein */
+        }
+
+        .back-button:hover {
+            background-color: #505050; /* Dunkleres Grau bei Hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Bat Jump</h1>
+    </div>
+    <div class="product-container">
+        <div class="product-image">
+            <img src="https://hardtech.siansystem.com/hardtech/upload/news/images/dinorun.png" alt="Dino Jump">
+        </div>
+        <div class="product-details">
+            <h2>Erlebe spannende Kämpfe und aufregende Abenteuer!</h2>
+            <div class="description">
+                <p>In Jump the Dino steuerst du deinen eigenen Dinosaurier und musst Hindernisse überwinden, während du durch die fantastische Welt der Dinosaurier rennst. Sammle Punkte und entdecke neue Herausforderungen!</p>
+            </div>
+            <div class="button-container">
+                <button onclick="window.location.href='dino_game.html'">Spiel Starten</button>
+                <button onclick="window.location.href='shop.html'">Zurück zum Shop</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

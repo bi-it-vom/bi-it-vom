@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Racer - Das Spiel</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+            position: relative; /* Für den Button */
+        }
+        canvas {
+            border: 2px solid #fff;
+            background-color: #333;
+        }
+        #scoreBoard {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: #fff;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            text-align: center;
+        }
+        #topScore {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        #exitButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #exitButton:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div id="scoreBoard">
+        <div id="topScore">Top Punktzahl: 0</div>
+        <div id="currentScore">Score: 0</div>
+    </div>
+    <button id="exitButton">Zurück</button>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreBoard = document.getElementById('scoreBoard');
+        const topScoreText = document.getElementById('topScore');
+        const currentScoreText = document.getElementById('currentScore');
+        const exitButton = document.getElementById('exitButton');
+
+        const playerImage = new Image();
+        playerImage.src = 'image-removebg-preview (17).png'; // Bild des Spielerautos
+
+        const incomingCarImage = new Image();
+        incomingCarImage.src = 'image-removebg-preview (18).png'; // Bild für entgegenkommende Autos
+
+        let player = { x: canvas.width / 2 - 30, y: canvas.height - 100, width: 60, height: 100 };
+        let obstacles = [];
+        let score = 0;
+        let topScore = 0;
+        let gameSpeed = 4;
+        let moveAmount = 0;
+
+        function drawRoad() {
+            ctx.fillStyle = '#444';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, i);
+                ctx.lineTo(canvas.width / 2, i + 20);
+                ctx.stroke();
+            }
+        }
+
+        function drawPlayer() {
+            ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+        }
+
+        function createIncomingCar() {
+            const obstacleWidth = 120; // Breite der entgegenkommenden Autos
+            const obstacleHeight = 180; // Höhe der entgegenkommenden Autos
+            const obstacleX = Math.random() * (canvas.width - obstacleWidth); // Zufällige Position
+            obstacles.push({ x: obstacleX, y: -obstacleHeight, width: obstacleWidth, height: obstacleHeight });
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obstacle => {
+                obstacle.y += gameSpeed;
+                ctx.drawImage(incomingCarImage, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+
+        function detectCollision() {
+            for (let obstacle of obstacles) {
+                if (
+                    player.x < obstacle.x + obstacle.width &&
+                    player.x + player.width > obstacle.x &&
+                    player.y < obstacle.y + obstacle.height &&
+                    player.y + player.height > obstacle.y
+                ) {
+                    return true; // Kollision erkannt
+                }
+            }
+            return false; // Keine Kollision
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawRoad();
+            drawPlayer();
+            drawObstacles();
+
+            currentScoreText.innerHTML = "Score: " + score;
+            topScoreText.innerHTML = "Top Punktzahl: " + topScore;
+
+            if (detectCollision()) {
+                // Bei Kollision wird das Spiel neu gestartet
+                topScore = Math.max(topScore, score); // Update Top Punktzahl
+                score = 0;
+                gameSpeed = 4; // Zurücksetzen der Spielgeschwindigkeit
+                obstacles = [];
+                player.x = canvas.width / 2 - 30; // Zurück in die Mitte
+                player.y = canvas.height - 100; // Zurück nach unten
+            } else {
+                score++;
+            }
+
+            if (score % 100 === 0) gameSpeed += 0.5; // Erhöhung der Geschwindigkeit
+
+            player.x += moveAmount;
+            if (player.x < 0) player.x = 0; 
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width; 
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') moveAmount = -15; 
+            if (event.key === 'ArrowRight') moveAmount = 15; 
+        });
+
+        document.addEventListener('keyup', () => {
+            moveAmount = 0; 
+        });
+
+        function spawnCars() {
+            const randomDelay = Math.random() * 500 + 500; // Schnellerer Delay zwischen 500ms und 1000ms
+            setTimeout(() => {
+                createIncomingCar();
+                spawnCars();
+            }, randomDelay);
+        }
+
+        exitButton.addEventListener('click', () => {
+            // Funktion zum Zurückkehren zu speedracer.html
+            location.href = 'speedracer.html'; // Zurück zur speedracer.html
+        });
+
+        spawnCars(); 
+        gameLoop();
+    </script>
+</body>
+</html>
