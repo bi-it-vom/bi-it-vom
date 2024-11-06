@@ -15,8 +15,8 @@
             color: white;
             font-family: Arial, sans-serif;
             padding: 20px;
-            min-height: 100vh; /* Minimumhöhe des Viewports */
-            overflow-y: auto; /* Ermöglicht das Scrollen der gesamten Seite */
+            min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Viewports hat */
+            overflow-y: auto; /* Ermöglicht das Scrollen, falls mehr Inhalt da ist */
         }
 
         .header {
@@ -38,6 +38,7 @@
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
             flex-direction: row; /* Standardlayout auf größeren Bildschirmen */
+            margin-bottom: 20px; /* Abstand nach unten */
         }
 
         .product-image {
