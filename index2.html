@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plattform-Spiel</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #111;
+            flex-direction: column; /* Flexbox für vertikale Anordnung */
+        }
+        canvas {
+            border: 2px solid #fff;
+        }
+        #buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="buttons">
+        <button id="optionButton">Option</button>
+        <button id="exitButton">Exit</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = 1400;
+        canvas.height = 700;
+
+        const defaultBackgroundImage = new Image();
+        defaultBackgroundImage.src = 'https://th.bing.com/th/id/OIP.nKLoWcm1cPMc5YaArb614gHaED?w=980&h=536&rs=1&pid=ImgDetMain';
+
+        const newBackgroundImage = new Image();
+        newBackgroundImage.src = 'https://vignette.wikia.nocookie.net/kazuhisa/images/d/dc/Konoha_actualmente.png/revision/latest?cb=20140623032604&path-prefix=es';
+
+        let currentBackgroundImage = defaultBackgroundImage; // Start mit dem Standard-Hintergrund
+
+        const players = [
+            { 
+                x: canvas.width / 2 - 50,
+                y: canvas.height / 2,
+                width: 50,
+                height: 100,
+                imageRight: new Image(),
+                imageLeft: new Image(),
+                jumpImage: new Image(),
+                kickImage: new Image(),
+                speed: 30,
+                jumpPower: 16.9,
+                gravity: 0.6,
+                dy: 0,
+                isJumping: false,
+                vx: 0,
+                friction: 0.85,
+                score: 0,
+                direction: 1,
+                attacking: false,
+                attackCooldown: 0,
+                kickForce: 20
+            },
+            { 
+                x: canvas.width / 2 + 50,
+                y: canvas.height / 2,
+                width: 50,
+                height: 100,
+                imageRight: new Image(),
+                imageLeft: new Image(),
+                jumpImage: new Image(),
+                kickImage: new Image(),
+                speed: 30,
+                jumpPower: 16.9,
+                gravity: 0.6,
+                dy: 0,
+                isJumping: false,
+                vx: 0,
+                friction: 0.85,
+                score: 0,
+                direction: -1,
+                attacking: false,
+                attackCooldown: 0,
+                kickForce: 20
+            }
+        ];
+
+        players[0].imageRight.src = 'image-removebg-preview (3).png';
+        players[0].imageLeft.src = 'image-removebg-preview (4).png';
+        players[1].imageRight.src = 'image-removebg-preview (3).png';
+        players[1].imageLeft.src = 'image-removebg-preview (4).png';
+
+        players[0].jumpImage.src = 'image-removebg-previewjump (10).png';
+        players[1].jumpImage.src = 'image-removebg-previewjump (10).png';
+
+        players[0].kickImage.src = 'image-removebg-preview (9).png';
+        players[1].kickImage.src = 'image-removebg-preview (9).png';
+
+        const platformImage = new Image();
+        platformImage.src = 'image-removebg-preview (2).png';
+
+        const platforms = [
+            { x: 494, y: 590, width: 450, height: 120 },
+            { x: 200, y: 50, width: 150, height: 100 },
+            { x: 150, y: 400, width: 200, height: 100 },
+            { x: 800, y: 300, width: 100, height: 100 },
+            { x: 1100, y: 500, width: 100, height: 90 },
+            { x: 1100, y: 100, width: 100, height: 90 },
+        ];
+
+        function update() {
+            players.forEach((player, index) => {
+                player.attacking = (keys['f'] && index === 0) || (keys['o'] && index === 1);
+
+                if (keys['ArrowRight'] && index === 1) {
+                    player.vx += 3;  
+                    player.direction = 1;
+                }
+                if (keys['ArrowLeft'] && index === 1) {
+                    player.vx -= 3;  
+                    player.direction = -1;
+                }
+                if (keys['d'] && index === 0) {
+                    player.vx += 3;  
+                    player.direction = 1;
+                }
+                if (keys['a'] && index === 0) {
+                    player.vx -= 3;  
+                    player.direction = -1;
+                }
+
+                if (!player.isJumping && keys['ArrowUp'] && index === 1) {
+                    player.isJumping = true;
+                    player.dy = -player.jumpPower;
+                }
+                if (!player.isJumping && keys['w'] && index === 0) {
+                    player.isJumping = true;
+                    player.dy = -player.jumpPower;
+                }
+
+                player.vx *= player.friction;
+                if (Math.abs(player.vx) > player.speed) player.vx = player.speed * Math.sign(player.vx);
+                player.x += player.vx;
+
+                player.dy += player.gravity;
+                player.y += player.dy;
+
+                platforms.forEach(platform => {
+                    if (player.x < platform.x + platform.width &&
+                        player.x + player.width > platform.x &&
+                        player.y + player.height < platform.y + platform.height &&
+                        player.y + player.height + player.dy >= platform.y) {
+                        
+                        player.isJumping = false;
+                        player.dy = 0;
+                        player.y = platform.y - player.height; 
+                    }
+                });
+
+                players.forEach((otherPlayer, otherIndex) => {
+                    if (index !== otherIndex && player.attacking && 
+                        player.x < otherPlayer.x + otherPlayer.width &&
+                        player.x + player.width > otherPlayer.x &&
+                        player.y < otherPlayer.y + otherPlayer.height &&
+                        player.y + player.height > otherPlayer.y) {
+                        
+                        const kickDirection = player.direction;
+                        otherPlayer.vx += kickDirection * otherPlayer.kickForce;
+                        otherPlayer.dy = -20;
+                    }
+                });
+
+                if (player.y > canvas.height) {
+                    if (index === 0) {
+                        players[1].score++;
+                    } else {
+                        players[0].score++;
+                    }
+                    player.x = canvas.width / 2 + (index === 0 ? -50 : 50);
+                    player.y = canvas.height / 2; 
+                    player.dy = 0;
+                }
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(currentBackgroundImage, 0, 0, canvas.width, canvas.height);
+            platforms.forEach(platform => {
+                ctx.drawImage(platformImage, platform.x, platform.y, platform.width, platform.height);
+            });
+            players.forEach(player => {
+                if (player.attacking) {
+                    ctx.save();
+                    if (player.direction === -1) {
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(player.kickImage, -player.x - player.width, player.y, player.width, player.height);
+                    } else {
+                        ctx.drawImage(player.kickImage, player.x, player.y, player.width, player.height);
+                    }
+                    ctx.restore();
+                } else if (player.isJumping) {
+                    ctx.save();
+                    if (player.direction === -1) {
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(player.jumpImage, -player.x - player.width, player.y, player.width, player.height);
+                    } else {
+                        ctx.drawImage(player.jumpImage, player.x, player.y, player.width, player.height);
+                    }
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(player.direction === 1 ? player.imageRight : player.imageLeft, player.x, player.y, player.width, player.height);
+                }
+            });
+
+            ctx.fillStyle = "#fff";
+            ctx.font = "24px Arial";
+            ctx.fillText(`Spieler 1 Punkte: ${players[0].score}`, 10, 30);
+            ctx.fillText(`Spieler 2 Punkte: ${players[1].score}`, canvas.width - 150, 30);
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        let keys = {};
+        window.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+        });
+        window.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        document.getElementById('optionButton').addEventListener('click', () => {
+            currentBackgroundImage = (currentBackgroundImage === defaultBackgroundImage) ? newBackgroundImage : defaultBackgroundImage; // Wechsel das Hintergrundbild
+        });
+
+        document.getElementById('exitButton').addEventListener('click', () => {
+            window.location.href = 'spielinfo.html'; // Leitet zu spielinfo.html
+        });
+
+        gameLoop(); // Starte die Spielschleife
+    </script>
+</body>
+</html>
