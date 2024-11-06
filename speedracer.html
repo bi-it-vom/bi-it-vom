@@ -35,6 +35,7 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            flex-direction: row; /* Standardlayout auf größeren Bildschirmen */
         }
 
         .product-image {
@@ -102,6 +103,18 @@
 
         .back-button:hover {
             background-color: #505050; /* Dunkleres Grau bei Hover */
+        }
+
+        /* Mobile Ansicht: Bild über dem Text */
+        @media screen and (max-width: 768px) {
+            .product-container {
+                flex-direction: column; /* Ändert die Richtung auf Spalten */
+            }
+
+            .product-details {
+                margin-left: 0; /* Entfernt den linken Abstand */
+                margin-top: 20px; /* Fügt einen Abstand oben hinzu */
+            }
         }
     </style>
 </head>
