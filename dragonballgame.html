@@ -34,7 +34,7 @@
     <canvas id="gameCanvas"></canvas>
     <div id="buttons">
         <button id="optionButton">Option</button>
-        <button id="exitButton">Exit</button>
+        <button onclick="window.location.href='spielinfo.html'">Exit</button>
     </div>
 
     <script>
@@ -253,10 +253,6 @@
 
         optionButton.addEventListener('click', () => {
             currentBackgroundImage = currentBackgroundImage === defaultBackgroundImage ? newBackgroundImage : defaultBackgroundImage;
-        });
-
-        exitButton.addEventListener('click', () => {
-            window.location.href = 'https://www.google.com';
         });
 
         gameLoop();
