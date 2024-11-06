@@ -28,6 +28,19 @@
             font-size: 16px;
             cursor: pointer;
         }
+        @media (max-width: 768px) {
+            #buttons {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            button {
+                margin: 5px;
+                padding: 15px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -44,12 +57,25 @@
         canvas.width = 1400;
         canvas.height = 700;
 
+        // Bilder laden
         const defaultBackgroundImage = new Image();
-        defaultBackgroundImage.src = 'https://th.bing.com/th/id/OIP.nKLoWcm1cPMc5YaArb614gHaED?w=980&h=536&rs=1&pid=ImgDetMain';
-
         const newBackgroundImage = new Image();
-        newBackgroundImage.src = 'https://vignette.wikia.nocookie.net/kazuhisa/images/d/dc/Konoha_actualmente.png/revision/latest?cb=20140623032604&path-prefix=es';
+        const platformImage = new Image();
+        const playerImageRight = new Image();
+        const playerImageLeft = new Image();
+        const playerJumpImage = new Image();
+        const playerKickImage = new Image();
 
+        // Bilder-URLs setzen
+        defaultBackgroundImage.src = 'https://th.bing.com/th/id/OIP.nKLoWcm1cPMc5YaArb614gHaED?w=980&h=536&rs=1&pid=ImgDetMain';
+        newBackgroundImage.src = 'https://vignette.wikia.nocookie.net/kazuhisa/images/d/dc/Konoha_actualmente.png/revision/latest?cb=20140623032604&path-prefix=es';
+        platformImage.src = 'image-removebg-preview (2).png';
+        playerImageRight.src = 'image-removebg-preview (3).png';
+        playerImageLeft.src = 'image-removebg-preview (4).png';
+        playerJumpImage.src = 'image-removebg-previewjump (10).png';
+        playerKickImage.src = 'image-removebg-preview (9).png';
+
+        // Variablen für das Spiel
         let currentBackgroundImage = defaultBackgroundImage;
 
         const players = [
@@ -58,10 +84,10 @@
                 y: canvas.height / 2,
                 width: 50,
                 height: 100,
-                imageRight: new Image(),
-                imageLeft: new Image(),
-                jumpImage: new Image(),
-                kickImage: new Image(),
+                imageRight: playerImageRight,
+                imageLeft: playerImageLeft,
+                jumpImage: playerJumpImage,
+                kickImage: playerKickImage,
                 speed: 30,
                 jumpPower: 16.9,
                 gravity: 0.6,
@@ -80,10 +106,10 @@
                 y: canvas.height / 2,
                 width: 50,
                 height: 100,
-                imageRight: new Image(),
-                imageLeft: new Image(),
-                jumpImage: new Image(),
-                kickImage: new Image(),
+                imageRight: playerImageRight,
+                imageLeft: playerImageLeft,
+                jumpImage: playerJumpImage,
+                kickImage: playerKickImage,
                 speed: 30,
                 jumpPower: 16.9,
                 gravity: 0.6,
@@ -99,20 +125,6 @@
             }
         ];
 
-        players[0].imageRight.src = 'image-removebg-preview (3).png';
-        players[0].imageLeft.src = 'image-removebg-preview (4).png';
-        players[1].imageRight.src = 'image-removebg-preview (3).png';
-        players[1].imageLeft.src = 'image-removebg-preview (4).png';
-
-        players[0].jumpImage.src = 'image-removebg-previewjump (10).png';
-        players[1].jumpImage.src = 'image-removebg-previewjump (10).png';
-
-        players[0].kickImage.src = 'image-removebg-preview (9).png';
-        players[1].kickImage.src = 'image-removebg-preview (9).png';
-
-        const platformImage = new Image();
-        platformImage.src = 'image-removebg-preview (2).png';
-
         const platforms = [
             { x: 494, y: 590, width: 450, height: 120 },
             { x: 200, y: 50, width: 150, height: 100 },
@@ -122,6 +134,30 @@
             { x: 1100, y: 100, width: 100, height: 90 },
         ];
 
+        // Wartet, bis das Bild vollständig geladen ist
+        function waitForImages() {
+            return new Promise((resolve) => {
+                let loadedImages = 0;
+                const totalImages = 6; // Anzahl der Bilder
+
+                function checkImagesLoaded() {
+                    loadedImages++;
+                    if (loadedImages === totalImages) {
+                        resolve();
+                    }
+                }
+
+                defaultBackgroundImage.onload = checkImagesLoaded;
+                newBackgroundImage.onload = checkImagesLoaded;
+                platformImage.onload = checkImagesLoaded;
+                playerImageRight.onload = checkImagesLoaded;
+                playerImageLeft.onload = checkImagesLoaded;
+                playerJumpImage.onload = checkImagesLoaded;
+                playerKickImage.onload = checkImagesLoaded;
+            });
+        }
+
+        // Spiel-Update und Zeichnen
         function update() {
             players.forEach((player, index) => {
                 player.attacking = (keys['f'] && index === 0) || (keys['o'] && index === 1);
@@ -152,7 +188,6 @@
                     player.dy = -player.jumpPower;
                 }
 
-                // Sofortiges Herunterfallen bei "s" (Spieler 1) oder "ArrowDown" (Spieler 2)
                 if (player.isJumping && ((keys['s'] && index === 0) || (keys['ArrowDown'] && index === 1))) {
                     player.dy = player.jumpPower;
                 }
@@ -176,19 +211,6 @@
                     }
                 });
 
-                players.forEach((otherPlayer, otherIndex) => {
-                    if (index !== otherIndex && player.attacking && 
-                        player.x < otherPlayer.x + otherPlayer.width &&
-                        player.x + player.width > otherPlayer.x &&
-                        player.y < otherPlayer.y + otherPlayer.height &&
-                        player.y + player.height > otherPlayer.y) {
-                        
-                        const kickDirection = player.direction;
-                        otherPlayer.vx += kickDirection * otherPlayer.kickForce;
-                        otherPlayer.dy = -20;
-                    }
-                });
-
                 if (player.y > canvas.height) {
                     if (index === 0) {
                         players[1].score++;
@@ -203,40 +225,52 @@
         }
 
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(currentBackgroundImage, 0, 0, canvas.width, canvas.height);
-            platforms.forEach(platform => {
-                ctx.drawImage(platformImage, platform.x, platform.y, platform.width, platform.height);
-            });
-            players.forEach(player => {
-                if (player.attacking) {
-                    ctx.save();
-                    if (player.direction === -1) {
-                        ctx.scale(-1, 1);
-                        ctx.drawImage(player.kickImage, -player.x - player.width, player.y, player.width, player.height);
-                    } else {
-                        ctx.drawImage(player.kickImage, player.x, player.y, player.width, player.height);
-                    }
-                    ctx.restore();
-                } else if (player.isJumping) {
-                    ctx.save();
-                    if (player.direction === -1) {
-                        ctx.scale(-1, 1);
-                        ctx.drawImage(player.jumpImage, -player.x - player.width, player.y, player.width, player.height);
-                    } else {
-                        ctx.drawImage(player.jumpImage, player.x, player.y, player.width, player.height);
-                    }
-                    ctx.restore();
-                } else {
-                    ctx.drawImage(player.direction === 1 ? player.imageRight : player.imageLeft, player.x, player.y, player.width, player.height);
-                }
-            });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(currentBackgroundImage, 0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = "#fff";
-            ctx.font = "24px Arial";
-            ctx.fillText(`Spieler 1 Punkte: ${players[0].score}`, 20, 30);
-            ctx.fillText(`Spieler 2 Punkte: ${players[1].score}`, canvas.width - 200, 30);
+    platforms.forEach(platform => {
+        ctx.drawImage(platformImage, platform.x, platform.y, platform.width, platform.height);
+    });
+
+    players.forEach(player => {
+        if (player.attacking) {
+            ctx.save();
+            // Wenn der Spieler nach links schaut
+            if (player.direction === -1) {
+                ctx.scale(-1, 1); // Bild spiegeln
+                ctx.drawImage(player.kickImage, -player.x - player.width, player.y, player.width, player.height);
+            } else {
+                ctx.drawImage(player.kickImage, player.x, player.y, player.width, player.height);
+            }
+            ctx.restore();
+        } else if (player.isJumping) {
+            ctx.save();
+            // Wenn der Spieler nach links springt
+            if (player.direction === -1) {
+                ctx.scale(-1, 1); // Bild spiegeln
+                ctx.drawImage(player.jumpImage, -player.x - player.width, player.y, player.width, player.height);
+            } else {
+                ctx.drawImage(player.jumpImage, player.x, player.y, player.width, player.height);
+            }
+            ctx.restore();
+        } else {
+            // Wenn der Spieler läuft
+            if (player.direction === -1) {
+                ctx.save();
+                ctx.scale(-1, 1); // Bild spiegeln
+                ctx.drawImage(player.imageRight, -player.x - player.width, player.y, player.width, player.height);
+                ctx.restore();
+            } else {
+                ctx.drawImage(player.imageRight, player.x, player.y, player.width, player.height);
+            }
         }
+    });
+
+    ctx.font = "30px Arial";
+    ctx.fillText(`Player 1: ${players[0].score}`, 50, 30);
+    ctx.fillText(`Player 2: ${players[1].score}`, canvas.width - 200, 30);
+}
+
 
         function gameLoop() {
             update();
@@ -244,18 +278,25 @@
             requestAnimationFrame(gameLoop);
         }
 
-        const keys = {};
-        window.addEventListener('keydown', (e) => { keys[e.key] = true; });
-        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
-
-        const optionButton = document.getElementById('optionButton');
-        const exitButton = document.getElementById('exitButton');
-
-        optionButton.addEventListener('click', () => {
-            currentBackgroundImage = currentBackgroundImage === defaultBackgroundImage ? newBackgroundImage : defaultBackgroundImage;
+        waitForImages().then(() => {
+            gameLoop();
         });
 
-        gameLoop();
+        let keys = {};
+
+        window.addEventListener('keydown', e => {
+            keys[e.key] = true;
+        });
+
+        window.addEventListener('keyup', e => {
+            keys[e.key] = false;
+        });
+
+        function toggleBackground() {
+            currentBackgroundImage = currentBackgroundImage === defaultBackgroundImage ? newBackgroundImage : defaultBackgroundImage;
+        }
+
+        document.getElementById("optionButton").addEventListener("click", toggleBackground);
     </script>
 </body>
 </html>

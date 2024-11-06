@@ -15,6 +15,9 @@
             color: white;
             font-family: Arial, sans-serif;
             padding: 20px;
+            min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Bildschirmhöhe einnimmt */
+            overflow-x: hidden; /* Verhindert horizontales Scrollen */
+            overflow-y: auto; /* Ermöglicht vertikales Scrollen */
         }
 
         .header {
@@ -35,6 +38,7 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            width: 100%;
         }
 
         .product-image {
@@ -86,6 +90,34 @@
         button:hover {
             background-color: #cc0000; /* Dunkleres Rot bei Hover */
         }
+
+        /* Mobile Ansicht */
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column; /* Bild und Details untereinander anordnen */
+                align-items: center; /* Zentrieren */
+            }
+
+            .product-details {
+                margin-left: 0; /* Kein Abstand mehr zum Bild */
+                text-align: center; /* Text zentrieren */
+            }
+
+            h1 {
+                font-size: 24px; /* Kleinere Schrift auf mobilen Geräten */
+            }
+
+            .description {
+                font-size: 14px; /* Kleinere Schrift für die Beschreibung */
+                margin: 5px 0;
+                padding: 8px;
+            }
+
+            button {
+                font-size: 14px; /* Kleinere Schaltflächen auf mobilen Geräten */
+                padding: 8px 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -109,4 +141,3 @@
     </div>
 </body>
 </html>
-
