@@ -194,6 +194,22 @@ header {
     transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
 }
 
+.Erfahremehr2-btn {
+    position: fixed; 
+    bottom: 25px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 1000; 
+    background-color: #0000002d; /* Hintergrundfarbe */
+    color: rgb(58, 202, 22); /* Schriftfarbe */
+    border: none; /* Kein Rahmen */
+    padding: 15px 30px; /* Innenabstand */
+    font-size: 25px; /* Schriftgröße */
+    border-radius: 0px; /* Abgerundete Ecken */
+    cursor: pointer; /* Handzeiger bei Hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Übergangseffekte */
+}
+
 /* Mobile Anpassungen */
 @media only screen and (max-width: 768px) { /* Für Handyansicht */
     .Erfahremehr-btn {
