@@ -196,7 +196,7 @@ header {
 
 .Erfahremehr2-btn {
     position: fixed; 
-    bottom: 25px; 
+    bottom: 22px; 
     left: 50%; 
     transform: translateX(-50%); 
     z-index: 1000; 
