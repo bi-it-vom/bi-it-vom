@@ -232,23 +232,30 @@
             }
         }
 
-        function setActivePoint() {
-            if (activePointIndex !== null) {
-                const oldPoint = document.getElementsByClassName('point')[activePointIndex];
-                oldPoint.classList.remove('active-point');
-            }
+        let timeoutId;  // Diese Variable speichert die ID des aktuellen setTimeouts
 
-            activePointIndex = Math.floor(Math.random() * totalPoints);
-            const points = document.getElementsByClassName('point');
-            const activePoint = points[activePointIndex];
+function setActivePoint() {
+    if (activePointIndex !== null) {
+        const oldPoint = document.getElementsByClassName('point')[activePointIndex];
+        oldPoint.classList.remove('active-point');
+    }
 
-            activePoint.classList.add('active-point');
+    activePointIndex = Math.floor(Math.random() * totalPoints);
+    const points = document.getElementsByClassName('point');
+    const activePoint = points[activePointIndex];
 
-            setTimeout(() => {
-                activePoint.classList.remove('active-point');
-                setActivePoint();
-            }, 2000);
-        }
+    activePoint.classList.add('active-point');
+
+    // Lösche den alten Timeout, falls er noch aktiv ist
+    clearTimeout(timeoutId);
+
+    // Setze den neuen Timeout für den nächsten Wechsel
+    timeoutId = setTimeout(() => {
+        activePoint.classList.remove('active-point');
+        setActivePoint();
+    }, 2000); // 2 Sekunden warten
+}
+
 
         function increaseScore(index) {
             if (activePointIndex === index) {
