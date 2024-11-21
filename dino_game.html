@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Game</title>
+
+    <div id="scoreBoard" style="text-align: center; margin-top: 20px; color: white;">
+        <h2>Top 4 Versuche:</h2>
+        <ol id="topScores"></ol>
+    </div>
+    
     <style>
         body {
             margin: 0;
@@ -89,8 +95,8 @@
 </head>
 <body>
     <button class="exit-button" onclick="window.location.href='dinojump.html'">Zurück</button>
-    <div class="score" id="scoreDisplay">Meter: 0</div>
-    <canvas id="gameCanvas" width="1200" height="500"></canvas>
+    <div class="score" id="scoreDisplay">Hindernisse bewältigt: 0</div>
+    <canvas id="gameCanvas"></canvas>
     <div class="game-over" id="gameOverOverlay">
         <div class="bloody-text">Why so serious?</div>
         <div id="gameOverText"></div>
@@ -99,25 +105,46 @@
     </div>
 
     <script>
+        // Funktion für die Namenseingabe
+        function askForName() {
+            let playerName = null;
+            while (!playerName) {
+                playerName = prompt("Bitte gib deinen Namen ein:");
+                if (!playerName) {
+                    alert("Der Name darf nicht leer sein!");
+                }
+            }
+            alert(`Willkommen, ${playerName}!`);
+            return playerName;
+        }
+
+        const playerName = askForName(); // Spielername wird gespeichert
+
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const gameOverOverlay = document.getElementById('gameOverOverlay');
         const gameOverText = document.getElementById('gameOverText');
 
+        // Canvas Größe an Bildschirm anpassen
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight * 0.8;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
         let dinoY, dinoWidth, dinoHeight, gravity, isJumping, jumpStrength, jumpSpeed;
         let obstacles, distanceInMeters, highScore, obstacleSpeed, obstacleWidth, obstaclesCleared, spawnInterval;
-        let jumpCount = 0; // Zähler für die Anzahl der Sprünge
+        let jumpCount = 0;
 
-        // Lade die Dino-Bilder
         const dinoImage = new Image();
         const dinoJumpImage = new Image();
         const obstacleImage = new Image();
-        
-        dinoImage.src = 'image-removebg-preview (20).png';  // Pfad zu deinem Dino-Bild
-        dinoJumpImage.src = 'image-removebg-preview (21).png'; // Pfad zu deinem springenden Dino-Bild
-        obstacleImage.src = 'image-removebg-preview (22).png'; // Pfad zu deinem Hindernis-Bild
 
-        // Warte, bis alle Bilder geladen sind
+        dinoImage.src = 'image-removebg-preview (20).png';
+        dinoJumpImage.src = 'image-removebg-preview (21).png';
+        obstacleImage.src = 'image-removebg-preview (22).png';
+
         let imagesLoaded = 0;
         const totalImages = 3;
 
@@ -137,7 +164,7 @@
             constructor(x, height) {
                 this.x = x;
                 this.y = canvas.height - height;
-                this.width = 50;  // Breite der Hindernisse
+                this.width = 50;
                 this.height = height;
             }
 
@@ -149,13 +176,12 @@
                 this.x -= obstacleSpeed;
             }
 
-            // Funktion zur Kollisionsüberprüfung mit dem Dino (mit kleinerer Kollision)
             checkCollision(dinoX, dinoY, dinoWidth, dinoHeight) {
-                const collisionBoxWidth = 60;  // Verkleinerte Breite des Kollisionserkennungsbereichs
-                const collisionBoxHeight = 120; // Verkleinerte Höhe des Kollisionserkennungsbereichs
+                const collisionBoxWidth = 60;
+                const collisionBoxHeight = 120;
 
                 if (
-                    dinoX + collisionBoxWidth > this.x &&  // Dino trifft auf Hindernis
+                    dinoX + collisionBoxWidth > this.x &&
                     dinoX < this.x + this.width &&
                     dinoY + collisionBoxHeight > this.y &&
                     dinoY < this.y + this.height
@@ -177,16 +203,14 @@
                     } else {
                         clearInterval(jumpInterval);
                         let fallInterval = setInterval(() => {
-                            dinoY += gravity + 1;
+                            dinoY += gravity + 10;
                             if (dinoY >= canvas.height - dinoHeight) {
                                 clearInterval(fallInterval);
                                 dinoY = canvas.height - dinoHeight;
                                 isJumping = false;
-                                jumpCount++; // Erhöhe den Sprungzähler
-
-                                // Überprüfe, ob 3 Hindernisse gesprungen wurden
+                                jumpCount++;
                                 if (jumpCount % 3 === 0) {
-                                    obstacleSpeed += 2; // Erhöhe die Geschwindigkeit nach jedem 3. Sprung
+                                    obstacleSpeed += 4; 
                                 }
                             }
                         }, 20);
@@ -196,17 +220,17 @@
         }
 
         function addObstacle() {
-            const height = Math.random() * 50 + 50; // Zufällige Höhe der Hindernisse
+            const height = Math.random() * 50 + 50;
             obstacles.push(new Obstacle(canvas.width, height));
         }
 
         function updateScore() {
-            document.getElementById('scoreDisplay').innerText = 'Meter: ' + distanceInMeters;
+            document.getElementById('scoreDisplay').innerText = playerName + ' - Hindernisse bewältigt: ' + distanceInMeters;
         }
 
         function gameOver() {
             gameOverOverlay.style.display = 'flex';
-            gameOverText.innerText = 'Game Over! Du hast ' + distanceInMeters + ' Meter geschafft!';
+            gameOverText.innerText = playerName + ', du hast ' + distanceInMeters + ' Hindernisse bewältigt!';
             if (distanceInMeters > highScore) {
                 highScore = distanceInMeters;
                 gameOverText.innerText += '\nNeuer Highscore: ' + highScore;
@@ -214,7 +238,7 @@
         }
 
         function restartGame() {
-            location.reload();  // Die Seite neu laden, um das Spiel zurückzusetzen
+            location.reload();
         }
 
         function resetGame() {
@@ -227,56 +251,57 @@
             jumpSpeed = 0;
             obstacles = [];
             distanceInMeters = 0;
-            obstacleSpeed = 5;  // Anfangsgeschwindigkeit der Hindernisse
+            obstacleSpeed = 5;
             obstaclesCleared = 0;
-            jumpCount = 0; // Reset Sprungzähler
-            clearInterval(spawnInterval);  // Stop previous spawn interval
-            spawnInterval = setInterval(addObstacle, 1500);  // Hindernisse alle 1,5 Sekunden
+            jumpCount = 0;
+            clearInterval(spawnInterval);
+            startObstacleSpawning();
+        }
+
+        function startObstacleSpawning() {
+            spawnInterval = setTimeout(function () {
+                addObstacle();
+                startObstacleSpawning();
+            }, Math.random() * 2000 + 500); 
         }
 
         function update() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Zeige den Dino (je nach Sprungstatus)
             if (isJumping) {
                 ctx.drawImage(dinoJumpImage, 50, dinoY, dinoWidth, dinoHeight);
             } else {
                 ctx.drawImage(dinoImage, 50, dinoY, dinoWidth, dinoHeight);
             }
 
-            // Zeichne und aktualisiere Hindernisse
             obstacles.forEach((obstacle, index) => {
                 obstacle.update();
                 obstacle.draw();
 
-                // Überprüfe Kollision
                 if (obstacle.checkCollision(50, dinoY, dinoWidth, dinoHeight)) {
                     gameOver();
                 }
 
-                // Entferne Hindernisse, die den Bildschirm verlassen haben
                 if (obstacle.x + obstacle.width < 0) {
                     obstacles.splice(index, 1);
                     obstaclesCleared++;
-                    distanceInMeters += 10;  // Erhöhe den Punktestand
+                    distanceInMeters += 1;
                     updateScore();
                 }
             });
         }
 
         function animate() {
-            if (gameOverOverlay.style.display !== 'flex') {
-                update();
+            update();
+            if (gameOverOverlay.style.display === 'none') {
                 requestAnimationFrame(animate);
             }
         }
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === ' ' || event.key === 'ArrowUp') {
+        document.addEventListener('keydown', event => {
+            if (event.code === 'Space') {
                 jump();
             }
         });
-
-        resetGame();  // Startgame mit Reset
     </script>
 </body>
 </html>
