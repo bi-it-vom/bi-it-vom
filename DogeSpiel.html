@@ -27,8 +27,8 @@
       background-image: url('Herunterladen.png');
       background-size: cover;
       background-position: center;
+      transition: all 0.2s ease-in-out;
     }
-
 
     #score {
       position: absolute;
@@ -150,6 +150,11 @@
     let isFollowing = false;
     let bullets = [];
     let enemies = [];
+    let level = 1;
+    let levelUpTime = 30; // in Sekunden
+    let timeElapsed = 0;
+    let playerColor = "white";
+    let shootMultiple = false;
 
     // Mausverfolgung aktivieren, wenn die linke Maustaste gedrückt wird
     gameArea.addEventListener('mousedown', (e) => {
@@ -206,11 +211,11 @@
 
       let angle = Math.atan2(playerPosY - playerPosY, playerPosX - playerPosX);
       let bulletSpeed = 10;
-      
+
       function moveBullet() {
         let bulletPosX = parseInt(bullet.style.left);
         let bulletPosY = parseInt(bullet.style.top);
-        
+
         bulletPosX += bulletSpeed * Math.cos(angle);
         bulletPosY += bulletSpeed * Math.sin(angle);
 
@@ -249,6 +254,9 @@
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
         shootBullet();
+        if (shootMultiple) {
+          shootBullet(); // Doppelter Schuss
+        }
       }
     });
 
@@ -258,7 +266,6 @@
       enemy.classList.add('enemy');
       enemy.style.left = Math.random() * gameArea.offsetWidth + 'px';
       enemy.style.top = Math.random() * gameArea.offsetHeight + 'px';
-
       gameArea.appendChild(enemy);
 
       const enemyData = {
@@ -266,92 +273,95 @@
         posX: parseInt(enemy.style.left),
         posY: parseInt(enemy.style.top),
         size: 20,
-        health: 200
+        health: level === 2 ? 300 : 100, // Stärkere Gegner bei Level 2
       };
 
       enemies.push(enemyData);
-
-      function moveEnemy() {
-        let enemyPosX = enemyData.posX;
-        let enemyPosY = enemyData.posY;
-        let enemySpeed = 3;
-        let angle = Math.atan2(playerPosY - enemyPosY, playerPosX - enemyPosX);
-
-        enemyPosX += enemySpeed * Math.cos(angle);
-        enemyPosY += enemySpeed * Math.sin(angle);
-
-        enemy.style.left = enemyPosX + 'px';
-        enemy.style.top = enemyPosY + 'px';
-
-        enemyData.posX = enemyPosX;
-        enemyData.posY = enemyPosY;
-
-        // Angriff der Gegner
-        if (Math.random() < 0.01) {
-          shootEnemyBullet(enemyData);
-        }
-
-        requestAnimationFrame(moveEnemy);
-      }
-
-      moveEnemy();
     }
 
-    // Gegner-Schüsse
-    function shootEnemyBullet(enemyData) {
-      const enemyBullet = document.createElement('div');
-      enemyBullet.classList.add('enemy-bullet');
-      enemyBullet.style.left = enemyData.posX + enemyData.size / 2 - 5 + 'px';
-      enemyBullet.style.top = enemyData.posY + enemyData.size / 2 - 5 + 'px';
-      gameArea.appendChild(enemyBullet);
+    // Kollisionserkennung und Spielmechanik für Gegner-Schüsse
+    function shootEnemyBullet(enemy) {
+      const bullet = document.createElement('div');
+      bullet.classList.add('enemy-bullet');
+      bullet.style.left = enemy.posX + enemy.size / 2 - 5 + 'px';
+      bullet.style.top = enemy.posY + enemy.size / 2 - 5 + 'px';
+      gameArea.appendChild(bullet);
 
-      const angle = Math.atan2(playerPosY - enemyData.posY, playerPosX - enemyData.posX);
       let bulletSpeed = 5;
-
-      function moveEnemyBullet() {
-        let bulletPosX = parseInt(enemyBullet.style.left);
-        let bulletPosY = parseInt(enemyBullet.style.top);
-
+      function moveBullet() {
+        let bulletPosX = parseInt(bullet.style.left);
+        let bulletPosY = parseInt(bullet.style.top);
+        
+        // Beispiel: Gegner schießt in Richtung Spieler
+        let angle = Math.atan2(playerPosY - bulletPosY, playerPosX - bulletPosX);
+        
         bulletPosX += bulletSpeed * Math.cos(angle);
         bulletPosY += bulletSpeed * Math.sin(angle);
 
-        enemyBullet.style.left = bulletPosX + 'px';
-        enemyBullet.style.top = bulletPosY + 'px';
+        bullet.style.left = bulletPosX + 'px';
+        bullet.style.top = bulletPosY + 'px';
 
-        // Entfernt die Kugel, wenn sie den Bildschirm verlässt
-        if (bulletPosX < 0 || bulletPosX > gameArea.offsetWidth || bulletPosY < 0 || bulletPosY > gameArea.offsetHeight) {
-          enemyBullet.remove();
-        }
-
-        // Kollisionsabfrage mit dem Spieler
         if (
-          bulletPosX < playerPosX + player.offsetWidth &&
+          bulletPosX < playerPosX + 50 &&
           bulletPosX + 10 > playerPosX &&
-          bulletPosY < playerPosY + player.offsetHeight &&
+          bulletPosY < playerPosY + 50 &&
           bulletPosY + 10 > playerPosY
         ) {
-          health -= 8; // Schaden pro Treffer des Gegners
+          health -= 10;
           healthBar.style.width = health + '%';
           healthText.textContent = health + ' HP';
-          enemyBullet.remove();
+
+          if (health <= 0) {
+            alert('Game Over');
+            window.location.reload();
+          }
+          bullet.remove();
         }
 
-        requestAnimationFrame(moveEnemyBullet);
+        if (bulletPosX < 0 || bulletPosX > gameArea.offsetWidth || bulletPosY < 0 || bulletPosY > gameArea.offsetHeight) {
+          bullet.remove();
+        }
+
+        requestAnimationFrame(moveBullet);
       }
 
-      moveEnemyBullet();
+      moveBullet();
     }
 
-    // Gegner spawnen alle 3 Sekunden
-    setInterval(spawnEnemy, 3000);
+    // Level Up Timer und Mechaniken
+    function levelUp() {
+      timeElapsed++;
 
-    // Spiel-Loop
+      if (timeElapsed >= levelUpTime) {
+        level++;
+        timeElapsed = 0;
+
+        if (level === 2) {
+          playerColor = "cyan"; // Spielerfarbe ändern bei Level 2
+          shootMultiple = true; // Doppel-Schuss aktivieren
+        }
+
+        score += 50; // Punkte erhöhen
+        scoreDisplay.textContent = 'Punkte: ' + score;
+      }
+    }
+
+    // Gegner nach Level ändern
     function gameLoop() {
-      // Hier kann die Logik für Kollisionen, Punkte und andere Spielmechaniken hinzugefügt werden
-      scoreDisplay.textContent = `Punkte: ${score}`;
+      levelUp();
+
+      if (Math.random() < 0.01) {
+        spawnEnemy();
+      }
+
+      enemies.forEach(enemy => {
+        shootEnemyBullet(enemy);
+      });
+
       requestAnimationFrame(gameLoop);
     }
 
+    // Starte das Spiel
     gameLoop();
   </script>
 </body>
