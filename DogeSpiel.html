@@ -8,8 +8,6 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: black;
-      font-family: Arial, sans-serif;
       overflow: hidden;
     }
 
@@ -17,17 +15,72 @@
       position: relative;
       width: 100vw;
       height: 100vh;
-      background-color: black;
+      background-image: url('https://lumiere-a.akamaihd.net/v1/images/Death-Star-II_b5760154.jpeg?region=0,68,2160,1080');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+    }
+
+    #char-selection {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    #char1, #char2 {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    #char1 img, #char2 img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    #char1:hover img, #char2:hover img {
+      transform: scale(1.1); /* Vergrößern beim Hover */
+    }
+
+    #button-container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+    }
+
+    .button {
+      width: 200px;
+      height: 50px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: center;
+      line-height: 50px;
+      border-radius: 10px;
+    }
+
+    .button:hover {
+      background-color: rgba(0, 0, 0, 0.9);
     }
 
     #player {
       position: absolute;
-      width: 50px;
-      height: 50px;
-      background-image: url('Herunterladen.png');
+      width: 80px;
+      height: 80px;
       background-size: cover;
       background-position: center;
-      transition: all 0.2s ease-in-out;
+      z-index: 2;
+      display: none;
     }
 
     #score {
@@ -38,7 +91,7 @@
       color: white;
     }
 
-    #ammo-container {
+    #ammo-container, #health-container {
       position: absolute;
       bottom: 20px;
       right: 20px;
@@ -49,87 +102,48 @@
       background-color: rgba(0, 0, 0, 0.5);
     }
 
-    #ammo-bar {
+    #ammo-bar, #health-bar {
       height: 100%;
-      background-color: green;
       border-radius: 10px;
-      width: 100%;
     }
 
-    #ammo-text {
+    #ammo-text, #health-text {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
       font-size: 18px;
-    }
-
-    #health-container {
-      position: absolute;
-      bottom: 60px;
-      right: 20px;
-      width: 200px;
-      height: 30px;
-      border: 2px solid white;
-      border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    #health-bar {
-      height: 100%;
-      background-color: red;
-      border-radius: 10px;
-      width: 100%;
-    }
-
-    #health-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 18px;
-    }
-
-    .bullet {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: yellow;
-      border-radius: 50%;
-    }
-
-    .comet, .enemy {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: red;
-      border-radius: 50%;
-    }
-
-    .enemy-bullet {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: blue;
-      border-radius: 50%;
     }
   </style>
 </head>
 <body>
   <div id="game-area">
+    <div id="char-selection">
+      <!-- Charakter 1 auf der linken Seite -->
+      <div id="char1" onclick="selectCharacter('char1')">
+        <img src="Herunterladen (3).png" alt="Charakter 1">
+      </div>
+      <!-- Charakter 2 auf der rechten Seite -->
+      <div id="char2" onclick="selectCharacter('char2')">
+        <img src="Herunterladen (2).png" alt="Charakter 2">
+      </div>
+    </div>
+
+    <div id="button-container">
+      <button class="button" onclick="startGame()">Start Game</button>
+      <button class="button" onclick="restartGame()">Restart</button>
+    </div>
+
     <div id="player"></div>
     <div id="score">Punkte: 0</div>
     <div id="ammo-container">
-      <div id="ammo-bar">
-        <div id="ammo-text">100%</div>
-      </div>
+      <div id="ammo-bar"></div>
+      <div id="ammo-text">100%</div>
     </div>
     <div id="health-container">
-      <div id="health-bar">
-        <div id="health-text">100 HP</div>
-      </div>
+      <div id="health-bar"></div>
+      <div id="health-text">100 HP</div>
     </div>
   </div>
 
@@ -141,228 +155,51 @@
     const ammoText = document.getElementById('ammo-text');
     const healthBar = document.getElementById('health-bar');
     const healthText = document.getElementById('health-text');
+    const charSelection = document.getElementById('char-selection');
+    const starsContainer = document.getElementById('stars');
+    const buttonContainer = document.getElementById('button-container');
     let score = 0;
     let ammo = 100;
     let health = 100;
     let playerPosX = gameArea.offsetWidth / 2 - 25;
     let playerPosY = gameArea.offsetHeight / 2 - 25;
     let playerSpeed = 15;
-    let isFollowing = false;
-    let bullets = [];
-    let enemies = [];
-    let level = 1;
-    let levelUpTime = 30; // in Sekunden
-    let timeElapsed = 0;
-    let playerColor = "white";
-    let shootMultiple = false;
+    let selectedCharacter = null;
 
-    // Mausverfolgung aktivieren, wenn die linke Maustaste gedrückt wird
-    gameArea.addEventListener('mousedown', (e) => {
-      if (e.button === 0) {
-        isFollowing = true;
+    // Funktion, um den Charakter auszuwählen
+    function selectCharacter(character) {
+      if (character === 'char1') {
+        selectedCharacter = 'Herunterladen (3).png';  // Der erste Charakter
+      } else if (character === 'char2') {
+        selectedCharacter = 'Herunterladen (2).png';  // Der zweite Charakter
       }
-    });
 
-    // Verhindert, dass der Charakter weiter folgt, wenn die Maustaste losgelassen wird
-    gameArea.addEventListener('mouseup', (e) => {
-      if (e.button === 0) {
-        isFollowing = false;
-      }
-    });
-
-    // Hauptlogik für das Verfolgen der Maus
-    function followMouse(e) {
-      if (isFollowing) {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        let deltaX = mouseX - playerPosX - player.offsetWidth / 2;
-        let deltaY = mouseY - playerPosY - player.offsetHeight / 2;
-        let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-        // Der Spieler folgt der Maus sofort und bewegt sich schnell
-        if (distance > 0) {
-          let angle = Math.atan2(deltaY, deltaX);
-          playerPosX += playerSpeed * Math.cos(angle);
-          playerPosY += playerSpeed * Math.sin(angle);
-
-          player.style.left = playerPosX + 'px';
-          player.style.top = playerPosY + 'px';
-        }
+      // Überprüfen, ob das Bild existiert, und den Hintergrund setzen
+      if (selectedCharacter) {
+        player.style.backgroundImage = `url(${selectedCharacter})`;
+        player.style.display = 'block';  // Zeige den Charakter
+        charSelection.style.display = 'none';  // Verstecke die Charakterauswahl
+        startGame();  // Spiel starten
       }
     }
 
-    // Fängt die Mausbewegung während des Spielens ein
-    gameArea.addEventListener('mousemove', followMouse);
-
-    // Kollisionserkennung und Spielmechanik für Schüsse
-    function shootBullet() {
-      if (ammo <= 0) return; // Keine Munition
-
-      ammo--;
+    // Spiel starten
+    function startGame() {
+      score = 0;
+      ammo = 100;
+      health = 100;
+      scoreDisplay.textContent = `Punkte: ${score}`;
       ammoBar.style.width = ammo + '%';
       ammoText.textContent = ammo + '%';
-
-      const bullet = document.createElement('div');
-      bullet.classList.add('bullet');
-      bullet.style.left = playerPosX + player.offsetWidth / 2 - 5 + 'px';
-      bullet.style.top = playerPosY + player.offsetHeight / 2 - 5 + 'px';
-      gameArea.appendChild(bullet);
-
-      let angle = Math.atan2(playerPosY - playerPosY, playerPosX - playerPosX);
-      let bulletSpeed = 10;
-
-      function moveBullet() {
-        let bulletPosX = parseInt(bullet.style.left);
-        let bulletPosY = parseInt(bullet.style.top);
-
-        bulletPosX += bulletSpeed * Math.cos(angle);
-        bulletPosY += bulletSpeed * Math.sin(angle);
-
-        bullet.style.left = bulletPosX + 'px';
-        bullet.style.top = bulletPosY + 'px';
-
-        // Entfernt den Schuss, wenn er den Bildschirm verlässt
-        if (bulletPosX < 0 || bulletPosX > gameArea.offsetWidth || bulletPosY < 0 || bulletPosY > gameArea.offsetHeight) {
-          bullet.remove();
-        }
-
-        // Kollisionsabfrage mit Kometen
-        enemies.forEach(enemy => {
-          if (
-            bulletPosX < enemy.posX + enemy.size &&
-            bulletPosX + 10 > enemy.posX &&
-            bulletPosY < enemy.posY + enemy.size &&
-            bulletPosY + 10 > enemy.posY
-          ) {
-            enemy.health -= 50;
-            if (enemy.health <= 0) {
-              enemy.elem.remove();
-              enemies = enemies.filter(e => e !== enemy);
-            }
-            bullet.remove();
-          }
-        });
-
-        requestAnimationFrame(moveBullet);
-      }
-
-      moveBullet();
+      healthBar.style.width = health + '%';
+      healthText.textContent = health + ' HP';
     }
 
-    // Leertaste zum Schießen
-    window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        shootBullet();
-        if (shootMultiple) {
-          shootBullet(); // Doppelter Schuss
-        }
-      }
-    });
-
-    // Spawn von Gegner-Raumschiffen
-    function spawnEnemy() {
-      const enemy = document.createElement('div');
-      enemy.classList.add('enemy');
-      enemy.style.left = Math.random() * gameArea.offsetWidth + 'px';
-      enemy.style.top = Math.random() * gameArea.offsetHeight + 'px';
-      gameArea.appendChild(enemy);
-
-      const enemyData = {
-        elem: enemy,
-        posX: parseInt(enemy.style.left),
-        posY: parseInt(enemy.style.top),
-        size: 20,
-        health: level === 2 ? 300 : 100, // Stärkere Gegner bei Level 2
-      };
-
-      enemies.push(enemyData);
+    // Funktion für das Neustarten des Spiels
+    function restartGame() {
+      charSelection.style.display = 'flex';
+      player.style.display = 'none';
     }
-
-    // Kollisionserkennung und Spielmechanik für Gegner-Schüsse
-    function shootEnemyBullet(enemy) {
-      const bullet = document.createElement('div');
-      bullet.classList.add('enemy-bullet');
-      bullet.style.left = enemy.posX + enemy.size / 2 - 5 + 'px';
-      bullet.style.top = enemy.posY + enemy.size / 2 - 5 + 'px';
-      gameArea.appendChild(bullet);
-
-      let bulletSpeed = 5;
-      function moveBullet() {
-        let bulletPosX = parseInt(bullet.style.left);
-        let bulletPosY = parseInt(bullet.style.top);
-        
-        // Beispiel: Gegner schießt in Richtung Spieler
-        let angle = Math.atan2(playerPosY - bulletPosY, playerPosX - bulletPosX);
-        
-        bulletPosX += bulletSpeed * Math.cos(angle);
-        bulletPosY += bulletSpeed * Math.sin(angle);
-
-        bullet.style.left = bulletPosX + 'px';
-        bullet.style.top = bulletPosY + 'px';
-
-        if (
-          bulletPosX < playerPosX + 50 &&
-          bulletPosX + 10 > playerPosX &&
-          bulletPosY < playerPosY + 50 &&
-          bulletPosY + 10 > playerPosY
-        ) {
-          health -= 10;
-          healthBar.style.width = health + '%';
-          healthText.textContent = health + ' HP';
-
-          if (health <= 0) {
-            alert('Game Over');
-            window.location.reload();
-          }
-          bullet.remove();
-        }
-
-        if (bulletPosX < 0 || bulletPosX > gameArea.offsetWidth || bulletPosY < 0 || bulletPosY > gameArea.offsetHeight) {
-          bullet.remove();
-        }
-
-        requestAnimationFrame(moveBullet);
-      }
-
-      moveBullet();
-    }
-
-    // Level Up Timer und Mechaniken
-    function levelUp() {
-      timeElapsed++;
-
-      if (timeElapsed >= levelUpTime) {
-        level++;
-        timeElapsed = 0;
-
-        if (level === 2) {
-          playerColor = "cyan"; // Spielerfarbe ändern bei Level 2
-          shootMultiple = true; // Doppel-Schuss aktivieren
-        }
-
-        score += 50; // Punkte erhöhen
-        scoreDisplay.textContent = 'Punkte: ' + score;
-      }
-    }
-
-    // Gegner nach Level ändern
-    function gameLoop() {
-      levelUp();
-
-      if (Math.random() < 0.01) {
-        spawnEnemy();
-      }
-
-      enemies.forEach(enemy => {
-        shootEnemyBullet(enemy);
-      });
-
-      requestAnimationFrame(gameLoop);
-    }
-
-    // Starte das Spiel
-    gameLoop();
   </script>
 </body>
 </html>
