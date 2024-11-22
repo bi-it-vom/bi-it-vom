@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Game</title>
 
-    <div id="scoreBoard" style="text-align: center; margin-top: 20px; color: white;">
-        <h2>Top 4 Versuche:</h2>
-        <ol id="topScores"></ol>
-    </div>
-    
     <style>
         body {
             margin: 0;
@@ -36,7 +31,6 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
             z-index: 10;
         }
 
@@ -49,259 +43,211 @@
             top: 20px;
             left: 20px;
             font-size: 24px;
-            color: #fff;
-        }
-
-        .game-over {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            display: none;
-            z-index: 20;
-            text-align: center;
-        }
-
-        .game-over .bloody-text {
-            font-family: 'Creepster', cursive;
-            color: red;
-            font-size: 48px;
-            text-shadow: 0 0 20px red;
-        }
-
-        .game-over button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #ff0000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .game-over button:hover {
-            background-color: #cc0000;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
     <button class="exit-button" onclick="window.location.href='dinojump.html'">Zurück</button>
     <div class="score" id="scoreDisplay">Hindernisse bewältigt: 0</div>
     <canvas id="gameCanvas"></canvas>
-    <div class="game-over" id="gameOverOverlay">
-        <div class="bloody-text">Why so serious?</div>
-        <div id="gameOverText"></div>
-        <button onclick="restartGame()">Nochmal</button>
-        <button onclick="window.location.href='dinojump.html'">Exit</button>
-    </div>
 
     <script>
-        // Funktion für die Namenseingabe
-        function askForName() {
-            let playerName = null;
-            while (!playerName) {
-                playerName = prompt("Bitte gib deinen Namen ein:");
-                if (!playerName) {
-                    alert("Der Name darf nicht leer sein!");
-                }
-            }
-            alert(`Willkommen, ${playerName}!`);
-            return playerName;
-        }
-
-        const playerName = askForName(); // Spielername wird gespeichert
-
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const gameOverOverlay = document.getElementById('gameOverOverlay');
-        const gameOverText = document.getElementById('gameOverText');
+        const scoreDisplay = document.getElementById('scoreDisplay');
 
-        // Canvas Größe an Bildschirm anpassen
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight * 0.8;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        let dinoY, dinoWidth, dinoHeight, gravity, isJumping, jumpStrength, jumpSpeed;
-        let obstacles, distanceInMeters, highScore, obstacleSpeed, obstacleWidth, obstaclesCleared, spawnInterval;
-        let jumpCount = 0;
-
-        const dinoImage = new Image();
-        const dinoJumpImage = new Image();
+        // Bilder laden
+        const playerNormalImage = new Image();
+        const playerJumpImage = new Image();
         const obstacleImage = new Image();
+        const houseImage = new Image();
 
-        dinoImage.src = 'image-removebg-preview (20).png';
-        dinoJumpImage.src = 'image-removebg-preview (21).png';
-        obstacleImage.src = 'image-removebg-preview (22).png';
+        playerNormalImage.src = 'image-removebg-preview (20).png'; // Normales Bild
+        playerJumpImage.src = 'batmanjumpbild.png'; // Sprungbild
+        obstacleImage.src = 'Herunterladen (7).png'; // Neues Hindernisbild
+        houseImage.src = 'https://thumbs.dreamstime.com/b/pixel-art-house-background-games-design-53644577.jpg'; // Hausbild
 
         let imagesLoaded = 0;
-        const totalImages = 3;
+        const totalImages = 4; // Vier Bilder
 
-        function imageLoaded() {
+        function checkImagesLoaded() {
             imagesLoaded++;
             if (imagesLoaded === totalImages) {
-                resetGame();
-                animate();
+                initGame();
             }
         }
 
-        dinoImage.onload = imageLoaded;
-        dinoJumpImage.onload = imageLoaded;
-        obstacleImage.onload = imageLoaded;
+        playerNormalImage.onload = checkImagesLoaded;
+        playerJumpImage.onload = checkImagesLoaded;
+        obstacleImage.onload = checkImagesLoaded;
+        houseImage.onload = checkImagesLoaded;
+
+        // Spielvariablen
+        canvas.width = window.innerWidth * 2; // Längerer Spielraum
+        canvas.height = window.innerHeight;
+        const groundLevel = canvas.height - 120; // Boden minimal höher gesetzt
+
+        const player = {
+            x: 50,
+            y: groundLevel - 100,
+            width: 80,
+            height: 120,
+            speed: 5,
+            jumping: false,
+            jumpSpeed: 30,
+            gravity: 10,
+            jumpCount: 0
+        };
+
+        const obstacles = [];
+        let obstaclesCleared = 0;
+        let obstacleSpeed = 5; // Anfangsgeschwindigkeit der Hindernisse
+
+        let backgroundX = 0;
+        let housePositions = [];
+
+        function moveBackground() {
+            backgroundX -= 2;
+            if (backgroundX <= -canvas.width) {
+                backgroundX = 0;
+            }
+
+            housePositions.forEach((pos, index) => {
+                housePositions[index] = pos - obstacleSpeed;
+                if (housePositions[index] <= -canvas.width) {
+                    housePositions[index] = canvas.width;
+                }
+            });
+        }
+
+        function drawBackground() {
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            housePositions.forEach((pos) => {
+                ctx.drawImage(houseImage, pos, groundLevel - 300, 400, 400);
+            });
+        }
 
         class Obstacle {
-            constructor(x, height) {
+            constructor(image, x, height) {
+                this.image = image;
                 this.x = x;
-                this.y = canvas.height - height;
-                this.width = 50;
-                this.height = height;
+                this.y = groundLevel - height;
+                this.width = 5;
+                this.height = height * 0.6;
+                this.imageWidth = 50;
+                this.imageHeight = height;
             }
 
             draw() {
-                ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height);
+                ctx.drawImage(this.image, this.x, this.y, this.imageWidth, this.imageHeight);
             }
 
             update() {
                 this.x -= obstacleSpeed;
             }
 
-            checkCollision(dinoX, dinoY, dinoWidth, dinoHeight) {
-                const collisionBoxWidth = 60;
-                const collisionBoxHeight = 120;
-
-                if (
-                    dinoX + collisionBoxWidth > this.x &&
-                    dinoX < this.x + this.width &&
-                    dinoY + collisionBoxHeight > this.y &&
-                    dinoY < this.y + this.height
-                ) {
-                    return true;
-                }
-                return false;
+            isOffScreen() {
+                return this.x + this.width < 0;
             }
-        }
 
-        function jump() {
-            if (!isJumping) {
-                isJumping = true;
-                jumpSpeed = jumpStrength;
-                let jumpInterval = setInterval(() => {
-                    if (jumpSpeed > 0) {
-                        dinoY -= jumpSpeed;
-                        jumpSpeed -= gravity;
-                    } else {
-                        clearInterval(jumpInterval);
-                        let fallInterval = setInterval(() => {
-                            dinoY += gravity + 10;
-                            if (dinoY >= canvas.height - dinoHeight) {
-                                clearInterval(fallInterval);
-                                dinoY = canvas.height - dinoHeight;
-                                isJumping = false;
-                                jumpCount++;
-                                if (jumpCount % 3 === 0) {
-                                    obstacleSpeed += 4; 
-                                }
-                            }
-                        }, 20);
-                    }
-                }, 20);
+            checkCollision(player) {
+                return (
+                    player.x < this.x + this.width &&
+                    player.x + player.width > this.x &&
+                    player.y < this.y + this.height &&
+                    player.y + player.height > this.y
+                );
             }
         }
 
         function addObstacle() {
-            const height = Math.random() * 50 + 50;
-            obstacles.push(new Obstacle(canvas.width, height));
+            const randomHeight = Math.random() * 50 + 30;
+            obstacles.push(new Obstacle(obstacleImage, canvas.width, randomHeight));
         }
 
-        function updateScore() {
-            document.getElementById('scoreDisplay').innerText = playerName + ' - Hindernisse bewältigt: ' + distanceInMeters;
-        }
+        function jump() {
+            if (!player.jumping) {
+                player.jumping = true;
+                player.jumpCount++;
 
-        function gameOver() {
-            gameOverOverlay.style.display = 'flex';
-            gameOverText.innerText = playerName + ', du hast ' + distanceInMeters + ' Hindernisse bewältigt!';
-            if (distanceInMeters > highScore) {
-                highScore = distanceInMeters;
-                gameOverText.innerText += '\nNeuer Highscore: ' + highScore;
+                let jumpInterval = setInterval(() => {
+                    player.y -= player.jumpSpeed;
+                    if (player.y <= groundLevel - 350) {
+                        clearInterval(jumpInterval);
+                        let fallInterval = setInterval(() => {
+                            player.y += player.gravity;
+                            if (player.y >= groundLevel - player.height) {
+                                player.y = groundLevel - player.height;
+                                player.jumping = false;
+                                clearInterval(fallInterval);
+                            }
+                        }, 20);
+                    }
+                }, 20);
+
+                if (player.jumpCount % 5 === 0 && obstaclesCleared < 34) {
+                    obstacleSpeed *= 1.4; // Erhöhe die Geschwindigkeit alle 5 Sprünge
+                }
             }
         }
 
-        function restartGame() {
-            location.reload();
-        }
-
-        function resetGame() {
-            dinoY = canvas.height - 180;
-            dinoWidth = 120;
-            dinoHeight = 180;
-            gravity = 5;
-            isJumping = false;
-            jumpStrength = 40;
-            jumpSpeed = 0;
-            obstacles = [];
-            distanceInMeters = 0;
-            obstacleSpeed = 5;
-            obstaclesCleared = 0;
-            jumpCount = 0;
-            clearInterval(spawnInterval);
-            startObstacleSpawning();
-        }
-
-        function startObstacleSpawning() {
-            spawnInterval = setTimeout(function () {
-                addObstacle();
-                startObstacleSpawning();
-            }, Math.random() * 2000 + 500); 
-        }
-
-        function update() {
+        function updateGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (isJumping) {
-                ctx.drawImage(dinoJumpImage, 50, dinoY, dinoWidth, dinoHeight);
+
+            moveBackground();
+            drawBackground();
+
+            ctx.fillStyle = '#6e4b3e';
+            ctx.fillRect(0, groundLevel, canvas.width, canvas.height - groundLevel);
+
+            if (player.jumping) {
+                ctx.drawImage(playerJumpImage, player.x, player.y, player.width, player.height);
             } else {
-                ctx.drawImage(dinoImage, 50, dinoY, dinoWidth, dinoHeight);
+                ctx.drawImage(playerNormalImage, player.x, player.y, player.width, player.height);
             }
 
             obstacles.forEach((obstacle, index) => {
                 obstacle.update();
                 obstacle.draw();
 
-                if (obstacle.checkCollision(50, dinoY, dinoWidth, dinoHeight)) {
-                    gameOver();
+                if (obstacle.checkCollision(player)) {
+                    alert('Game Over! Hindernisse bewältigt: ' + obstaclesCleared);
+                    document.location.reload();
                 }
 
-                if (obstacle.x + obstacle.width < 0) {
+                if (obstacle.isOffScreen()) {
                     obstacles.splice(index, 1);
                     obstaclesCleared++;
-                    distanceInMeters += 1;
-                    updateScore();
+                    scoreDisplay.textContent = 'Hindernisse bewältigt: ' + obstaclesCleared;
                 }
             });
+
+            requestAnimationFrame(updateGame);
         }
 
-        function animate() {
-            update();
-            if (gameOverOverlay.style.display === 'none') {
-                requestAnimationFrame(animate);
+        function initGame() {
+            for (let i = 0; i < 5; i++) {
+                housePositions.push(canvas.width + i * 300);
             }
-        }
 
-        document.addEventListener('keydown', event => {
-            if (event.code === 'Space') {
-                jump();
-            }
-        });
+            setInterval(addObstacle, Math.random() * 2000 + 700);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    jump();
+                }
+                if (e.code === 'ArrowRight') {
+                    player.x = Math.min(player.x + player.speed, canvas.width - player.width);
+                }
+                if (e.code === 'ArrowLeft') {
+                    player.x = Math.max(player.x - player.speed, 0);
+                }
+            });
+
+            updateGame();
+        }
     </script>
 </body>
 </html>
