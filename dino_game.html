@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Game</title>
-
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #000;
             color: white;
             font-family: Arial, sans-serif;
         }
@@ -17,7 +15,6 @@
         canvas {
             display: block;
             margin: 0 auto;
-            background-color: #e0e0e0;
             border: 2px solid #222;
         }
 
@@ -40,24 +37,9 @@
 
         .score {
             position: absolute;
-            top: 60px; /* Etwas weiter unten platziert */
+            top: 20px;
             left: 20px;
             font-size: 24px;
-        }
-
-        .star {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: yellow;
-            border-radius: 50%;
-            animation: sparkle 1.5s infinite;
-        }
-
-        @keyframes sparkle {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.5); }
-            100% { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -122,6 +104,35 @@
         let housePositions = [];
         let stars = [];
 
+        // Funkelnde Sterne
+        function createStars() {
+            if (obstaclesCleared >= 20 && stars.length === 0) {
+                for (let i = 0; i < 50; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2 + 1,
+                        opacity: Math.random() * 0.5 + 0.5,
+                        speed: Math.random() * 0.1 + 0.1
+                    });
+                }
+            }
+        }
+
+        function drawStars() {
+            ctx.fillStyle = 'yellow';
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                // Funkeln lassen
+                star.opacity += star.speed;
+                if (star.opacity > 1 || star.opacity < 0.5) {
+                    star.speed = -star.speed;
+                }
+            });
+        }
+
         function moveBackground() {
             backgroundX -= 2;
             if (backgroundX <= -canvas.width) {
@@ -138,33 +149,17 @@
 
         function drawBackground() {
             if (obstaclesCleared >= 25) {
-                ctx.fillStyle = '#000'; // Hintergrund schwarz
-                createStars(); // Funkelnde Sterne hinzufügen
+                ctx.fillStyle = (Math.floor(Date.now() / 100) % 2 === 0) ? '#ffffff' : '#000000'; // Weiß-Schwarz Blinken
+            } else if (obstaclesCleared >= 20) {
+                ctx.fillStyle = '#000'; // Hintergrund schwarz nach 20 Hindernissen
             } else {
-                ctx.fillStyle = '#87CEEB'; // Helles Blau für den Himmel
+                ctx.fillStyle = '#87CEEB'; // Himmelblau, vor dem 20. Hindernis
             }
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             housePositions.forEach((pos) => {
                 ctx.drawImage(houseImage, pos, groundLevel - 300, 400, 400);
             });
-
-            // Sterne zeichnen
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'yellow';
-                ctx.fill();
-            });
-        }
-
-        function createStars() {
-            if (Math.random() < 0.1) {
-                const radius = Math.random() * 3 + 2;
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                stars.push({ x, y, radius });
-            }
         }
 
         class Obstacle {
@@ -236,6 +231,7 @@
 
             moveBackground();
             drawBackground();
+            drawStars(); // Funkelnde Sterne
 
             ctx.fillStyle = '#6e4b3e';
             ctx.fillRect(0, groundLevel, canvas.width, canvas.height - groundLevel);
@@ -285,6 +281,8 @@
 
             updateGame();
         }
+
+        createStars();
     </script>
 </body>
 </html>
