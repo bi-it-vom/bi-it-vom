@@ -87,12 +87,14 @@
         // Funktion zur Anpassung der Canvas-Größe an die Bildschirmgröße
         function resizeCanvas() {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerWidth * 1.33; // Seitenverhältnis von 4:3 beibehalten
+            canvas.height = window.innerHeight; // Höhe jetzt an die Bildschirmhöhe anpassen
             player.x = canvas.width / 2 - 30; // Spielerposition zurücksetzen
             player.y = canvas.height - 100; // Spielerposition zurücksetzen
-            // Berechnung der Auto-Größe basierend auf der Canvas-Breite
+
+            // Berechnung der Auto-Größe basierend auf der Canvas-Breite und -Höhe
             carWidth = canvas.width * 0.12; // Autos nehmen 12% der Canvas-Breite ein
             carHeight = carWidth * 1.5; // Höhe der Autos wird proportional zur Breite angepasst
+
             // Auch die Größe des Spielerautos wird dynamisch angepasst
             player.width = carWidth;
             player.height = carHeight;
@@ -180,8 +182,8 @@
         }
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') moveAmount = -15;
-            if (event.key === 'ArrowRight') moveAmount = 15;
+            if (event.key === 'ArrowLeft' || event.key === 'a') moveAmount = -15;
+            if (event.key === 'ArrowRight' || event.key === 'd') moveAmount = 15;
         });
 
         document.addEventListener('keyup', () => {
