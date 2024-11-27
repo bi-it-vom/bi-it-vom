@@ -15,7 +15,7 @@
             height: 100vh;
             color: white;
             font-family: Arial, sans-serif;
-            position: relative;
+            position: relative; /* Für den Button */
         }
         canvas {
             border: 2px solid #fff;
@@ -61,7 +61,6 @@
         <div id="currentScore">Score: 0</div>
     </div>
     <button id="exitButton">Zurück</button>
-
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -159,42 +158,34 @@
 
             if (score % 100 === 0) gameSpeed += 0.5; // Erhöhung der Geschwindigkeit
 
-            player.x += moveAmount;
-            if (player.x < 0) player.x = 0; 
-            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width; 
-
             requestAnimationFrame(gameLoop);
         }
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') moveAmount = -15; 
-            if (event.key === 'ArrowRight') moveAmount = 15; 
-        });
-
-        document.addEventListener('keyup', () => {
-            moveAmount = 0; 
-        });
-
-        // Touch Events für das Wischen auf dem Handy
+        // Handle Touch Events for swiping movement
         let touchStartX = 0;
-        let touchEndX = 0;
 
-        document.addEventListener('touchstart', (event) => {
-            touchStartX = event.changedTouches[0].screenX;
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX; // Save initial touch position
         });
 
-        document.addEventListener('touchend', (event) => {
-            touchEndX = event.changedTouches[0].screenX;
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Prevent default scrolling behavior
+            const touchX = e.touches[0].clientX; // Get current touch position
+            const moveDistance = touchX - touchStartX;
 
-            if (touchStartX - touchEndX > 50) {
-                // Wischen nach links
-                moveAmount = -15; 
-            } else if (touchEndX - touchStartX > 50) {
-                // Wischen nach rechts
-                moveAmount = 15; 
-            } else {
-                moveAmount = 0; // Kein Wischen
-            }
+            // Update player's X position based on touch movement
+            player.x += moveDistance;
+
+            // Keep the player within the canvas bounds
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+
+            touchStartX = touchX; // Update touch position for next move
+        });
+
+        // Exit Button Event
+        exitButton.addEventListener('click', () => {
+            location.href = 'speedracer.html'; // Zurück zur speedracer.html
         });
 
         function spawnCars() {
@@ -204,11 +195,6 @@
                 spawnCars();
             }, randomDelay);
         }
-
-        exitButton.addEventListener('click', () => {
-            // Funktion zum Zurückkehren zu speedracer.html
-            location.href = 'speedracer.html'; // Zurück zur speedracer.html
-        });
 
         spawnCars(); 
         gameLoop();
