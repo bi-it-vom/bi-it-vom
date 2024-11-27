@@ -15,7 +15,7 @@
             height: 100vh;
             color: white;
             font-family: Arial, sans-serif;
-            position: relative; /* Für den Button */
+            position: relative;
         }
         canvas {
             border: 2px solid #fff;
@@ -61,6 +61,7 @@
         <div id="currentScore">Score: 0</div>
     </div>
     <button id="exitButton">Zurück</button>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -114,29 +115,26 @@
         }
 
         function detectCollision() {
-    for (let obstacle of obstacles) {
-        // Zentrale Positionierung der Hitbox relativ zum Hindernis
-        const hitboxWidth = 50;
-        const hitboxHeight = 120;
+            for (let obstacle of obstacles) {
+                // Zentrale Positionierung der Hitbox relativ zum Hindernis
+                const hitboxWidth = 50;
+                const hitboxHeight = 120;
 
-        // Berechnung der Hitbox-Mitte basierend auf der Mitte des Hindernisses
-        const obstacleCenterX = obstacle.x + (obstacle.width / 2) - (hitboxWidth / 2);
-        const obstacleCenterY = obstacle.y + (obstacle.height / 2) - (hitboxHeight / 2);
+                // Berechnung der Hitbox-Mitte basierend auf der Mitte des Hindernisses
+                const obstacleCenterX = obstacle.x + (obstacle.width / 2) - (hitboxWidth / 2);
+                const obstacleCenterY = obstacle.y + (obstacle.height / 2) - (hitboxHeight / 2);
 
-        if (
-            player.x < obstacleCenterX + hitboxWidth &&
-            player.x + player.width > obstacleCenterX &&
-            player.y < obstacleCenterY + hitboxHeight &&
-            player.y + player.height > obstacleCenterY
-        ) {
-            return true; // Kollision erkannt
+                if (
+                    player.x < obstacleCenterX + hitboxWidth &&
+                    player.x + player.width > obstacleCenterX &&
+                    player.y < obstacleCenterY + hitboxHeight &&
+                    player.y + player.height > obstacleCenterY
+                ) {
+                    return true; // Kollision erkannt
+                }
+            }
+            return false; // Keine Kollision
         }
-    }
-    return false; // Keine Kollision
-}
-
-
-
 
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -175,6 +173,28 @@
 
         document.addEventListener('keyup', () => {
             moveAmount = 0; 
+        });
+
+        // Touch Events für das Wischen auf dem Handy
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (event) => {
+            touchStartX = event.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (event) => {
+            touchEndX = event.changedTouches[0].screenX;
+
+            if (touchStartX - touchEndX > 50) {
+                // Wischen nach links
+                moveAmount = -15; 
+            } else if (touchEndX - touchStartX > 50) {
+                // Wischen nach rechts
+                moveAmount = 15; 
+            } else {
+                moveAmount = 0; // Kein Wischen
+            }
         });
 
         function spawnCars() {

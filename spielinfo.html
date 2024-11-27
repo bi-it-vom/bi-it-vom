@@ -3,35 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon Ball Fusions</title>
+    <title>Spielinfo - Speed Racer</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 0;
             background-color: #222;
             color: white;
             font-family: Arial, sans-serif;
             padding: 20px;
-            min-height: 100vh;
-        }
-
-        .content {
-            max-width: 900px;
-            background-color: #333;
-            border-radius: 10px;
-            overflow-y: auto;
-            padding: 20px;
-            width: 100%;
-            height: 80vh; /* Content scrollable area */
+            min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Viewports hat */
+            overflow-y: auto; /* Ermöglicht das Scrollen, falls mehr Inhalt da ist */
         }
 
         .header {
@@ -41,56 +26,56 @@
 
         h1 {
             font-size: 28px;
-            color: #ff0000;
+            color: #ff0000; /* Rote Schriftfarbe */
             margin-bottom: 10px;
         }
 
         .product-container {
             display: flex;
-            max-width: 900px;
-            background-color: #333;
+            max-width: 900px; /* Maximale Breite */
+            background-color: #333; /* Hintergrundfarbe der Verpackung */
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-            width: 100%;
-            margin-bottom: 40px;
+            flex-direction: row; /* Standardlayout auf größeren Bildschirmen */
+            margin-bottom: 20px; /* Abstand nach unten */
         }
 
         .product-image {
-            flex: 1;
-            position: relative;
+            flex: 1; /* Bild nimmt den verfügbaren Platz ein */
+            position: relative; /* Positionierung für das Bild */
         }
 
         .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; /* Bild auf die volle Breite des Containers */
+            height: 100%; /* Bild auf die volle Höhe des Containers */
+            object-fit: cover; /* Bildfüllung */
         }
 
         .product-details {
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            flex: 1;
-            margin-left: 20px;
+            justify-content: space-between; /* Abstand zwischen Elementen */
+            flex: 1; /* Nimmt den restlichen Platz ein */
+            margin-left: 20px; /* Abstand zwischen Bild und Text */
         }
 
         .description {
             font-size: 16px;
             margin: 10px 0;
             padding: 10px;
-            background-color: rgba(255, 0, 0, 0.2);
+            background-color: rgba(255, 0, 0, 0.2); /* Rote Hintergrundfarbe */
             border-radius: 5px;
-            flex-grow: 1;
+            flex-grow: 1; /* Füllt den verfügbaren Raum */
         }
 
         .button-container {
-            text-align: center;
-            margin-top: 20px;
+            text-align: center; /* Zentriert den Button */
+            margin-top: 10px; /* Abstand über den Buttons */
         }
 
-        button {
+        button, .back-button {
             padding: 10px 20px;
             font-size: 16px;
             background-color: #ff0000;
@@ -99,64 +84,56 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 100%;
-            margin-top: 10px;
+            width: 100%; /* Alle Buttons nehmen die gesamte Breite ein */
+            margin-bottom: 10px; /* Abstand zwischen den Buttons */
         }
 
-        button:hover {
+        button:hover, .back-button:hover {
             background-color: #cc0000;
         }
 
-        @media (max-width: 768px) {
+        .back-button {
+            background-color: #616161; /* Grau für den Zurück-Button */
+            color: white; /* Weiße Schriftfarbe */
+        }
+
+        /* Mobile Ansicht: Bild über dem Text */
+        @media screen and (max-width: 768px) {
             .product-container {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: column; /* Ändert die Richtung auf Spalten */
             }
 
             .product-details {
-                margin-left: 0;
-                text-align: center;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .description {
-                font-size: 14px;
-                margin: 5px 0;
-                padding: 8px;
-            }
-
-            button {
-                font-size: 14px;
-                padding: 8px 15px;
+                margin-left: 0; /* Entfernt den linken Abstand */
+                margin-top: 20px; /* Fügt einen Abstand oben hinzu */
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Spielinfo - Dragon Ball Fusions</h1>
+        <h1>Speed Racer</h1>
     </div>
-    <div class="content">
-        <div class="product-container">
-            <div class="product-image">
-                <img src="https://static.wikia.nocookie.net/4d8a5d1e-9c74-46b9-8e64-73194ab7abc9" alt="Dragon Ball Fusion">
+    <div class="product-container">
+        <div class="product-image">
+            <img src="https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/games_15/nintendo_switch_download_software_1/H2x1_NSwitchDS_RiseRaceTheFuture_image1600w.jpg" alt="Speed Racer">
+        </div>
+        <div class="product-details">
+            <h2>Erlebe spannende Kämpfe und aufregende Abenteuer!</h2>
+            <div class="description">
+                <p>In Speed Racer erlebst du rasante Rennen und spannende Herausforderungen. Steuere deinen Wagen durch herausfordernde Strecken und verbessere deine Fähigkeiten, um als Erster die Ziellinie zu überqueren!</p>
             </div>
-            <div class="product-details">
-                <h2>Erlebe spannende Kämpfe und aufregende Abenteuer!</h2>
-                <div class="description">
-                    <p>In Dragon Ball Fusions kannst du dein eigenes Team aus Charakteren aus dem Dragon Ball-Universum zusammenstellen und dich in aufregenden Kämpfen beweisen. Entdecke eine neue Story und erlebe epische Momente!</p>
-                    <p>Der Inhalt geht hier weiter und du kannst scrollen, um alles zu lesen. Dies ist ein sehr langer Text, der den Bildschirm füllt, so dass du den Button am Ende erreichen kannst, indem du nach unten scrollst.</p>
-                    <p>Mehr Details und spannende Geschichten warten auf dich. Der Text wird so lang sein, dass du beim Scrollen den Button erreichen kannst!</p>
-                </div>
+            <div class="button-container">
+                <!-- Button, um das Spiel zu starten -->
+                <button onclick="window.location.href='game.html'">Spielen</button>
+                <!-- Button, um zurück zum Shop zu gehen -->
+                <button onclick="window.location.href='shop.html'">Zurück zum Shop</button>
             </div>
         </div>
-        <div class="button-container">
-            <button onclick="window.location.href='dragonballgame.html'">Spielen</button>
-            <button onclick="window.location.href='shop.html'">Zurück zum Shop</button>
-        </div>
+    </div>
+    <div class="button-container">
+        <!-- Button, um zur Startseite zurückzukehren -->
+        <button onclick="window.location.href='index.html'">Zurück zur Startseite</button>
     </div>
 </body>
 </html>
