@@ -206,11 +206,13 @@
 
         canvas.addEventListener('touchmove', (e) => {
             let touchEndX = e.touches[0].clientX;
-            let swipeDifference = touchEndX - touchStartX;
+            let targetX = touchEndX - player.width / 2;  // Auto wird genau zum Touchpunkt bewegt
 
-            if (Math.abs(swipeDifference) > 10) {
-                moveAmount = swipeDifference > 0 ? 15 : -15;
-            }
+            // Verhindert das Übertreten der Bildschirmgrenzen
+            if (targetX < 0) targetX = 0;
+            if (targetX > canvas.width - player.width) targetX = canvas.width - player.width;
+
+            player.x = targetX;  // Setzt das Auto genau auf den Touchpunkt
         });
 
         canvas.addEventListener('touchend', () => {
