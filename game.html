@@ -55,7 +55,7 @@
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <canvas id="gameCanvas"></canvas>
     <div id="scoreBoard">
         <div id="topScore">Top Punktzahl: 0</div>
         <div id="currentScore">Score: 0</div>
@@ -75,12 +75,31 @@
         const incomingCarImage = new Image();
         incomingCarImage.src = 'image-removebg-preview (18).png'; // Bild für entgegenkommende Autos
 
-        let player = { x: canvas.width / 2 - 30, y: canvas.height - 100, width: 60, height: 80 };
+        let player = { x: 0, y: 0, width: 60, height: 80 };
         let obstacles = [];
         let score = 0;
         let topScore = 0;
         let gameSpeed = 4;
         let moveAmount = 0;
+        let carWidth = 0;
+        let carHeight = 0;
+
+        // Funktion zur Anpassung der Canvas-Größe an die Bildschirmgröße
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerWidth * 1.33; // Seitenverhältnis von 4:3 beibehalten
+            player.x = canvas.width / 2 - 30; // Spielerposition zurücksetzen
+            player.y = canvas.height - 100; // Spielerposition zurücksetzen
+            // Berechnung der Auto-Größe basierend auf der Canvas-Breite
+            carWidth = canvas.width * 0.12; // Autos nehmen 12% der Canvas-Breite ein
+            carHeight = carWidth * 1.5; // Höhe der Autos wird proportional zur Breite angepasst
+            // Auch die Größe des Spielerautos wird dynamisch angepasst
+            player.width = carWidth;
+            player.height = carHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas); // Canvas-Größe bei Fenstergröße ändern
+        resizeCanvas(); // Beim Initialisieren die Canvas-Größe anpassen
 
         function drawRoad() {
             ctx.fillStyle = '#444';
@@ -100,10 +119,8 @@
         }
 
         function createIncomingCar() {
-            const obstacleWidth = 120; // Breite der entgegenkommenden Autos
-            const obstacleHeight = 180; // Höhe der entgegenkommenden Autos
-            const obstacleX = Math.random() * (canvas.width - obstacleWidth); // Zufällige Position
-            obstacles.push({ x: obstacleX, y: -obstacleHeight, width: obstacleWidth, height: obstacleHeight });
+            const obstacleX = Math.random() * (canvas.width - carWidth); // Zufällige Position
+            obstacles.push({ x: obstacleX, y: -carHeight, width: carWidth, height: carHeight });
         }
 
         function drawObstacles() {
@@ -115,24 +132,22 @@
 
         function detectCollision() {
             for (let obstacle of obstacles) {
-                // Zentrale Positionierung der Hitbox relativ zum Hindernis
-                const hitboxWidth = 50;
-                const hitboxHeight = 120;
+                const playerHitboxWidth = player.width * 0.4; // kleinere Hitbox für den Spieler
+                const playerHitboxHeight = player.height * 0.6; // kleinere Hitbox für den Spieler
 
-                // Berechnung der Hitbox-Mitte basierend auf der Mitte des Hindernisses
-                const obstacleCenterX = obstacle.x + (obstacle.width / 2) - (hitboxWidth / 2);
-                const obstacleCenterY = obstacle.y + (obstacle.height / 2) - (hitboxHeight / 2);
+                const obstacleCenterX = obstacle.x + (obstacle.width / 2) - (playerHitboxWidth / 2);
+                const obstacleCenterY = obstacle.y + (obstacle.height / 2) - (playerHitboxHeight / 2);
 
                 if (
-                    player.x < obstacleCenterX + hitboxWidth &&
+                    player.x < obstacleCenterX + playerHitboxWidth &&
                     player.x + player.width > obstacleCenterX &&
-                    player.y < obstacleCenterY + hitboxHeight &&
+                    player.y < obstacleCenterY + playerHitboxHeight &&
                     player.y + player.height > obstacleCenterY
                 ) {
-                    return true; // Kollision erkannt
+                    return true;
                 }
             }
-            return false; // Keine Kollision
+            return false;
         }
 
         function gameLoop() {
@@ -145,58 +160,66 @@
             topScoreText.innerHTML = "Top Punktzahl: " + topScore;
 
             if (detectCollision()) {
-                // Bei Kollision wird das Spiel neu gestartet
-                topScore = Math.max(topScore, score); // Update Top Punktzahl
+                topScore = Math.max(topScore, score);
                 score = 0;
-                gameSpeed = 4; // Zurücksetzen der Spielgeschwindigkeit
+                gameSpeed = 4;
                 obstacles = [];
-                player.x = canvas.width / 2 - 30; // Zurück in die Mitte
-                player.y = canvas.height - 100; // Zurück nach unten
+                player.x = canvas.width / 2 - player.width / 2;
+                player.y = canvas.height - player.height - 20;
             } else {
                 score++;
             }
 
-            if (score % 100 === 0) gameSpeed += 0.5; // Erhöhung der Geschwindigkeit
+            if (score % 100 === 0) gameSpeed += 0.5;
+
+            player.x += moveAmount;
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
 
             requestAnimationFrame(gameLoop);
         }
 
-        // Handle Touch Events for swiping movement
-        let touchStartX = 0;
-
-        canvas.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX; // Save initial touch position
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') moveAmount = -15;
+            if (event.key === 'ArrowRight') moveAmount = 15;
         });
 
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Prevent default scrolling behavior
-            const touchX = e.touches[0].clientX; // Get current touch position
-            const moveDistance = touchX - touchStartX;
-
-            // Update player's X position based on touch movement
-            player.x += moveDistance;
-
-            // Keep the player within the canvas bounds
-            if (player.x < 0) player.x = 0;
-            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
-
-            touchStartX = touchX; // Update touch position for next move
-        });
-
-        // Exit Button Event
-        exitButton.addEventListener('click', () => {
-            location.href = 'speedracer.html'; // Zurück zur speedracer.html
+        document.addEventListener('keyup', () => {
+            moveAmount = 0;
         });
 
         function spawnCars() {
-            const randomDelay = Math.random() * 500 + 500; // Schnellerer Delay zwischen 500ms und 1000ms
+            const randomDelay = Math.random() * 500 + 500;
             setTimeout(() => {
                 createIncomingCar();
                 spawnCars();
             }, randomDelay);
         }
 
-        spawnCars(); 
+        let touchStartX = 0;
+
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            let touchEndX = e.touches[0].clientX;
+            let swipeDifference = touchEndX - touchStartX;
+
+            if (Math.abs(swipeDifference) > 10) {
+                moveAmount = swipeDifference > 0 ? 15 : -15;
+            }
+        });
+
+        canvas.addEventListener('touchend', () => {
+            moveAmount = 0;
+        });
+
+        exitButton.addEventListener('click', () => {
+            location.href = 'speedracer.html';
+        });
+
+        spawnCars();
         gameLoop();
     </script>
 </body>

@@ -28,18 +28,10 @@
             font-size: 16px;
             cursor: pointer;
         }
-        @media (max-width: 768px) {
-            #buttons {
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-            button {
-                margin: 5px;
-                padding: 15px;
-                font-size: 20px;
-            }
+        #error-message {
+            color: red;
+            font-size: 24px;
+            display: none;
         }
     </style>
 </head>
@@ -49,10 +41,24 @@
         <button id="optionButton">Option</button>
         <button onclick="window.location.href='spielinfo.html'">Exit</button>
     </div>
+    <div id="error-message">Das Spiel ist auf mobilen Geräten nicht spielbar!</div>
+    <div id="exit-button-container">
+        <button id="exitButton" onclick="window.location.href='spielinfo.html'">Zurück zu Spielinfo</button>
+    </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const errorMessage = document.getElementById('error-message');
+        const exitButtonContainer = document.getElementById('exit-button-container');
+
+        // Überprüfen, ob der Benutzer ein Mobilgerät verwendet
+        if (window.innerWidth < 768) {
+            errorMessage.style.display = 'block';
+            canvas.style.display = 'none'; // Verstecke das Canvas
+            exitButtonContainer.style.display = 'block'; // Exit-Button anzeigen
+            throw new Error('Spiel ist auf mobilen Geräten nicht spielbar.');
+        }
 
         canvas.width = 1400;
         canvas.height = 700;
@@ -158,161 +164,123 @@
         }
 
         // Spiel-Update und Zeichnen
-// Spiel-Update und Zeichnen
-function update() {
-    players.forEach((player, index) => {
-        player.attacking = (keys['f'] && index === 0) || (keys['o'] && index === 1);
+        function update() {
+            players.forEach((player, index) => {
+                player.attacking = (keys['f'] && index === 0) || (keys['o'] && index === 1);
 
-        if (keys['ArrowRight'] && index === 1) {
-            player.vx += 3;
-            player.direction = 1;
-        }
-        if (keys['ArrowLeft'] && index === 1) {
-            player.vx -= 3;
-            player.direction = -1;
-        }
-        if (keys['d'] && index === 0) {
-            player.vx += 3;
-            player.direction = 1;
-        }
-        if (keys['a'] && index === 0) {
-            player.vx -= 3;
-            player.direction = -1;
-        }
-
-        if (!player.isJumping && keys['ArrowUp'] && index === 1) {
-            player.isJumping = true;
-            player.dy = -player.jumpPower;
-        }
-        if (!player.isJumping && keys['w'] && index === 0) {
-            player.isJumping = true;
-            player.dy = -player.jumpPower;
-        }
-
-        if (player.isJumping && ((keys['s'] && index === 0) || (keys['ArrowDown'] && index === 1))) {
-            player.dy = player.jumpPower;
-        }
-
-        player.vx *= player.friction;
-        if (Math.abs(player.vx) > player.speed) player.vx = player.speed * Math.sign(player.vx);
-        player.x += player.vx;
-
-        player.dy += player.gravity;
-        player.y += player.dy;
-
-        // Angriff und Kollision mit Gegnern
-        players.forEach((otherPlayer, otherIndex) => {
-            if (player !== otherPlayer && player.attacking) {
-                if (player.direction === -1 && otherPlayer.x + otherPlayer.width > player.x && otherPlayer.x < player.x && player.y < otherPlayer.y + otherPlayer.height && player.y + player.height > otherPlayer.y) {
-                    // Spieler 1 schlägt nach links und trifft Spieler 2
-                    otherPlayer.vx = -player.kickForce; // Gegner wird nach links geschleudert
-                } else if (player.direction === 1 && otherPlayer.x < player.x + player.width && otherPlayer.x + otherPlayer.width > player.x && player.y < otherPlayer.y + otherPlayer.height && player.y + player.height > otherPlayer.y) {
-                    // Spieler 1 schlägt nach rechts und trifft Spieler 2
-                    otherPlayer.vx = player.kickForce; // Gegner wird nach rechts geschleudert
+                if (keys['ArrowRight'] && index === 1) {
+                    player.vx += 3;
+                    player.direction = 1;
                 }
-            }
-        });
+                if (keys['ArrowLeft'] && index === 1) {
+                    player.vx -= 3;
+                    player.direction = -1;
+                }
+                if (keys['d'] && index === 0) {
+                    player.vx += 3;
+                    player.direction = 1;
+                }
+                if (keys['a'] && index === 0) {
+                    player.vx -= 3;
+                    player.direction = -1;
+                }
 
-        // Kollision mit Plattformen
-        platforms.forEach(platform => {
-            if (player.x < platform.x + platform.width &&
-                player.x + player.width > platform.x &&
-                player.y + player.height < platform.y + platform.height &&
-                player.y + player.height + player.dy >= platform.y) {
-                
-                player.isJumping = false;
-                player.dy = 0;
-                player.y = platform.y - player.height; 
-            }
-        });
+                if (!player.isJumping && keys['ArrowUp'] && index === 1) {
+                    player.isJumping = true;
+                    player.dy = -player.jumpPower;
+                }
+                if (!player.isJumping && keys['w'] && index === 0) {
+                    player.isJumping = true;
+                    player.dy = -player.jumpPower;
+                }
 
-        if (player.y > canvas.height) {
-            if (index === 0) {
-                players[1].score++;
-            } else {
-                players[0].score++;
-            }
-            player.x = canvas.width / 2 + (index === 0 ? -50 : 50);
-            player.y = canvas.height / 2; 
-            player.dy = 0;
+                if (player.isJumping && ((keys['s'] && index === 0) || (keys['ArrowDown'] && index === 1))) {
+                    player.dy = player.jumpPower;
+                }
+
+                player.vx *= player.friction;
+                if (Math.abs(player.vx) > player.speed) player.vx = player.speed * Math.sign(player.vx);
+                player.x += player.vx;
+
+                player.dy += player.gravity;
+                player.y += player.dy;
+
+                // Angriff und Kollision mit Gegnern
+                players.forEach((otherPlayer, otherIndex) => {
+                    if (player !== otherPlayer && player.attacking) {
+                        if (player.direction === -1 && otherPlayer.x + otherPlayer.width > player.x && otherPlayer.x < player.x && player.y < otherPlayer.y + otherPlayer.height && player.y + player.height > otherPlayer.y) {
+                            otherPlayer.vx = -player.kickForce; // Gegner wird nach links geschleudert
+                        } else if (player.direction === 1 && otherPlayer.x < player.x + player.width && otherPlayer.x + otherPlayer.width > player.x && player.y < otherPlayer.y + otherPlayer.height && player.y + player.height > otherPlayer.y) {
+                            otherPlayer.vx = player.kickForce; // Gegner wird nach rechts geschleudert
+                        }
+                    }
+                });
+
+                // Kollision mit Plattformen
+                platforms.forEach(platform => {
+                    if (player.x < platform.x + platform.width &&
+                        player.x + player.width > platform.x &&
+                        player.y + player.height < platform.y + platform.height &&
+                        player.y + player.height + player.dy >= platform.y) {
+                        
+                        player.isJumping = false;
+                        player.dy = 0;
+                        player.y = platform.y - player.height; 
+                    }
+                });
+
+                if (player.y > canvas.height) {
+                    player.y = canvas.height / 2;
+                    player.vx = 0;
+                    player.dy = 0;
+                    player.isJumping = false;
+                }
+            });
         }
-    });
-}
-
 
         function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(currentBackgroundImage, 0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(currentBackgroundImage, 0, 0, canvas.width, canvas.height);
 
-    platforms.forEach(platform => {
-        ctx.drawImage(platformImage, platform.x, platform.y, platform.width, platform.height);
-    });
+            platforms.forEach(platform => {
+                ctx.drawImage(platformImage, platform.x, platform.y, platform.width, platform.height);
+            });
 
-    players.forEach(player => {
-        if (player.attacking) {
-            ctx.save();
-            // Wenn der Spieler nach links schaut
-            if (player.direction === -1) {
-                ctx.scale(-1, 1); // Bild spiegeln
-                ctx.drawImage(player.kickImage, -player.x - player.width, player.y, player.width, player.height);
-            } else {
-                ctx.drawImage(player.kickImage, player.x, player.y, player.width, player.height);
-            }
-            ctx.restore();
-        } else if (player.isJumping) {
-            ctx.save();
-            // Wenn der Spieler nach links springt
-            if (player.direction === -1) {
-                ctx.scale(-1, 1); // Bild spiegeln
-                ctx.drawImage(player.jumpImage, -player.x - player.width, player.y, player.width, player.height);
-            } else {
-                ctx.drawImage(player.jumpImage, player.x, player.y, player.width, player.height);
-            }
-            ctx.restore();
-        } else {
-            // Wenn der Spieler läuft
-            if (player.direction === -1) {
-                ctx.save();
-                ctx.scale(-1, 1); // Bild spiegeln
-                ctx.drawImage(player.imageRight, -player.x - player.width, player.y, player.width, player.height);
-                ctx.restore();
-            } else {
-                ctx.drawImage(player.imageRight, player.x, player.y, player.width, player.height);
-            }
-        }
-    });
-
-    ctx.font = "30px Arial";
-    ctx.fillText(`Player 1: ${players[0].score}`, 50, 30);
-    ctx.fillText(`Player 2: ${players[1].score}`, canvas.width - 200, 30);
-}
-
-
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
+            players.forEach(player => {
+                if (player.attacking) {
+                    ctx.drawImage(player.kickImage, player.x, player.y, player.width, player.height);
+                } else if (player.isJumping) {
+                    ctx.drawImage(player.jumpImage, player.x, player.y, player.width, player.height);
+                } else if (player.direction === 1) {
+                    ctx.drawImage(player.imageRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(player.imageLeft, player.x, player.y, player.width, player.height);
+                }
+            });
         }
 
-        waitForImages().then(() => {
-            gameLoop();
-        });
+        // Tastenereignisse
+        const keys = {};
 
-        let keys = {};
-
-        window.addEventListener('keydown', e => {
+        window.addEventListener('keydown', (e) => {
             keys[e.key] = true;
         });
 
-        window.addEventListener('keyup', e => {
+        window.addEventListener('keyup', (e) => {
             keys[e.key] = false;
         });
 
-        function toggleBackground() {
-            currentBackgroundImage = currentBackgroundImage === defaultBackgroundImage ? newBackgroundImage : defaultBackgroundImage;
+        async function main() {
+            await waitForImages();
+            function gameLoop() {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+            gameLoop();
         }
 
-        document.getElementById("optionButton").addEventListener("click", toggleBackground);
+        main();
     </script>
 </body>
 </html>
