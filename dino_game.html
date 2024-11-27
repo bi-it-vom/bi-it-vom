@@ -7,9 +7,10 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Verhindert das Scrollen */
             color: white;
             font-family: Arial, sans-serif;
+            touch-action: none; /* Verhindert das Scrollen auf Touch-Geräten */
         }
 
         canvas {
@@ -101,7 +102,7 @@
         let obstacleSpeed = 5; // Anfangsgeschwindigkeit der Hindernisse
 
         let backgroundX = 0;
-        let housePositions = [];
+        let housePositions = [canvas.width, canvas.width + 400]; // Hauspositionen
         let stars = [];
 
         // Funkelnde Sterne
@@ -139,12 +140,9 @@
                 backgroundX = 0;
             }
 
-            housePositions.forEach((pos, index) => {
-                housePositions[index] = pos - obstacleSpeed;
-                if (housePositions[index] <= -canvas.width) {
-                    housePositions[index] = canvas.width;
-                }
-            });
+            housePositions = housePositions.map((pos) => pos - obstacleSpeed); // Häuser bewegen sich
+            if (housePositions[0] + 400 <= 0) housePositions[0] = canvas.width;
+            if (housePositions[1] + 400 <= 0) housePositions[1] = canvas.width;
         }
 
         function drawBackground() {
@@ -158,7 +156,7 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             housePositions.forEach((pos) => {
-                ctx.drawImage(houseImage, pos, groundLevel - 300, 400, 400);
+                ctx.drawImage(houseImage, pos, groundLevel - 300, 400, 400); // Haus zeichnen
             });
         }
 
@@ -261,28 +259,22 @@
         }
 
         function initGame() {
-            for (let i = 0; i < 5; i++) {
-                housePositions.push(canvas.width + i * 300);
-            }
+            setInterval(addObstacle, 3000);
 
-            setInterval(addObstacle, Math.random() * 2000 + 800);
-
-            document.addEventListener('keydown', (e) => {
+            window.addEventListener('keydown', (e) => {
                 if (e.code === 'Space') {
                     jump();
                 }
-                if (e.code === 'ArrowRight') {
-                    player.x = Math.min(player.x + player.speed, canvas.width - player.width);
-                }
-                if (e.code === 'ArrowLeft') {
-                    player.x = Math.max(player.x - player.speed, 0);
-                }
             });
 
+            window.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Verhindert Scrollen auf Touch-Geräten
+                jump();
+            });
+
+            createStars();
             updateGame();
         }
-
-        createStars();
     </script>
 </body>
 </html>
