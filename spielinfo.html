@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Point Game</title>
+    <title>Dragon Ball Fusions</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         html, body {
-            height: 100%; /* Sicherstellen, dass html und body die volle Höhe einnehmen */
+            height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Verhindert horizontales Scrollen */
-            overflow-y: auto; /* Ermöglicht vertikales Scrollen */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body {
@@ -22,9 +22,9 @@
             color: white;
             font-family: Arial, sans-serif;
             padding: 20px;
-            min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Bildschirmhöhe einnimmt */
-            overflow-y: auto; /* Ermöglicht das vertikale Scrollen */
-            padding-bottom: 60px; /* Platz für den fixierten Button */
+            min-height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 80px;
         }
 
         .header {
@@ -34,14 +34,14 @@
 
         h1 {
             font-size: 28px;
-            color: #ff0000; /* Rote Schriftfarbe */
+            color: #ff0000;
             margin-bottom: 10px;
         }
 
         .product-container {
             display: flex;
-            max-width: 900px; /* Maximale Breite */
-            background-color: #333; /* Hintergrundfarbe der Verpackung */
+            max-width: 900px;
+            background-color: #333;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
@@ -49,80 +49,79 @@
         }
 
         .product-image {
-            flex: 1; /* Bild nimmt den verfügbaren Platz ein */
-            position: relative; /* Positionierung für das Bild */
+            flex: 1;
+            position: relative;
         }
 
         .product-image img {
-            width: 100%; /* Bild auf die volle Breite des Containers */
-            height: 100%; /* Bild auf die volle Höhe des Containers */
-            object-fit: cover; /* Bildfüllung */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .product-details {
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Abstand zwischen Elementen */
-            flex: 1; /* Nimmt den restlichen Platz ein */
-            margin-left: 20px; /* Abstand zwischen Bild und Text */
+            justify-content: space-between;
+            flex: 1;
+            margin-left: 20px;
         }
 
         .description {
             font-size: 16px;
             margin: 10px 0;
             padding: 10px;
-            background-color: rgba(255, 0, 0, 0.2); /* Rote Hintergrundfarbe */
+            background-color: rgba(255, 0, 0, 0.2);
             border-radius: 5px;
-            flex-grow: 1; /* Füllt den verfügbaren Raum */
+            flex-grow: 1;
         }
 
         .button-container {
-            text-align: center; /* Zentriert den Button */
-            margin-top: 20px; /* Abstand nach oben */
+            text-align: center;
+            margin-top: 20px;
         }
 
         button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #ff0000; /* Rote Farbe für den Button */
-            color: #222; /* Dunkelgraue Schriftfarbe */
+            background-color: #ff0000;
+            color: #222;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 100%; /* Button nimmt volle Breite ein */
-            margin-top: 10px; /* Abstand zwischen den Buttons */
+            width: 100%;
+            margin-top: 10px;
         }
 
         button:hover {
-            background-color: #cc0000; /* Dunkleres Rot bei Hover */
+            background-color: #cc0000;
         }
 
-        /* Mobile Ansicht */
         @media (max-width: 768px) {
             .product-container {
-                flex-direction: column; /* Bild und Details untereinander anordnen */
-                align-items: center; /* Zentrieren */
+                flex-direction: column;
+                align-items: center;
             }
 
             .product-details {
-                margin-left: 0; /* Kein Abstand mehr zum Bild */
-                text-align: center; /* Text zentrieren */
+                margin-left: 0;
+                text-align: center;
             }
 
             h1 {
-                font-size: 24px; /* Kleinere Schrift auf mobilen Geräten */
+                font-size: 24px;
             }
 
             .description {
-                font-size: 14px; /* Kleinere Schrift für die Beschreibung */
+                font-size: 14px;
                 margin: 5px 0;
                 padding: 8px;
             }
 
             button {
-                font-size: 14px; /* Kleinere Schaltflächen auf mobilen Geräten */
+                font-size: 14px;
                 padding: 8px 15px;
             }
         }
@@ -130,11 +129,11 @@
 </head>
 <body>
     <div class="header">
-        <h1>Spielinfo - Point Game</h1>
+        <h1>Spielinfo - Dragon Ball Fusions</h1>
     </div>
     <div class="product-container">
         <div class="product-image">
-            <img src="https://static.wikia.nocookie.net/4d8a5d1e-9c74-46b9-8e64-73194ab7abc9" alt="Dragon Ball Fusions">
+            <img src="https://static.wikia.nocookie.net/4d8a5d1e-9c74-46b9-8e64-73194ab7abc9" alt="Dragon Ball Fusion">
         </div>
         <div class="product-details">
             <h2>Erlebe spannende Kämpfe und aufregende Abenteuer!</h2>
@@ -142,7 +141,7 @@
                 <p>In Dragon Ball Fusions kannst du dein eigenes Team aus Charakteren aus dem Dragon Ball-Universum zusammenstellen und dich in aufregenden Kämpfen beweisen. Entdecke eine neue Story und erlebe epische Momente!</p>
             </div>
             <div class="button-container">
-                <button onclick="window.location.href='Punktespiel.html'">Spielen</button>
+                <button onclick="window.location.href='dragonballgame.html'">Spielen</button>
                 <button onclick="window.location.href='shop.html'">Zurück zum Shop</button>
             </div>
         </div>
