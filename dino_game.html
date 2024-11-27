@@ -213,8 +213,7 @@
                 obstacle.draw();
 
                 if (obstacle.checkCollision(player)) {
-                    alert('Game Over! Hindernisse bewältigt: ' + obstaclesCleared);
-                    document.location.reload();
+                    location.reload(); // Neustart ohne Meldung
                 }
 
                 if (obstacle.isOffScreen()) {
@@ -232,7 +231,7 @@
                 housePositions.push(canvas.width + i * 300);
             }
 
-            setInterval(addObstacle, Math.random() * 2000 + 700);
+            setInterval(addObstacle, Math.random() * 2000 + 800);
 
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space') {
@@ -244,6 +243,11 @@
                 if (e.code === 'ArrowLeft') {
                     player.x = Math.max(player.x - player.speed, 0);
                 }
+            });
+
+            // Touch event für mobile Geräte
+            canvas.addEventListener('touchstart', () => {
+                jump();
             });
 
             updateGame();

@@ -6,17 +6,27 @@
     <title>Spielinfo - Dragonball Fusion</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%; /* Stellt sicher, dass die Höhe der Seite korrekt gesetzt ist */
+            overflow-x: hidden; /* Verhindert horizontales Scrollen */
+        }
+
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
             background-color: #222;
             color: white;
             font-family: Arial, sans-serif;
             padding: 20px;
             min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Viewports hat */
-            overflow-y: auto; /* Ermöglicht das Scrollen, wenn der Inhalt zu groß ist */
+            overflow-y: auto; /* Ermöglicht vertikales Scrollen */
         }
 
         .header {
@@ -106,6 +116,11 @@
             .product-details {
                 margin-left: 0; /* Entfernt den linken Abstand */
                 margin-top: 20px; /* Fügt einen Abstand oben hinzu */
+            }
+
+            /* Stellt sicher, dass der Inhalt der Seite vertikal gescrollt werden kann */
+            body {
+                padding-bottom: 50px; /* Fügt unten etwas Platz hinzu, damit die Buttons sichtbar bleiben */
             }
         }
     </style>
