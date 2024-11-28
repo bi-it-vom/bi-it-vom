@@ -3,175 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bat Jump</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dino Game: Extreme Edition</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             margin: 0;
-            background-color: #222;
+            overflow: hidden;
             color: white;
             font-family: Arial, sans-serif;
-            padding: 0;
-            height: 100vh;
-            overflow-y: auto; /* Ermöglicht vertikales Scrollen */
+            touch-action: none;
+            background-color: #000;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #222;
         }
 
-        h1 {
-            font-size: 28px;
-            color: #ff0000; /* Rote Schriftfarbe */
-            margin-bottom: 10px;
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            max-width: 900px;
-            background-color: #333;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-            margin-top: 20px;
-            flex-grow: 1;
-            overflow-y: auto; /* Ermöglicht das Scrollen innerhalb des Containers */
-        }
-
-        .product-container {
-            display: flex;
-            width: 100%;
-            background-color: #333;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-            margin-bottom: 40px;
-        }
-
-        .product-image {
-            flex: 1;
-            position: relative;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-details {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex: 1;
-            margin-left: 20px;
-        }
-
-        .description {
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            background-color: rgba(255, 0, 0, 0.2);
-            border-radius: 5px;
-            flex-grow: 1;
-        }
-
-        .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        button {
+        .exit-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             padding: 10px 20px;
-            font-size: 16px;
             background-color: #ff0000;
             color: #222;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-            margin-top: 10px;
+            z-index: 10;
         }
 
-        button:hover {
+        .exit-button:hover {
             background-color: #cc0000;
         }
 
-        .back-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #616161;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-        }
-
-        .back-button:hover {
-            background-color: #505050;
-        }
-
-        @media (max-width: 768px) {
-            .product-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .product-details {
-                margin-left: 0;
-                text-align: center;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .description {
-                font-size: 14px;
-                margin: 5px 0;
-                padding: 8px;
-            }
-
-            button {
-                font-size: 14px;
-                padding: 8px 15px;
-            }
+        .score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Bat Jump</h1>
-    </div>
-    <div class="content">
-        <div class="product-container">
-            <div class="product-image">
-                <img src="https://hardtech.siansystem.com/hardtech/upload/news/images/dinorun.png" alt="Dino Jump">
-            </div>
-            <div class="product-details">
-                <h2>Erlebe spannende Kämpfe und aufregende Abenteuer!</h2>
-                <div class="description">
-                    <p>In Jump the Dino steuerst du deinen eigenen Dinosaurier und musst Hindernisse überwinden, während du durch die fantastische Welt der Dinosaurier rennst. Sammle Punkte und entdecke neue Herausforderungen!</p>
-                </div>
-                <div class="button-container">
-                    <button onclick="window.location.href='dino_game.html'">Spiel Starten</button>
-                    <button onclick="window.location.href='shop.html'">Zurück zum Shop</button>
-                </div>
-            </div>
-        </div>
-        <div class="button-container">
-            <button onclick="window.location.href='index.html'">Zurück zur Startseite</button>
-        </div>
-    </div>
+    <button class="exit-button" onclick="window.location.href='dinojump.html'">Zurück</button>
+    <div class="score" id="scoreDisplay">Hindernisse bewältigt: 0</div>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+
+        // Bilder laden
+        const playerNormalImage = new Image();
+        const playerJumpImage = new Image();
+        const obstacleImage = new Image();
+        const houseImage = new Image();
+
+        playerNormalImage.src = 'image-removebg-preview (20).png';
+        playerJumpImage.src = 'batmanjumpbild.png';
+        obstacleImage.src = 'image-removebg-preview (28).png';
+        houseImage.src = 'https://thumbs.dreamstime.com/b/pixel-art-house-background-games-design-53644577.jpg';
+
+        let imagesLoaded = 0;
+        const totalImages = 4;
+
+        function checkImagesLoaded() {
+            imagesLoaded++;
+            if (imagesLoaded === totalImages) {
+                initGame();
+            }
+        }
+
+        playerNormalImage.onload = checkImagesLoaded;
+        playerJumpImage.onload = checkImagesLoaded;
+        obstacleImage.onload = checkImagesLoaded;
+        houseImage.onload = checkImagesLoaded;
+
+        // Spielvariablen
+        canvas.width = window.innerWidth * 2;
+        canvas.height = window.innerHeight;
+        const groundLevel = canvas.height - 120;
+
+        const player = {
+            x: 50,
+            y: groundLevel - 100,
+            width: 80,
+            height: 120,
+            speed: 5,
+            jumping: false,
+            jumpSpeed: 30,
+            gravity: 10,
+            jumpCount: 0
+        };
+
+        const obstacles = [];
+        let obstaclesCleared = 0;
+        let obstacleSpeed = 5;
+
+        let backgroundX = 0;
+        let housePositions = [canvas.width, canvas.width + 400];
+        let stars = [];
+
+        function createStars() {
+            if (obstaclesCleared >= 25 && stars.length === 0) {
+                for (let i = 0; i < 50; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2 + 1,
+                        opacity: Math.random() * 0.5 + 0.5,
+                        speed: Math.random() * 0.1 + 0.1
+                    });
+                }
+            }
+        }
+
+        function drawStars() {
+            ctx.fillStyle = 'yellow';
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                star.opacity += star.speed;
+                if (star.opacity > 1 || star.opacity < 0.5) {
+                    star.speed = -star.speed;
+                }
+            });
+        }
+
+        function moveBackground() {
+            backgroundX -= 2;
+            if (backgroundX <= -canvas.width) {
+                backgroundX = 0;
+            }
+
+            housePositions = housePositions.map((pos) => pos - obstacleSpeed);
+            if (housePositions[0] + 400 <= 0) housePositions[0] = canvas.width;
+            if (housePositions[1] + 400 <= 0) housePositions[1] = canvas.width;
+        }
+
+        function drawBackground() {
+            if (obstaclesCleared >= 25 && obstaclesCleared <= 29) {
+                // Nacht-Szenario mit Sternenhimmel
+                ctx.fillStyle = '#000000'; // Dunkler Himmel
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                drawStars(); // Sterne zeichnen
+            } else {
+                ctx.fillStyle = '#87CEEB'; // Tag-Szene
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            housePositions.forEach((pos) => {
+                ctx.drawImage(houseImage, pos, groundLevel - 300, 400, 400);
+            });
+        }
+
+        class Obstacle {
+            constructor(image, x, height, yPosition) {
+                this.image = image;
+                this.x = x;
+                this.y = yPosition; // Position kann entweder Boden oder Mitte sein
+                this.width = 50;
+                this.height = height * 0.6;
+                this.imageWidth = 50;
+                this.imageHeight = height;
+            }
+
+            draw() {
+                // Leuchtender, oranger Schimmer um das Hindernis
+                ctx.shadowColor = 'orange';  // Schattenfarbe für den Leuchteffekt
+                ctx.shadowBlur = 20;  // Stärke des Schattens (Glühen)
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+                ctx.shadowBlur = 0;  // Setzt den Schimmer zurück
+            }
+
+            update() {
+                this.x -= obstacleSpeed;
+            }
+
+            isOffScreen() {
+                return this.x + this.width < 0;
+            }
+
+            checkCollision(player) {
+                return (
+                    player.x < this.x + this.width &&
+                    player.x + player.width > this.x &&
+                    player.y < this.y + this.height &&
+                    player.y + player.height > this.y
+                );
+            }
+        }
+
+        function addObstacle() {
+            const randomHeight = Math.random() * 30 + 80; // Höhe des Hindernisses
+            const randomYPosition = Math.random() > 0.5 
+                ? canvas.height / 2 - randomHeight / 2 // Hindernis in der Mitte des Bildschirms
+                : groundLevel - 45; // Hindernis weiter unten als der Boden (du kannst den Wert anpassen)
+            obstacles.push(new Obstacle(obstacleImage, canvas.width, randomHeight, randomYPosition));
+        }
+
+        // Zufälliger Intervall zum Spawn der Hindernisse
+        function setRandomSpawnInterval() {
+            const randomInterval = Math.random() * (3000 - 1000) + 800; // Zwischen 600ms und 3000ms
+            setTimeout(() => {
+                addObstacle();
+                setRandomSpawnInterval(); // Wiederhole den Vorgang
+            }, randomInterval);
+        }
+
+        function jump() {
+            if (!player.jumping) {
+                player.jumping = true;
+                player.jumpCount++;
+
+                let jumpInterval = setInterval(() => {
+                    player.y -= player.jumpSpeed;
+                    if (player.y <= groundLevel - 350) {
+                        clearInterval(jumpInterval);
+                        let fallInterval = setInterval(() => {
+                            player.y += player.gravity;
+                            if (player.y >= groundLevel - player.height) {
+                                player.y = groundLevel - player.height;
+                                player.jumping = false;
+                                clearInterval(fallInterval);
+                            }
+                        }, 20);
+                    }
+                }, 20);
+
+                if (player.jumpCount % 5 === 0 && obstaclesCleared < 34) {
+                    obstacleSpeed *= 1.4;
+                }
+            }
+        }
+
+        function resetGame() {
+            obstaclesCleared = 0;
+            obstacleSpeed = 5;
+            obstacles.length = 0;
+            player.y = groundLevel - 100;
+            player.jumpCount = 0;
+            scoreDisplay.textContent = `Hindernisse bewältigt: ${obstaclesCleared}`;
+        }
+
+        function updateGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            moveBackground();
+            drawBackground();
+
+            ctx.fillStyle = '#6e4b3e';
+            ctx.fillRect(0, groundLevel, canvas.width, canvas.height - groundLevel);
+
+            if (player.jumping) {
+                ctx.drawImage(playerJumpImage, player.x, player.y, player.width, player.height);
+            } else {
+                ctx.drawImage(playerNormalImage, player.x, player.y, player.width, player.height);
+            }
+
+            obstacles.forEach((obstacle, index) => {
+                obstacle.update();
+                obstacle.draw();
+
+                if (obstacle.isOffScreen()) {
+                    obstacles.splice(index, 1);
+                    obstaclesCleared++;
+                    scoreDisplay.textContent = `Hindernisse bewältigt: ${obstaclesCleared}`;
+                    createStars();
+                }
+
+                if (obstacle.checkCollision(player)) {
+                    resetGame();
+                }
+            });
+        }
+
+        function initGame() {
+            setRandomSpawnInterval();
+            setInterval(updateGame, 20);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    jump();
+                }
+            });
+
+            document.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                jump();
+            });
+        }
+    </script>
 </body>
 </html>
