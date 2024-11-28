@@ -252,6 +252,13 @@
                     obstacles.splice(index, 1);
                     obstaclesCleared++;
                     scoreDisplay.textContent = 'Hindernisse bewältigt: ' + obstaclesCleared;
+
+                    // Bildschirm umdrehen, wenn zwischen 29 und 33 Hindernisse bewältigt wurden
+                    if (obstaclesCleared >= 29 && obstaclesCleared <= 33) {
+                        document.body.style.transform = 'rotate(180deg)';
+                    } else {
+                        document.body.style.transform = 'rotate(0deg)';
+                    }
                 }
             });
 
@@ -268,11 +275,11 @@
             });
 
             window.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Verhindert Scrollen auf Touch-Geräten
-                jump();
+                if (e.touches.length === 1) {
+                    jump();
+                }
             });
 
-            createStars();
             updateGame();
         }
     </script>
