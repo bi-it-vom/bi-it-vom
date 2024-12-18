@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brutaler Stresstest</title>
+  <title>Ultra-Brutaler Stresstest</title>
   <style>
     body {
       background-color: black;
@@ -13,6 +13,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      font-family: Arial, sans-serif;
     }
     button {
       font-size: 20px;
@@ -21,41 +22,93 @@
       color: white;
       border: 2px solid white;
       cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
     }
     button:active {
       background-color: darkred;
+      transform: scale(0.95);
+    }
+    button.active {
+      background-color: green;
+    }
+    button.inactive {
+      background-color: red;
     }
   </style>
 </head>
 <body>
 
   <div>
-    <button id="startBtn" onclick="startStressTest()">Start Stresstest</button>
-    <button id="stopBtn" onclick="stopStressTest()">Stop Stresstest</button>
+    <button id="startBtn" onclick="startStressTest()" class="inactive">Start Stresstest</button>
+    <button id="stopBtn" onclick="stopStressTest()" class="inactive">Stop Stresstest</button>
   </div>
 
   <script>
     let stressTestRunning = false;
-    let stressInterval;
+    let stressIntervals = [];
 
     function startStressTest() {
       if (stressTestRunning) return;  // Verhindert mehrfaches Starten
 
       stressTestRunning = true;
+      
+      // Button-Status ändern
+      document.getElementById('startBtn').classList.add('active');
+      document.getElementById('startBtn').classList.remove('inactive');
+      document.getElementById('startBtn').textContent = 'Stresstest läuft...';
+      
+      document.getElementById('stopBtn').classList.add('active');
+      document.getElementById('stopBtn').classList.remove('inactive');
+      
+      // Startet extrem viele parallele Prozesse (mit einer hohen Anzahl von Intervallen)
+      const numProcesses = navigator.hardwareConcurrency || 4;  // Nutzt die Anzahl der CPU-Kerne (oder 4 als Standard)
 
-      // Startet den extremen Stresstest durch eine endlose Schleife
-      stressInterval = setInterval(function() {
-        // Maximale CPU-Auslastung erzeugen durch extrem viele Berechnungen
-        let a = 1;
-        while(a < 1000000000) {
-          a = a * Math.random();  // Maximale Belastung durch zufällige Berechnungen
-        }
-      }, 0);  // Minimale Verzögerung, was die CPU extrem belastet
+      for (let i = 0; i < numProcesses * 5; i++) {  // 5-mal so viele Prozesse wie Kerne
+        let stressInterval = setInterval(function() {
+          // Extrem intensive Berechnungen (Mathematik mit exponentiellen Zahlen und Fibonacci)
+          let a = 1;
+          let b = 1;
+          let c = 1;
+          let d = 1;
+
+          // Endlosschleife, um maximale CPU-Auslastung zu erzielen
+          while (true) {
+            a = a * Math.random();
+            b = b * Math.random();
+            c = Math.pow(Math.random(), Math.random() * 100000);
+            d = Math.sin(Math.random() * Math.PI * Math.random());
+            
+            // Fibonacci-Berechnung auf extrem großen Zahlen
+            let fib = (n) => {
+              if (n <= 1) return n;
+              return fib(n - 1) + fib(n - 2);
+            }
+            fib(10000);  // Sehr rechenintensive Berechnung (sehr hohe Fibonacci-Zahlen)
+            
+            // Ein weiteres stark berechnendes Beispiel
+            let bigCalc = Math.pow(a, b) * Math.sqrt(c) * Math.log(c + 1);
+            bigCalc = bigCalc * Math.exp(Math.random());
+          }
+
+        }, 0);  // Minimale Verzögerung für maximale Belastung
+
+        stressIntervals.push(stressInterval);
+      }
     }
 
     function stopStressTest() {
-      clearInterval(stressInterval);
+      // Stoppt alle laufenden Stresstests
+      stressIntervals.forEach(clearInterval);
+      stressIntervals = [];
       stressTestRunning = false;
+
+      // Button-Status zurücksetzen
+      document.getElementById('startBtn').classList.add('inactive');
+      document.getElementById('startBtn').classList.remove('active');
+      document.getElementById('startBtn').textContent = 'Start Stresstest';
+      
+      document.getElementById('stopBtn').classList.add('inactive');
+      document.getElementById('stopBtn').classList.remove('active');
     }
   </script>
 
