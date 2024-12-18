@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stresstest</title>
+  <title>Extremer Stresstest</title>
   <style>
     body {
       background-color: red;
@@ -14,19 +14,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background-color: blue;
-      animation: spin 0.1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      flex-direction: column;
     }
 
     .stresstest {
@@ -36,24 +24,43 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .stresstest div {
       width: 50px;
       height: 50px;
       background-color: green;
-      animation: bounce 0.1s linear infinite;
+      animation: bounce 0.01s linear infinite;
     }
 
     @keyframes bounce {
       0% { transform: translateY(0); }
-      50% { transform: translateY(-50px); }
+      50% { transform: translateY(-100px); }
       100% { transform: translateY(0); }
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button:active {
+      background-color: #444;
     }
   </style>
 </head>
 <body>
-  <div class="stresstest">
+  <button id="startBtn">Start</button>
+  <button id="stopBtn" disabled>Stop</button>
+
+  <div class="stresstest" id="stresstestArea">
     <!-- Viele kleine animierte Boxen für hohe Belastung -->
     <div></div>
     <div></div>
@@ -68,14 +75,69 @@
   </div>
 
   <script>
-    // Erzeuge eine hohe Rechenlast durch eine endlose Schleife
-    function stressTest() {
-      while(true) {
-        Math.random(); // Einfache Berechnung, um die CPU zu belasten
+    let stressTestInterval;
+    let isStressTesting = false;
+
+    // CPU-Stress: Endlosschleifen zur maximalen Auslastung der CPU
+    function cpuStress() {
+      let counter = 0;
+      while (true) {
+        counter++; // CPU-Arbeitslast durch eine sinnlose Berechnung
       }
     }
-    
-    stressTest(); // Unendlicher Loop für maximalen Stress
+
+    // RAM-Stress: Erzeugt einen massiven Speicherverbrauch
+    function ramStress() {
+      let largeArray = [];
+      while (true) {
+        largeArray.push(new Array(1000000).fill(Math.random())); // Verbraucht großen Teil des RAM
+        if (largeArray.length > 1000) break; // Verhindert unendlichen Wachstum des Arrays
+      }
+    }
+
+    // GPU-Stress: Maximiert GPU-Belastung mit Berechnungen
+    function gpuStress() {
+      stressTestInterval = setInterval(function() {
+        for (let i = 0; i < 10000; i++) {
+          Math.random(); // Minimale GPU-Belastung durch zufällige Berechnungen
+        }
+      }, 0); // Maximale Belastung durch Null-Intervall
+    }
+
+    // Funktion zum Starten des Tests
+    function startStressTest() {
+      isStressTesting = true;
+
+      // Starte CPU-Stress
+      for (let i = 0; i < navigator.hardwareConcurrency; i++) {
+        new Worker(cpuStress);  // Arbeiter für jeden CPU-Kern
+      }
+
+      // Starte RAM-Stress
+      ramStress();
+
+      // Starte GPU-Stress
+      gpuStress();
+
+      document.getElementById('startBtn').disabled = true;
+      document.getElementById('stopBtn').disabled = false;
+    }
+
+    // Funktion zum Stoppen des Tests
+    function stopStressTest() {
+      isStressTesting = false;
+      clearInterval(stressTestInterval);
+
+      // Alle Worker stoppen
+      let workers = [] // Hier Worker speichern und beenden
+      workers.forEach(worker => worker.terminate());
+
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('stopBtn').disabled = true;
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startStressTest);
+    document.getElementById('stopBtn').addEventListener('click', stopStressTest);
   </script>
 </body>
 </html>
