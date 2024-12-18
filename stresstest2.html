@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultra-Brutaler Stresstest</title>
+  <title>Brutaler Stresstest</title>
   <style>
     body {
       background-color: black;
@@ -22,6 +22,7 @@
       color: white;
       border: 2px solid white;
       cursor: pointer;
+      margin: 10px;
       transition: background-color 0.3s, transform 0.1s;
     }
     button:active {
@@ -39,78 +40,229 @@
 <body>
 
   <div>
-    <button id="startBtn" onclick="startStressTest()" class="inactive">Start Stresstest</button>
+    <button id="startPCBtn" onclick="startPCStressTest()" class="inactive">Stresstest PC starten</button>
+    <button id="startPhoneBtn" onclick="startPhoneStressTest()" class="inactive">Stresstest Handy starten</button>
     <button id="stopBtn" onclick="stopStressTest()" class="inactive">Stop Stresstest</button>
   </div>
 
   <script>
     let stressTestRunning = false;
     let stressIntervals = [];
+    let gpuStressInterval;
 
-    function startStressTest() {
-      if (stressTestRunning) return;  // Verhindert mehrfaches Starten
+    // CPU und RAM Stresstest
+    function startPCStressTest() {
+      if (stressTestRunning) return;
 
       stressTestRunning = true;
-      
-      // Button-Status ändern
-      document.getElementById('startBtn').classList.add('active');
-      document.getElementById('startBtn').classList.remove('inactive');
-      document.getElementById('startBtn').textContent = 'Stresstest läuft...';
-      
+
+      // Button Status ändern
+      document.getElementById('startPCBtn').classList.add('active');
+      document.getElementById('startPCBtn').classList.remove('inactive');
+      document.getElementById('startPCBtn').textContent = 'PC Stresstest läuft...';
+
+      document.getElementById('startPhoneBtn').classList.add('inactive');
+      document.getElementById('startPhoneBtn').classList.remove('active');
+
       document.getElementById('stopBtn').classList.add('active');
       document.getElementById('stopBtn').classList.remove('inactive');
-      
-      // Startet extrem viele parallele Prozesse (mit einer hohen Anzahl von Intervallen)
-      const numProcesses = navigator.hardwareConcurrency || 4;  // Nutzt die Anzahl der CPU-Kerne (oder 4 als Standard)
 
-      for (let i = 0; i < numProcesses * 5; i++) {  // 5-mal so viele Prozesse wie Kerne
+      // Brutaler CPU Stresstest: Maximal auf allen Kernen rechnen
+      const numProcesses = navigator.hardwareConcurrency || 8;  // Maximale Anzahl an Prozessen, basierend auf den verfügbaren CPU-Kernen
+
+      for (let i = 0; i < numProcesses * 50; i++) {  // Extreme Rechenlast auf vielen Kernen
         let stressInterval = setInterval(function() {
-          // Extrem intensive Berechnungen (Mathematik mit exponentiellen Zahlen und Fibonacci)
           let a = 1;
           let b = 1;
           let c = 1;
           let d = 1;
-
-          // Endlosschleife, um maximale CPU-Auslastung zu erzielen
           while (true) {
+            // CPU hochbeanspruchen durch zufällige Berechnungen
             a = a * Math.random();
             b = b * Math.random();
             c = Math.pow(Math.random(), Math.random() * 100000);
             d = Math.sin(Math.random() * Math.PI * Math.random());
-            
-            // Fibonacci-Berechnung auf extrem großen Zahlen
+
+            // Fibonacci-Rechnung mit extrem großen Zahlen
             let fib = (n) => {
               if (n <= 1) return n;
               return fib(n - 1) + fib(n - 2);
-            }
-            fib(10000);  // Sehr rechenintensive Berechnung (sehr hohe Fibonacci-Zahlen)
-            
-            // Ein weiteres stark berechnendes Beispiel
+            };
+            fib(100000);  // Fibonacci mit riesigen Zahlen, extrem rechenintensiv
+
+            // Extrem komplexe Berechnungen
             let bigCalc = Math.pow(a, b) * Math.sqrt(c) * Math.log(c + 1);
             bigCalc = bigCalc * Math.exp(Math.random());
           }
-
-        }, 0);  // Minimale Verzögerung für maximale Belastung
-
+        }, 0); // Maximale CPU-Auslastung durch minimale Verzögerung
         stressIntervals.push(stressInterval);
       }
+
+      // RAM Stresstest: Maximale Auslastung des Arbeitsspeichers
+      let largeArray = [];
+      for (let i = 0; i < 10000000; i++) {
+        largeArray.push(Math.random());
+      }
+      stressIntervals.push(setInterval(function() {
+        largeArray.push(Math.random());  // Halte RAM ständig ausgelastet
+      }, 10));
+
+      // GPU Stresstest: Extreme Auslastung der GPU mit WebGL
+      let canvas = document.createElement('canvas');
+      document.body.appendChild(canvas);
+      let gl = canvas.getContext('webgl');
+      if (!gl) {
+        console.error('WebGL wird von diesem Browser nicht unterstützt.');
+        return;
+      }
+
+      const vertexShaderSource = `
+        attribute vec4 a_position;
+        void main(void) {
+          gl_Position = a_position;
+        }
+      `;
+
+      const fragmentShaderSource = `
+        precision mediump float;
+        void main(void) {
+          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Rote Farbe, maximaler GPU-Stress
+        }
+      `;
+
+      function createShader(type, source) {
+        let shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error('Fehler beim Kompilieren des Shaders:', gl.getShaderInfoLog(shader));
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      }
+
+      const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+      const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+      const program = gl.createProgram();
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+      gl.linkProgram(program);
+      gl.useProgram(program);
+
+      const vertices = new Float32Array([
+        -1.0, -1.0,
+         1.0, -1.0,
+         0.0,  1.0
+      ]);
+
+      const vertexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+      const a_position = gl.getAttribLocation(program, 'a_position');
+      gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(a_position);
+
+      // GPU Stresstest: Maximale Grafikbelastung mit zigtausenden von Render-Vorgängen
+      gpuStressInterval = setInterval(function() {
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        for (let i = 0; i < 100000; i++) {
+          gl.drawArrays(gl.TRIANGLES, 0, 3);  // Dreiecke zeichnen, um die GPU zu überlasten
+        }
+      }, 0);  // Minimale Verzögerung für maximale GPU-Auslastung
     }
 
+    // Handy Stresstest: Maximale Auslastung von CPU und RAM
+    function startPhoneStressTest() {
+      if (stressTestRunning) return;
+
+      stressTestRunning = true;
+
+      // Button Status ändern
+      document.getElementById('startPhoneBtn').classList.add('active');
+      document.getElementById('startPhoneBtn').classList.remove('inactive');
+      document.getElementById('startPhoneBtn').textContent = 'Handy Stresstest läuft...';
+
+      document.getElementById('startPCBtn').classList.add('inactive');
+      document.getElementById('startPCBtn').classList.remove('active');
+
+      document.getElementById('stopBtn').classList.add('active');
+      document.getElementById('stopBtn').classList.remove('inactive');
+
+      // Brutaler CPU Stresstest für Handy: Maximal auf allen Kernen rechnen
+      const numProcesses = 4;  // Für Handys max. 4 Prozesse (kann angepasst werden)
+
+      for (let i = 0; i < numProcesses * 50; i++) {  // Extreme Rechenlast
+        let stressInterval = setInterval(function() {
+          let a = 1;
+          let b = 1;
+          let c = 1;
+          let d = 1;
+          while (true) {
+            // CPU hochbeanspruchen durch zufällige Berechnungen
+            a = a * Math.random();
+            b = b * Math.random();
+            c = Math.pow(Math.random(), Math.random() * 100000);
+            d = Math.sin(Math.random() * Math.PI * Math.random());
+
+            // Fibonacci-Rechnung mit extrem großen Zahlen
+            let fib = (n) => {
+              if (n <= 1) return n;
+              return fib(n - 1) + fib(n - 2);
+            };
+            fib(50000);  // Fibonacci mit riesigen Zahlen
+
+            // Extrem komplexe Berechnungen
+            let bigCalc = Math.pow(a, b) * Math.sqrt(c) * Math.log(c + 1);
+            bigCalc = bigCalc * Math.exp(Math.random());
+          }
+        }, 0);  // Maximale CPU-Auslastung
+        stressIntervals.push(stressInterval);
+      }
+
+      // RAM Stresstest für Handy: Maximale Auslastung des Arbeitsspeichers
+      let largeArray = [];
+      for (let i = 0; i < 1000000; i++) {
+        largeArray.push(Math.random());
+      }
+      stressIntervals.push(setInterval(function() {
+        largeArray.push(Math.random());  // Halte RAM ständig ausgelastet
+      }, 10));
+    }
+
+    // Stresstest stoppen
     function stopStressTest() {
-      // Stoppt alle laufenden Stresstests
-      stressIntervals.forEach(clearInterval);
-      stressIntervals = [];
       stressTestRunning = false;
 
-      // Button-Status zurücksetzen
-      document.getElementById('startBtn').classList.add('inactive');
-      document.getElementById('startBtn').classList.remove('active');
-      document.getElementById('startBtn').textContent = 'Start Stresstest';
-      
-      document.getElementById('stopBtn').classList.add('inactive');
+      // Button Status ändern
+      document.getElementById('startPCBtn').classList.remove('inactive');
+      document.getElementById('startPCBtn').classList.add('active');
+      document.getElementById('startPhoneBtn').classList.remove('inactive');
+      document.getElementById('startPhoneBtn').classList.add('active');
       document.getElementById('stopBtn').classList.remove('active');
+      document.getElementById('stopBtn').classList.add('inactive');
+
+      document.getElementById('startPCBtn').textContent = 'Stresstest PC starten';
+      document.getElementById('startPhoneBtn').textContent = 'Stresstest Handy starten';
+
+      // Stoppe alle Stresstests
+      for (let interval of stressIntervals) {
+        clearInterval(interval);
+      }
+
+      // Stoppe GPU Stresstest
+      if (gpuStressInterval) {
+        clearInterval(gpuStressInterval);
+      }
+
+      // Entferne Canvas für GPU Stresstest
+      let canvas = document.querySelector('canvas');
+      if (canvas) {
+        canvas.remove();
+      }
     }
   </script>
-
 </body>
 </html>
