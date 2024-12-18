@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stresstest</title>
+  <style>
+    body {
+      background-color: red;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: blue;
+      animation: spin 0.1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .stresstest {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stresstest div {
+      width: 50px;
+      height: 50px;
+      background-color: green;
+      animation: bounce 0.1s linear infinite;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-50px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stresstest">
+    <!-- Viele kleine animierte Boxen für hohe Belastung -->
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <script>
+    // Erzeuge eine hohe Rechenlast durch eine endlose Schleife
+    function stressTest() {
+      while(true) {
+        Math.random(); // Einfache Berechnung, um die CPU zu belasten
+      }
+    }
+    
+    stressTest(); // Unendlicher Loop für maximalen Stress
+  </script>
+</body>
+</html>
