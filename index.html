@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startseite</title>
+    <link rel="stylesheet" href="titelseite.css">
+</head>
+<body>
+    <div id="app">
+        <canvas id="canvas"></canvas>
+        <div class="hero">
+            <h1>Volmar</h1>
+            <h2>Melvin</h2>
+            <div class="erfahremehr-dropdown">
+                <button id="erfahremehrbutton" class="button-erfahre-mehr">Erfahre mehr</button>
+                <div id="dropdownContent" class="dropdown-menu">
+                    <a href="übermich.html">Über mich</a>
+                    <a href="lebenslauf.html">Lebenslauf</a>
+                    <a href="kontakt.html">Kontakt</a>
+                    <a href="datenschutz.html">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datenschutz Overlay -->
+    <div id="datenschutz-overlay">
+        <div class="overlay-box">
+            <h2>Datenschutzhinweis</h2>
+            <p>Um diese Website nutzen zu können, musst du den Datenschutz akzeptieren.</p>
+            <a href="datenschutz.html" target="_blank">Datenschutzerklärung lesen</a><br>
+            <button id="accept-btn">Ich akzeptiere</button>
+        </div>
+    </div>
+
+    <script type="module" src="webseite2.js"></script>
+    <script src="overlay.js"></script>
+
+    <p><br></p>
+    
+<footer>
+  <small>© 2025 Melvin Volmar, All rights reserved.</small>
+</footer>
+
+
+</body>
+</html>

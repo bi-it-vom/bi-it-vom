@@ -78,7 +78,7 @@ h2 {
     background-color: #555;
 }
 
-/* Canvas */
+
 #canvas {
   position: fixed;
   top: 0;
@@ -86,13 +86,17 @@ h2 {
   bottom: 0;
   left: 0;
   overflow: hidden;
+  z-index: -1;
 }
 
-
-
+.hero, footer {
+  position: relative;
+  z-index: 1;
+  color: white;
+}
 
 .modal {
-    display: none; /* standardmäßig versteckt */
+    display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -131,4 +135,71 @@ h2 {
 
 .modal button:hover {
     background-color: #ff00888d;
+}
+
+
+#datenschutz-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.overlay-box {
+  background: #fff;
+  color: #000;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+.overlay-box button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.overlay-box button:hover {
+  background: #333;
+}
+
+.overlay-box a {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ff0088;
+  text-decoration: none;
+}
+
+.overlay-box a:hover {
+  text-decoration: underline;
+}
+.overlay-box h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #000000;
+  text-shadow: none;
+  word-break: break-word;
+  text-align: center;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+  color: #aaa;
+  font-size: 0.9em;
 }
