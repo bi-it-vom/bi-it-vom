@@ -83,3 +83,66 @@ footer {
   font-size: 0.9em;
 }
 
+.text-box {
+  position: relative;
+  background-color: rgba(62,60,60,0.7); /* grauer, halbtransparenter Hintergrund */
+  padding: 30px 20px;
+  border-radius: 15px;
+  margin: 30px auto;
+  max-width: 800px;
+  z-index: 1;
+  text-align: center;
+
+  /* weißer LED-Leuchteffekt */
+  border: 2px solid #fff; /* dünne weiße Umrandung */
+  box-shadow: 
+    0 0 10px rgba(255,255,255,0.8),
+    0 0 20px rgba(255,255,255,0.6),
+    0 0 40px rgba(255,255,255,0.4);
+}
+
+
+
+.text-box {
+  position: relative;
+  background-color: rgba(62,60,60,0.7);
+  padding: 30px 20px;
+  border-radius: 15px;
+  margin: 30px auto;
+  max-width: 800px;
+  z-index: 1;
+  text-align: center;
+
+  /* Grund-Glow */
+  box-shadow: 
+    0 0 10px rgba(255,255,255,0.2),
+    0 0 20px rgba(255,255,255,0.1);
+  transition: all 0.3s ease; /* sanfte Animation */
+}
+
+.text-box:hover {
+  transform: scale(1.02); /* leichtes Vergrößern */
+  box-shadow: 
+    0 0 40px rgba(255,255,255,0.5),
+    0 0 300px rgba(255,255,255,0.3),
+    0 0 45px rgba(255,255,255,0.2);
+}
+
+.back-button {
+  cursor: pointer;
+  padding: 10px 30px;
+  background-color: #ff00888d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.3s ease; /* sanfte Animation */
+}
+
+.back-button:hover {
+  box-shadow: 
+    0 0 10px #ff0088,
+    0 0 20px #ff0088,
+    0 0 40px rgba(255,0,136,0.7);
+  transform: scale(1.05); /* leichtes Vergrößern */
+}
