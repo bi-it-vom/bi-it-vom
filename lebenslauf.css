@@ -1,0 +1,293 @@
+
+.lebenslauf {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+h1, h2 {
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-shadow: 0 0 20px rgba(0,0,0,1);
+  line-height: 100%;
+  user-select: none;
+}
+
+.text-box h1 {
+  font-size: 60px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+
+h2 {
+  font-size: 8vw;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+body {
+    background-color: #000000; 
+    color: rgb(191, 190, 194); 
+}
+
+.lebenslauf img {
+    width: 60% !important;
+    max-width: 600px !important;
+    height: auto !important;
+    display: block;
+    margin: 20px auto;
+}
+
+
+
+.lebenslauf {
+    padding: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
+.back-button {
+    cursor: pointer;
+    padding: 10px 30px;
+    background-color: #ff00888d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.lebenslauf {
+    text-align: center;
+ 
+
+}
+
+.hobbys p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: white
+}
+
+footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+.text-box {
+  position: relative;
+  background-color: rgba(62,60,60,0.7);
+  padding: 30px 20px;
+  border-radius: 15px;
+  margin: 40px auto;
+  max-width: 800px;
+  z-index: 1;
+  text-align: center;
+}
+
+.text-box + .text-box {
+  margin-top: 20px;
+}
+
+
+.text-box h1 {
+  margin: 10px 0;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+
+
+.text-box p {
+  max-width: 700px;
+  margin: 10px auto;
+  color: #fff;
+  line-height: 1.6;
+}
+
+body, html {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+ #app {
+ min-height: 100vh;
+}
+
+.lebenslauf {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+h1, h2 {
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-shadow: 0 0 20px rgba(0,0,0,1);
+  line-height: 100%;
+  user-select: none;
+}
+
+h1 {
+  font-size: 8vw;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 8vw;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+body {
+    background-color: #000000; 
+    color: rgb(191, 190, 194); 
+}
+
+.lebenslauf img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    display: block;
+    margin: 20px auto;
+    border: 4px solid #000000;
+    border-radius: 10px;
+    box-shadow: 0 0 15px;
+}
+
+.lebenslauf {
+    padding: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+}
+.back-button {
+  cursor: pointer;
+  padding: 10px 30px;
+  background-color: #ff00888d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;   /* Unterstreichung entfernen */
+  display: inline-block;   /* damit es wie ein Button wirkt */
+  transition: 0.3s;
+}
+
+.back-button:hover {
+  background-color: #ff0088;
+  box-shadow: 0 0 15px #ff0088, 0 0 30px #ff0088;
+}
+
+.lebenslauf {
+    text-align: center;
+}
+
+.hobbys p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: white
+}
+
+footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+.text-box {
+  position: relative;
+  background-color: rgba(62,60,60,0.7);
+  padding: 30px 20px;
+  border-radius: 15px;
+  margin: 40px auto;
+  max-width: 800px;
+  z-index: 1;
+  text-align: center;
+}
+
+.text-box h1 {
+  margin: 10px 0;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+
+
+.text-box p {
+  max-width: 700px;
+  margin: 10px auto;
+  color: #fff;
+  line-height: 1.6;
+}
+
+
+h1 {
+  font-size: 7vw;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lebenslauf-bild {
+  width: 100%;
+  max-width: 800px; /* Bild wird nicht größer als 800px */
+  height: auto;
+  display: block;
+  margin: 20px auto;
+
+  border-radius: 10px;
+  border: 2px solid #fff;
+  box-shadow: 
+    0 0 15px rgba(255,255,255,0.6),
+    0 0 30px rgba(255,255,255,0.4),
+    0 0 45px rgba(255,255,255,0.2);
+  transition: all 0.3s ease; /* weiche Animation */
+}
+
+.lebenslauf-bild:hover {
+  transform: scale(1.02); /* leichtes Vergrößern */
+  box-shadow: 
+    0 0 30px rgba(255,255,255,0.9),
+    0 0 60px rgba(255,255,255,0.7),
+    0 0 90px rgba(255,255,255,0.5);
+}
+
+
+body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 0; min-height: 100vh; display: block; /* kein zentrier-Flex für Body */ } /* Navbar bleibt oben */ .navbar { width: 100%; background: #111; /* dunkler Balken */ padding: 15px 0; position: sticky; /* fixiert oben */ top: 0; z-index: 1000; text-align: center; } .navbar ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 30px; } .navbar li { display: inline; } .navbar a { text-decoration: none; color: white; font-size: 18px; font-weight: bold; transition: all 0.3s ease; padding: 8px 15px; border-radius: 5px; } .navbar a:hover { color: #ff00ff; /* Violett */ text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f; }
