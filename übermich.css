@@ -121,7 +121,7 @@ footer {
 }
 
 .text-box:hover {
-  transform: scale(1.02); 
+  transform: scale(1.02); /* leichtes Vergrößern */
   box-shadow: 
     0 0 40px rgba(255,255,255,0.5),
     0 0 300px rgba(255,255,255,0.3),
@@ -136,7 +136,7 @@ footer {
   border: none;
   border-radius: 5px;
   font-size: 16px;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease; /* sanfte Animation */
 }
 
 .back-button:hover {
@@ -144,7 +144,7 @@ footer {
     0 0 10px #ff0088,
     0 0 20px #ff0088,
     0 0 40px rgba(255,0,136,0.7);
-  transform: scale(1.05);
+  transform: scale(1.05); /* leichtes Vergrößern */
 }
 
 body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 0; min-height: 100vh; display: block; /* kein zentrier-Flex für Body */ } /* Navbar bleibt oben */ .navbar { width: 100%; background: #111; /* dunkler Balken */ padding: 15px 0; position: sticky; /* fixiert oben */ top: 0; z-index: 1000; text-align: center; } .navbar ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 30px; } .navbar li { display: inline; } .navbar a { text-decoration: none; color: white; font-size: 18px; font-weight: bold; transition: all 0.3s ease; padding: 8px 15px; border-radius: 5px; } .navbar a:hover { color: #ff00ff; /* Violett */ text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f; }
