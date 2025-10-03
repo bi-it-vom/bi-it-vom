@@ -3,30 +3,37 @@ body {
   background: #000000;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
+  display: block; /* kein zentrier-Flex für Body */
 }
 
-/* Weißer Glow um die Box */
+body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 0; min-height: 100vh; display: block; /* kein zentrier-Flex für Body */ } /* Navbar bleibt oben */ .navbar { width: 100%; background: #111; /* dunkler Balken */ padding: 15px 0; position: sticky; /* fixiert oben */ top: 0; z-index: 1000; text-align: center; } .navbar ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 30px; } .navbar li { display: inline; } .navbar a { text-decoration: none; color: white; font-size: 18px; font-weight: bold; transition: all 0.3s ease; padding: 8px 15px; border-radius: 5px; } .navbar a:hover { color: #ff00ff; /* Violett */ text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f; }
+
+/* Wrapper mit Glow */
 .kontakt-wrapper {
+  margin: 120px auto 40px auto; /* Abstand zur Navbar */
   padding: 3px;
   border-radius: 10px;
   background: transparent;
+  width: 70%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Glow */
   box-shadow: 
     0 0 15px rgba(255, 255, 255, 0.6),
     0 0 30px rgba(255, 255, 255, 0.4),
     0 0 45px rgba(255, 255, 255, 0.2);
 }
 
-/* Die eigentliche Kontaktbox */
+/* Container innen */
 .kontakt-container {
-  width: 82.24%;
-  max-width: 500px;
   background: #fff;
   padding: 20px 30px;
   border-radius: 8px;
+  width: 100%;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
@@ -96,11 +103,157 @@ body {
   transform: scale(1.05);
 }
 
-h5 {
-  font-size: 2vw;
-  font-weight: 700;
-  text-transform: uppercase;
+footer {
   text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;                 
+  width: 100%;
+  padding: 10px 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.9em;
+}
+body { 
+  font-family: Arial, sans-serif;
+  background: #000000;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: block; /* kein zentrier-Flex für Body */
+}
+
+/* Navbar bleibt oben */
+.navbar {
+  width: 100%;
+  background: #111; /* dunkler Balken */
+  padding: 15px 0;
+  position: sticky; /* fixiert oben */
+  top: 0;
+  z-index: 1000;
+  text-align: center;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.navbar li {
+  display: inline;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.navbar a:hover {
+  color: #ff00ff; /* Violett */
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f;
+}
+
+/* Wrapper mit Glow */
+.kontakt-wrapper {
+  margin: 120px auto 40px auto; /* Abstand zur Navbar */
+  padding: 3px;
+  border-radius: 10px;
+  background: transparent;
+  width: 70%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Glow */
+  box-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4),
+    0 0 45px rgba(255, 255, 255, 0.2);
+}
+
+/* Container innen */
+.kontakt-container {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.kontakt-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.kontakt-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #444;
+}
+
+.kontakt-form input,
+.kontakt-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #4d4040;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.kontakt-form button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  background: #000000d4;
+  color: #ff0088;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.kontakt-form button:hover {
+  background: #000000;
+  box-shadow: 0 0 10px white,
+              0 0 20px white,
+              0 0 30px rgba(255,255,255,0.7);
+  transform: scale(1.05);
+}
+
+.zurückbutton {
+  cursor: pointer;
+  padding: 10px 30px;
+  background-color: #000000cd;
+  color: #ff0088;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 40px auto 0; 
+  display: block;
+}
+
+.zurückbutton:hover {
+  background-color: #000000;
+  box-shadow: 0 0 10px white,
+              0 0 20px white,
+              0 0 30px rgba(255,255,255,0.7);
+  transform: scale(1.05);
 }
 
 footer {
@@ -113,51 +266,4 @@ footer {
   background: transparent;
   color: #aaa;
   font-size: 0.9em;
-}
-
-.navbar {
-  width: 100%;
-  background: #000; /* schwarzer Hintergrund */
-  position: fixed;  /* bleibt oben fixiert */
-  top: 0;
-  left: 0;
-  z-index: 1000;
-}
-
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 10px;
-  display: flex;              /* macht die Liste horizontal */
-  justify-content: center;    /* zentriert die Links */
-  gap: 20px;                  /* Abstand zwischen Links */
-}
-
-.navbar ul li {
-  display: inline;
-}
-
-.navbar ul li a {
-  text-decoration: none;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  background: #111;
-  transition: 0.3s;
-}
-
-.navbar ul li a:hover {
-  background: #ff00888d;
-  box-shadow: 
-    0 0 15px #ff0088,
-    0 0 30px #ff0088,
-    0 0 45px #ff0088;
-}
-
-.navbar ul li a.active {
-  background: #ff00888d;
-  box-shadow: 
-    0 0 15px #ff0088,
-    0 0 30px #ff0088,
-    0 0 60px #ff0088;
 }
