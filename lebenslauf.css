@@ -192,15 +192,22 @@ body {
     justify-content: flex-start;
     gap: 40px;
 }
-
 .back-button {
-    cursor: pointer;
-    padding: 10px 30px;
-    background-color: #ff00888d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+  cursor: pointer;
+  padding: 10px 30px;
+  background-color: #ff00888d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;   /* Unterstreichung entfernen */
+  display: inline-block;   /* damit es wie ein Button wirkt */
+  transition: 0.3s;
+}
+
+.back-button:hover {
+  background-color: #ff0088;
+  box-shadow: 0 0 15px #ff0088, 0 0 30px #ff0088;
 }
 
 .lebenslauf {
@@ -256,4 +263,68 @@ h1 {
   font-size: 7vw;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.lebenslauf-bild {
+  width: 100%;
+  max-width: 800px; /* Bild wird nicht größer als 800px */
+  height: auto;
+  display: block;
+  margin: 20px auto;
+
+  border-radius: 10px;
+  border: 2px solid #fff;
+  box-shadow: 
+    0 0 15px rgba(255,255,255,0.6),
+    0 0 30px rgba(255,255,255,0.4),
+    0 0 45px rgba(255,255,255,0.2);
+  transition: all 0.3s ease; /* weiche Animation */
+}
+
+.lebenslauf-bild:hover {
+  transform: scale(1.02); /* leichtes Vergrößern */
+  box-shadow: 
+    0 0 30px rgba(255,255,255,0.9),
+    0 0 60px rgba(255,255,255,0.7),
+    0 0 90px rgba(255,255,255,0.5);
+}
+
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  background: #111; /* dunkler Balken */
+  padding: 15px 0;
+  position: sticky; /* bleibt beim Scrollen oben */
+  top: 0;
+  z-index: 1000;
+  text-align: center;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.navbar li {
+  display: inline;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.navbar a:hover {
+  color: #ff00ff; /* Violett */
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f;
 }

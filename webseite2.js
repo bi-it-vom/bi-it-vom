@@ -2,10 +2,10 @@ import TubesCursor from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/
 
 const app = TubesCursor(document.getElementById('canvas'), {
   tubes: {
-    colors: ["#ffffffff", "#ffffffff", "#ffffffff"],
+    colors: ["#f967fb", "#53bc28", "#6958d5"],
     lights: {
-      intensity: 20000,
-      colors: ["#ffffffff", "#ffffffff", "#ffffffff", "#ffffffff"]
+      intensity: 200,
+      colors: ["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"]
     }
   }
 })

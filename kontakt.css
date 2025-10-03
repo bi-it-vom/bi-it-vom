@@ -115,3 +115,49 @@ footer {
   font-size: 0.9em;
 }
 
+.navbar {
+  width: 100%;
+  background: #000; /* schwarzer Hintergrund */
+  position: fixed;  /* bleibt oben fixiert */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  display: flex;              /* macht die Liste horizontal */
+  justify-content: center;    /* zentriert die Links */
+  gap: 20px;                  /* Abstand zwischen Links */
+}
+
+.navbar ul li {
+  display: inline;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #111;
+  transition: 0.3s;
+}
+
+.navbar ul li a:hover {
+  background: #ff00888d;
+  box-shadow: 
+    0 0 15px #ff0088,
+    0 0 30px #ff0088,
+    0 0 45px #ff0088;
+}
+
+.navbar ul li a.active {
+  background: #ff00888d;
+  box-shadow: 
+    0 0 15px #ff0088,
+    0 0 30px #ff0088,
+    0 0 60px #ff0088;
+}
