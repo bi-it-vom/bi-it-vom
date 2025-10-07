@@ -5,8 +5,7 @@
 <script src="titelseite.js"></script>
 <script>
 const eingabe = prompt("Bitte Passwort eingeben:");
-
-if (eingabe === null || eingabe !== PASSWORD) {
+if (eingabe === PASSWORD || eingabe !== PASSWORD) {
   alert("Falsches Passwort oder abgebrochen!");
   window.location.href = "index.html";
 }
@@ -25,7 +24,7 @@ if (eingabe === null || eingabe !== PASSWORD) {
     <nav class="navbar">
   <ul>
     <li><a href="übermich.html">Über mich</a></li>
-    <li><a href="lebenslauf.html">Lebenslauf</a></li>
+    <li><a href="Lebenslauf.html">Lebenslauf</a></li>
     <li><a href="kontakt.html">Kontakt</a></li>
     <li><a href="datenschutz.html">Datenschutz</a></li>
   </ul>
