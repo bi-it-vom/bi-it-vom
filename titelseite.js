@@ -1,2 +1,2 @@
 
-const PASSWORD = "Passwort";
+const PASSWORD = "DieTyranneiDesSchmetterlings-LiesEmale10Siite";
