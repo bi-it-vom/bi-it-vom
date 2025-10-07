@@ -1,2 +1,2 @@
 
-const PASSWORD = "Melvin_Automech";
+const PASSWORD = "ICT_Melvin";
