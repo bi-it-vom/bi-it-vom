@@ -1,2 +1,2 @@
 
-const PASSWORD = "DieTyranneiDesSchmetterlings-LiesEmale10Siite";
+const PASSWORD = "Melvin_Automech";
