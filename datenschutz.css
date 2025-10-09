@@ -3,7 +3,7 @@ body {
   background: #000000;
   margin: 0;
   padding: 0;
-  min-height: 100vh;   /* Höhe trotzdem voll */
+  min-height: 100vh;
 }
 
 
@@ -12,10 +12,10 @@ body {
   border-radius: 10px;
   background: transparent;
   margin: 40px auto;
-  width: 70%;               /* responsiv */
-  max-width: 500px;         /* enger machen */
+  width: 70%;
+  max-width: 500px;
   
-  /* LED kompakter */
+
   box-shadow: 
     0 0 10px rgba(255,255,255,0.6),
     0 0 20px rgba(255,255,255,0.4),
@@ -28,26 +28,24 @@ body {
   background: #fff;
   padding: 25px 30px;
   border-radius: 8px;
-  width: 87.8%;              /* nimmt volle Breite vom Wrapper */
+  width: 87.8%;            
   box-shadow: 0 0 15px rgba(255,255,255,0.3);
 }
 
 
-
-/* Überschrift */
 .kontakt-container h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #222;
 }
 
-/* Unterüberschriften */
+
 .kontakt-container h3 {
   margin-top: 25px;
   color: #444;
 }
 
-/* Links im Text */
+
 .kontakt-container a {
   color: #ff0088;
   text-decoration: none;
@@ -58,9 +56,9 @@ body {
 
 .zurückbutton {
   display: block;
-  width: fit-content;         /* Button so breit wie Text */
-  padding: 12px 25px;         /* gleichmäßiger Abstand links/rechts */
-  margin: 30px auto 0;        /* Button selbst mittig in der Box */
+  width: fit-content;
+  padding: 12px 25px;
+  margin: 30px auto 0;
   background-color: #000000cd;
   color: white;
   border: none;
