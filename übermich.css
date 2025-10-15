@@ -148,3 +148,36 @@ footer {
 }
 
 body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 0; min-height: 100vh; display: block; /* kein zentrier-Flex für Body */ } /* Navbar bleibt oben */ .navbar { width: 100%; background: #111; /* dunkler Balken */ padding: 15px 0; position: sticky; /* fixiert oben */ top: 0; z-index: 1000; text-align: center; } .navbar ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 30px; } .navbar li { display: inline; } .navbar a { text-decoration: none; color: white; font-size: 18px; font-weight: bold; transition: all 0.3s ease; padding: 8px 15px; border-radius: 5px; } .navbar a:hover { color: #ff00ff; /* Violett */ text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f; }
+
+
+.bilderreihe {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 30px 0;
+  flex-wrap: wrap; /* bricht um bei kleineren Bildschirmen */
+}
+
+.bilderreihe figure {
+  text-align: center;
+  width: 180px; /* Bildbreite – kannst du anpassen */
+}
+
+.bilderreihe img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.bilderreihe img:hover {
+  transform: scale(1.05);
+}
+
+.bilderreihe figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+}
