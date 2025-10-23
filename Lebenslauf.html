@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lebenslauf</title>
   <link rel="stylesheet" href="Lebenslauf.css">
-  <script src="titelseite.js" defer></script>
 
   <style>
     /* ---------- Passwort Overlay ---------- */
@@ -44,7 +43,7 @@
       outline: none;
       background-color: #1a1a1a;
       color: white;
-      -webkit-text-security: '*'; /* 👈 zeigt Sternchen statt Punkte */
+      -webkit-text-security: '*'; /* zeigt Sternchen statt Punkte */
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
       transition: all 0.3s ease;
     }
@@ -84,7 +83,7 @@
     <h1>🔒 Geschützter Bereich</h1>
     <p>Bitte gib das Passwort ein, um auf meinen Lebenslauf zuzugreifen.</p>
     <input type="password" id="pw" placeholder="Passwort eingeben">
-    <button onclick="checkPasswort()">Zugang öffnen</button>
+    <button id="pw-button">Zugang öffnen</button>
   </div>
 
   <div id="content" style="display: none;">
@@ -114,22 +113,11 @@
   </div>
 
   <script>
-    const PASSWORD = "meinpasswort"; // ← Dein Passwort hier eintragen
+    const PASSWORD = "meinpasswort"; // 🔒 dein Passwort hier eintragen
 
     function checkPasswort() {
       const eingabe = document.getElementById("pw").value.trim();
       if (eingabe === PASSWORD) {
+        // Erfolg: Overlay ausblenden, Inhalt zeigen
         document.getElementById("passwort-overlay").style.display = "none";
-        document.getElementById("content").style.display = "block";
-      } else {
-        alert("❌ Falsches Passwort. Bitte versuche es erneut.");
-      }
-    }
-
-    // Optional: Passwort mit ENTER bestätigen
-    document.getElementById("pw").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") checkPasswort();
-    });
-  </script>
-</body>
-</html>
+        document.getElementById("content").style.display = "bl
