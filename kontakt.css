@@ -45,8 +45,8 @@ html, body {
 }
 
 .navbar a:hover {
-  color: #ff00ff; /* Violett */
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f;
+  color: #04fc00; /* Violett */
+  text-shadow: 0 0 10px #00ff26, 0 0 20px rgb(198, 12, 12);
 }
 
 /* === Kontaktbereich (Wrapper + Container) === */
@@ -105,7 +105,7 @@ html, body {
   width: 100%;
   padding: 12px;
   background: #000000d4;
-  color: #ff0088;
+  color: #04fc00;
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -126,7 +126,7 @@ html, body {
   cursor: pointer;
   padding: 10px 30px;
   background-color: #000000cd;
-  color: #ff0088;
+  color: #04fc00;
   border: none;
   border-radius: 5px;
   font-size: 16px;

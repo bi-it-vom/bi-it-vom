@@ -69,7 +69,7 @@ body, html {
 .back-button {
   cursor: pointer;
   padding: 10px 30px;
-  background-color: #ff00888d;
+  background-color: #04fc00;
   color: white;
   border: none;
   border-radius: 5px;
@@ -131,8 +131,8 @@ footer {
 .back-button {
   cursor: pointer;
   padding: 10px 30px;
-  background-color: #ff00888d;
-  color: white;
+  background-color: #04fc00;
+  color: black;
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -141,9 +141,9 @@ footer {
 
 .back-button:hover {
   box-shadow: 
-    0 0 10px #ff0088,
-    0 0 20px #ff0088,
-    0 0 40px rgba(255,0,136,0.7);
+    0 0 10px #fffbfd,
+    0 0 20px #04fc00,
+    0 0 40px rgba(255, 255, 255, 0.7);
   transform: scale(1.05);
 }
 
@@ -155,12 +155,12 @@ body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 
   justify-content: center;
   gap: 25px;
   margin: 30px 0;
-  flex-wrap: wrap; /* bricht um bei kleineren Bildschirmen */
+  flex-wrap: wrap;
 }
 
 .bilderreihe figure {
   text-align: center;
-  width: 180px; /* Bildbreite – kannst du anpassen */
+  width: 180px;
 }
 
 .bilderreihe img {

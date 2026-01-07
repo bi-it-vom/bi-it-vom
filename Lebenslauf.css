@@ -193,7 +193,7 @@ body {
 .back-button {
   cursor: pointer;
   padding: 10px 30px;
-  background-color: #ff00888d;
+  background-color: #04fc00;
   color: white;
   border: none;
   border-radius: 5px;
@@ -204,8 +204,8 @@ body {
 }
 
 .back-button:hover {
-  background-color: #ff0088;
-  box-shadow: 0 0 15px #ff0088, 0 0 30px #ff0088;
+  background-color: #04fc00;
+  box-shadow: 0 0 15px #04fc00, 0 0 30px #ffffff;
 }
 
 .lebenslauf {
