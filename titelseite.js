@@ -1,6 +1,6 @@
 // titelseite.js
 document.addEventListener("DOMContentLoaded", () => {
-  const PASSWORD = "Melvin54"; // 🔒 hier dein geheimes Passwort eintragen
+  const PASSWORD = "Leck Eier"; // 🔒 hier dein geheimes Passwort eintragen
   const input = document.getElementById("pw");
   const button = document.getElementById("pw-button");
   const overlay = document.getElementById("passwort-overlay");
