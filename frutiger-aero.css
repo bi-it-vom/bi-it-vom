@@ -102,3 +102,38 @@ body.fa-theme #passwort-overlay {
 #fa-toggle:hover {
   transform: translateY(-50%) scale(1.03);
 }
+/* ===== Seifenblasen Effekt (nur Aero) ===== */
+.fa-bubble-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.fa-bubble {
+  position: absolute;
+  bottom: -40px;
+  width: var(--size);
+  height: var(--size);
+  left: var(--x);
+  opacity: 0;
+  border-radius: 999px;
+
+  /* Bubble-Look */
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.15) 55%, rgba(255,255,255,0.05) 100%),
+    radial-gradient(circle at 70% 80%, rgba(160, 230, 255, 0.35), rgba(255,255,255,0) 60%);
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  animation: faBubbleUp var(--dur) ease-out forwards;
+}
+
+@keyframes faBubbleUp {
+  0%   { transform: translateY(0) translateX(0) scale(0.95); opacity: 0; }
+  12%  { opacity: 0.75; }
+  100% { transform: translateY(calc(-1 * var(--rise))) translateX(var(--drift)) scale(1.05); opacity: 0; }
+}
