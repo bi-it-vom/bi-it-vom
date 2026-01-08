@@ -204,3 +204,165 @@ footer {
   font-size: 0.9em;
 }
 
+/* ============================= */
+/* Grundlayout – bleibt gleich   */
+/* ============================= */
+
+body, html, #app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+  font-family: "Montserrat", serif;
+}
+
+/* ============================= */
+/* Hero / Titel                  */
+/* ============================= */
+
+.hero {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  z-index: 1;
+}
+
+h1, h2 {
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-shadow: 0 0 20px rgba(0,0,0,1);
+  line-height: 100%;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+h2 {
+  font-size: 1.5em;
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ============================= */
+/* DROPDOWN                      */
+/* ============================= */
+
+.erfahremehr-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.85);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px;
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+}
+
+/* ============================= */
+/* ===== FRUTIGER AERO MODE ==== */
+/* ============================= */
+
+/* Hintergrundbild + Glas */
+body.fa-theme {
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.55),
+      rgba(180,220,255,0.35)
+    ),
+    url("frutigeraero.jpg") center / cover no-repeat fixed;
+}
+
+/* zusätzlicher Glass-Layer für Tiefe */
+body.fa-theme::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: -1;
+}
+
+/* Dropdown im Aero-Stil */
+body.fa-theme .dropdown-menu {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.75),
+    rgba(200,230,255,0.45)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+body.fa-theme .dropdown-menu a {
+  color: #06233a;
+}
+
+body.fa-theme .dropdown-menu a:hover {
+  background: rgba(255,255,255,0.6);
+}
+
+/* Titel etwas edler im Aero-Modus */
+body.fa-theme h1,
+body.fa-theme h2 {
+  text-shadow:
+    0 0 25px rgba(255,255,255,0.6),
+    0 10px 30px rgba(0,0,0,0.4);
+}
+/* ===== FIX: Canvas blockiert sonst dein Hintergrundbild ===== */
+body.fa-theme #canvas {
+  display: none !important;
+}
+/* ===== Fullscreen Bild NUR im Frutiger-Aero-Modus ===== */
+
+/* Standard: unsichtbar */
+.hero-image {
+  display: none;
+}
+
+/* Aero-Modus: Bild als Fullscreen-Hintergrund */
+body.fa-theme .hero-image {
+  display: block;
+
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+
+  object-fit: cover;
+  object-position: center;
+
+  opacity: 0.35; /* ← Transparenz (0.25–0.45 ist sweet spot) */
+
+  z-index: -1; /* hinter Text & Buttons */
+
+  pointer-events: none; /* klickt sich nicht in den Weg */
+}

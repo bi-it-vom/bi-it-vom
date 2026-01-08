@@ -1,0 +1,104 @@
+/* frutiger-aero.css */
+/* Aktiv nur wenn .fa-theme am <body> hängt */
+
+body.fa-theme {
+  background: radial-gradient(circle at 20% 10%, rgba(180, 255, 245, 0.9) 0%, rgba(120, 210, 255, 0.55) 35%, rgba(40, 90, 180, 0.35) 70%, rgba(0, 0, 0, 0.15) 100%),
+              linear-gradient(180deg, rgba(255,255,255,0.65), rgba(160, 220, 255, 0.25));
+  color: #06233a;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+/* Glas-/Aero Panels */
+body.fa-theme .text-box,
+body.fa-theme .overlay-box,
+body.fa-theme .modal-content,
+body.fa-theme .dropdown-menu {
+  background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.35));
+  color: #06233a;
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 18px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Headings */
+body.fa-theme h1, body.fa-theme h2 {
+  color: #06233a;
+  text-shadow: 0 2px 12px rgba(255,255,255,0.6);
+}
+
+/* Navbar frutiger */
+body.fa-theme .navbar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.25));
+  border-bottom: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.fa-theme .navbar a {
+  color: #06233a;
+}
+
+body.fa-theme .navbar a:hover {
+  color: #0077ff;
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.7);
+}
+
+/* Buttons (deine vorhandenen Buttons werden nur im FA-Look überschrieben) */
+body.fa-theme button,
+body.fa-theme .back-button,
+body.fa-theme .button-erfahre-mehr {
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(170, 230, 255, 0.55));
+  color: #06233a;
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 14px;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.fa-theme button:hover,
+body.fa-theme .back-button:hover,
+body.fa-theme .button-erfahre-mehr:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 35px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+/* Links */
+body.fa-theme a { color: #0059ff; }
+body.fa-theme a:hover { color: #00a6ff; }
+
+/* Datenschutz Overlay Hintergrund etwas "Aero" */
+body.fa-theme #datenschutz-overlay,
+body.fa-theme #passwort-overlay {
+  background: radial-gradient(circle at top, rgba(255,255,255,0.35) 0%, rgba(0,40,120,0.55) 70%, rgba(0,0,0,0.7) 100%);
+}
+
+/* Toggle Button (rechts fix) */
+#fa-toggle {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10000;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.55);
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(120, 220, 255, 0.45));
+  color: #06233a;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.85);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+}
+
+#fa-toggle:hover {
+  transform: translateY(-50%) scale(1.03);
+}
