@@ -55,10 +55,10 @@
     if (!sendButton) return;
 
     sendButton.addEventListener("click", () => {
-      spawnBubbles(240000);
+      spawnBubbles(240);
 
       // zweite Welle für schöneren Effekt
-      setTimeout(() => spawnBubbles(100000), 2500);
+      setTimeout(() => spawnBubbles(100), 2500);
     });
   });
 })();
