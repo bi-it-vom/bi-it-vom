@@ -1,7 +1,6 @@
 /* === Grundlayout: kein horizontales Scrollen === */
 html, body {
   overflow-x: hidden; /* verhindert links/rechts Scrollen */
-  overflow: hidden;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -9,6 +8,8 @@ html, body {
   background: #000000;
   min-height: 100vh;
   display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* === Navbar === */
@@ -191,10 +192,7 @@ body.fa-theme .kontakt-container {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-/* Kein Scrollen auf Kontakt-Seite */
-body.fa-theme {
-  overflow: hidden;
-}
+
 /* === Frutiger Aero: Senden Button Animation + leicht abdunkeln === */
 body.fa-theme .kontakt-form button {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -220,4 +218,9 @@ body.fa-theme .kontakt-form button:active {
 /* Aero: Button soll hoch gehen (überschreibt das normale hover-scale) */
 body.fa-theme .kontakt-form button:hover {
   transform: translateY(-3px) !important; /* stärker hoch */
+}
+
+/* Bild standardmässig AUS */
+.fa-kontakt-deko {
+  display: none;
 }

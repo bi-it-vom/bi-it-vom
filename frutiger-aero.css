@@ -1,5 +1,13 @@
 /* frutiger-aero.css */
 /* Aktiv nur wenn .fa-theme am <body> hängt */
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  overflow-y: auto !important;   /* SCROLL ERLAUBT */
+  overflow-x: hidden !important; /* kein seitliches Scrollen */
+}
 
 body.fa-theme {
   background: radial-gradient(circle at 20% 10%, rgba(180, 255, 245, 0.9) 0%, rgba(120, 210, 255, 0.55) 35%, rgba(40, 90, 180, 0.35) 70%, rgba(0, 0, 0, 0.15) 100%),
@@ -193,3 +201,8 @@ body.fa-theme .kontakt-form button:hover {
   transition: all 0.25s ease;
 body.fa-theme .kontakt-container { ... }
 body.fa-theme { overflow: hidden; }
+
+/* Bild NUR im Frutiger-Aero anzeigen */
+body.fa-theme .fa-kontakt-deko {
+  display: block;
+}
