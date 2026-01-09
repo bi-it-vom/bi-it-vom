@@ -10,7 +10,6 @@ html, body {
   overflow-y: auto;     /* vertikal automatisch */
 }
 
-
 /* === Navbar === */
 .navbar {
   width: 100%;
@@ -55,7 +54,7 @@ html, body {
   padding: 4px;
   border-radius: 18px;
 
-  width: min(500px, 92vw);   /* DAS ist der Schlüssel */
+  width: min(500px, 92vw);   /* KEY */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,7 +64,6 @@ html, body {
     0 0 30px rgba(255,255,255,0.4),
     0 0 45px rgba(255,255,255,0.2);
 }
-
 
 .kontakt-container {
   background: #fff;
@@ -100,6 +98,7 @@ html, body {
   resize: none;
 }
 
+/* Normaler Button (ohne Aero Theme) */
 .kontakt-form button {
   margin-top: 15px;
   width: 100%;
@@ -130,7 +129,7 @@ html, body {
   border: none;
   border-radius: 5px;
   font-size: 16px;
-  margin: 40px auto 0; 
+  margin: 40px auto 0;
   display: block;
   transition: 0.3s ease;
 }
@@ -191,7 +190,7 @@ body.fa-theme .kontakt-container {
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* === Frutiger Aero: Senden Button Animation + leicht abdunkeln === */
+/* === Frutiger Aero: Senden Button (sauber, nur 1x hover) === */
 body.fa-theme .kontakt-form button {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -207,15 +206,11 @@ body.fa-theme .kontakt-form button:hover {
     0 12px 28px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.75);
 
-  transform: translateY(-30px); /* mini hoch */
+  transform: translateY(-3px) !important; /* nice, nicht -30px */
 }
 
 body.fa-theme .kontakt-form button:active {
-  transform: translateY(0px);
-}
-/* Aero: Button soll hoch gehen (überschreibt das normale hover-scale) */
-body.fa-theme .kontakt-form button:hover {
-  transform: translateY(-3px) !important; /* stärker hoch */
+  transform: translateY(0px) !important;
 }
 
 /* Bild standardmässig AUS */

@@ -1,31 +1,118 @@
-body, html {
+/* =========================
+   GLOBAL
+========================= */
+* { box-sizing: border-box; }
+
+html, body {
   margin: 0;
   width: 100%;
   min-height: 100vh;
   background-color: #000;
   color: rgb(191, 190, 194);
+  font-family: Arial, sans-serif;
 }
 
+/* =========================
+   CANVAS (hinten)
+========================= */
 #canvas {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
 }
 
+/* =========================
+   NAVBAR (sticky + responsive)
+========================= */
+.navbar {
+  width: 100%;
+  background: #111;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 20000;
+  text-align: center;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-wrap: wrap; /* KEY: passt sich an kleine Screens an */
+  gap: clamp(10px, 3vw, 30px);
+}
+
+.navbar li { display: inline; }
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+
+  font-size: clamp(14px, 2.2vw, 18px);
+  padding: clamp(6px, 1.2vw, 8px) clamp(10px, 2.5vw, 15px);
+
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbar a:hover {
+  color: #04fc00;
+  text-shadow: 0 0 10px #00ff26, 0 0 20px rgb(198, 12, 12);
+}
+
+/* =========================
+   LEBENSLAUF LAYOUT
+========================= */
 .lebenslauf {
   position: relative;
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+
   gap: 30px;
   padding: 50px;
   text-align: center;
 }
 
+/* =========================
+   TEXT BOX
+========================= */
+.text-box {
+  position: relative;
+  background-color: rgba(62,60,60,0.7);
+  padding: 30px 20px;
+  border-radius: 15px;
+  margin: 30px auto;
+  max-width: 800px;
+  z-index: 1;
+  text-align: center;
+
+  border: 2px solid #fff;
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.2),
+    0 0 20px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.text-box:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 0 40px rgba(255,255,255,0.5),
+    0 0 300px rgba(255,255,255,0.3),
+    0 0 45px rgba(255,255,255,0.2);
+}
 
 .text-box h1 {
   font-size: 50px;
@@ -36,6 +123,16 @@ body, html {
   margin: 10px 0;
 }
 
+.text-box p {
+  max-width: 700px;
+  margin: 10px auto;
+  color: #5d5c5cb9;
+  line-height: 1.6;
+}
+
+/* =========================
+   PROFILBILD
+========================= */
 .profilbild {
   width: 30%;
   max-width: 400px;
@@ -46,88 +143,9 @@ body, html {
   box-shadow: 0 0 15px rgba(0,0,0,0.7);
 }
 
-
-.text-box {
-  position: relative;
-  background-color: rgba(62,60,60,0.7);
-  padding: 30px 20px;
-  border-radius: 15px;
-  margin: 30px auto;
-  max-width: 800px;
-  z-index: 1;
-  text-align: center;
-}
-
-.text-box p {
-  max-width: 700px;
-  margin: 10px auto;
-  color: #5d5c5cb9;
-  line-height: 1.6;
-}
-
-
-.back-button {
-  cursor: pointer;
-  padding: 10px 30px;
-  background-color: #04fc00;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-footer {
-  text-align: center;
-  margin: 20px 0;
-  color: #aaa;
-  font-size: 0.9em;
-}
-
-.text-box {
-  position: relative;
-  background-color: rgba(62,60,60,0.7);
-  padding: 30px 20px;
-  border-radius: 15px;
-  margin: 30px auto;
-  max-width: 800px;
-  z-index: 1;
-  text-align: center;
-
-  
-  border: 2px solid #fff;
-  box-shadow: 
-    0 0 10px rgba(255,255,255,0.8),
-    0 0 20px rgba(255,255,255,0.6),
-    0 0 40px rgba(255,255,255,0.4);
-}
-
-
-
-.text-box {
-  position: relative;
-  background-color: rgba(62,60,60,0.7);
-  padding: 30px 20px;
-  border-radius: 15px;
-  margin: 30px auto;
-  max-width: 800px;
-  z-index: 1;
-  text-align: center;
-
- 
-  box-shadow: 
-    0 0 10px rgba(255,255,255,0.2),
-    0 0 20px rgba(255,255,255,0.1);
-  transition: all 0.3s ease;
-}
-
-.text-box:hover {
-  transform: scale(1.02);
-  box-shadow: 
-    0 0 40px rgba(255,255,255,0.5),
-    0 0 300px rgba(255,255,255,0.3),
-    0 0 45px rgba(255,255,255,0.2);
-}
-
+/* =========================
+   BUTTON
+========================= */
 .back-button {
   cursor: pointer;
   padding: 10px 30px;
@@ -140,16 +158,16 @@ footer {
 }
 
 .back-button:hover {
-  box-shadow: 
+  box-shadow:
     0 0 10px #fffbfd,
     0 0 20px #04fc00,
     0 0 40px rgba(255, 255, 255, 0.7);
   transform: scale(1.05);
 }
 
-body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 0; min-height: 100vh; display: block; /* kein zentrier-Flex für Body */ } /* Navbar bleibt oben */ .navbar { width: 100%; background: #111; /* dunkler Balken */ padding: 15px 0; position: sticky; /* fixiert oben */ top: 0; z-index: 1000; text-align: center; } .navbar ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 30px; } .navbar li { display: inline; } .navbar a { text-decoration: none; color: white; font-size: 18px; font-weight: bold; transition: all 0.3s ease; padding: 8px 15px; border-radius: 5px; } .navbar a:hover { color: #ff00ff; /* Violett */ text-shadow: 0 0 10px #ff00ff, 0 0 20px #00f; }
-
-
+/* =========================
+   BILDERREIHE
+========================= */
 .bilderreihe {
   display: flex;
   justify-content: center;
@@ -181,41 +199,13 @@ body { font-family: Arial, sans-serif; background: #000000; margin: 0; padding: 
   color: #555;
   font-style: italic;
 }
-/* === Navbar === */
-.navbar {
-  width: 100%;
-  background: #111; /* dunkler Balken */
-  padding: 15px 0;
-  position: sticky; /* fixiert oben */
-  top: 0;
-  z-index: 1000;
+
+/* =========================
+   FOOTER
+========================= */
+footer {
   text-align: center;
-}
-
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-}
-
-.navbar li {
-  display: inline;
-}
-
-.navbar a {
-  text-decoration: none;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  padding: 8px 15px;
-  border-radius: 5px;
-}
-
-.navbar a:hover {
-  color: #04fc00; /* Violett */
-  text-shadow: 0 0 10px #00ff26, 0 0 20px rgb(198, 12, 12);
+  margin: 20px 0;
+  color: #aaa;
+  font-size: 0.9em;
 }
