@@ -1,73 +1,71 @@
 /* === Grundlayout: kein horizontales Scrollen === */
 html, body {
-  overflow-x: hidden; /* verhindert links/rechts Scrollen */
   width: 100%;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
   background: #000000;
-  min-height: 100vh;
-  display: block;
-  overflow-x: hidden;
-  overflow-y: auto;
+
+  overflow-x: hidden;   /* NIE seitlich scrollen */
+  overflow-y: auto;     /* vertikal automatisch */
 }
+
 
 /* === Navbar === */
 .navbar {
   width: 100%;
-  background: #111; /* dunkler Balken */
-  padding: 15px 0;
-  position: sticky; /* fixiert oben */
+  background: #111;
+  padding: clamp(10px, 2vw, 15px) 0;
+  position: sticky;
   top: 0;
   z-index: 1000;
-  text-align: center;
 }
 
 .navbar ul {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-}
+  padding: 0 12px;
 
-.navbar li {
-  display: inline;
+  display: flex;
+  flex-wrap: wrap;              /* DARF umbrechen */
+  justify-content: center;
+  align-items: center;
+
+  gap: clamp(10px, 3vw, 30px);  /* passt sich an */
 }
 
 .navbar a {
-  text-decoration: none;
   color: white;
-  font-size: 18px;
+  text-decoration: none;
   font-weight: bold;
-  transition: all 0.3s ease;
-  padding: 8px 15px;
-  border-radius: 5px;
-}
 
-.navbar a:hover {
-  color: #04fc00; /* Violett */
-  text-shadow: 0 0 10px #00ff26, 0 0 20px rgb(198, 12, 12);
+  font-size: clamp(14px, 2.2vw, 18px);
+  padding: clamp(6px, 1.2vw, 8px)
+           clamp(10px, 2.5vw, 15px);
+
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 /* === Kontaktbereich (Wrapper + Container) === */
 .kontakt-wrapper {
-  margin: 120px auto 40px auto; /* Abstand zur Navbar */
-  padding: 3px;
+  margin: clamp(80px, 15vh, 120px) auto
+          clamp(30px, 8vh, 40px);
+
+  padding: 4px;
   border-radius: 18px;
-  background: transparent;
-  width: 70%;
-  max-width: 500px;
+
+  width: min(500px, 92vw);   /* DAS ist der Schlüssel */
   display: flex;
   justify-content: center;
   align-items: center;
 
   box-shadow:
-    0 0 15px rgba(255, 255, 255, 0.6),
-    0 0 30px rgba(255, 255, 255, 0.4),
-    0 0 45px rgba(255, 255, 255, 0.2);
+    0 0 15px rgba(255,255,255,0.6),
+    0 0 30px rgba(255,255,255,0.4),
+    0 0 45px rgba(255,255,255,0.2);
 }
+
 
 .kontakt-container {
   background: #fff;
