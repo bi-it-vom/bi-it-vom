@@ -55,7 +55,7 @@
     if (!sendButton) return;
 
     sendButton.addEventListener("click", () => {
-      spawnBubbles(240);
+      spawnBubbles(160);
 
       // zweite Welle für schöneren Effekt
       setTimeout(() => spawnBubbles(100), 2500);
