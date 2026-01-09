@@ -137,15 +137,59 @@ body.fa-theme #passwort-overlay {
   12%  { opacity: 0.75; }
   100% { transform: translateY(calc(-1 * var(--rise))) translateX(var(--drift)) scale(1.05); opacity: 0; }
 }
-/* Kontakt-Senden Button soll NICHT schwarz werden */
-body.fa-theme .kontakt-form button {
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(170, 230, 255, 0.55)) !important;
-  color: #4a5562 !important;          /* oder #06233a wenn du es dunkler willst */
-  border: 1px solid rgba(255,255,255,0.75) !important;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.85) !important;
+
+body.fa-theme .fa-kontakt-deko {
+  position: absolute;
+  right: 200px;        /* Bild ragt rechts raus */
+  bottom: -10px;      /* schön tief */
+  width: 450px;        /* gross */
+  z-index: 0;
+  pointer-events: none;
+
+  /* Bild bleibt scharf */
+  opacity: 0.6;
+  filter:
+    brightness(1.05)
+    contrast(1.03)
+    saturate(1.05);
+
+  /* NUR RECHTS sichtbar / heller */
+  mask-image: linear-gradient(
+    to left,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.9) 15%,
+    rgba(0,0,0,0.6) 35%,
+    rgba(0,0,0,0.25) 55%,
+    rgba(0,0,0,0) 75%
+  );
+  -webkit-mask-image: linear-gradient(
+    to left,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.9) 15%,
+    rgba(0,0,0,0.6) 35%,
+    rgba(0,0,0,0.25) 55%,
+    rgba(0,0,0,0) 75%
+  );
+}
+/* === Frutiger Aero: Glasiger Senden-Button === */
+/* Frutiger Aero – Button leicht abdunkeln beim Hover */
+body.fa-theme .kontakt-form button:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(235, 245, 255, 0.85),
+    rgba(150, 205, 235, 0.55)
+  ) !important;
+
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  transform: translateY(0); /* ruhig, kein Pop */
 }
 
-body.fa-theme .kontakt-form button:hover {
-  background: linear-gradient(180deg, rgba(216, 216, 216, 0.95), rgba(140, 210, 255, 0.65)) !important;
-  transform: translateY(-1px) scale(1.02);
-}
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition: all 0.25s ease;
+body.fa-theme .kontakt-container { ... }
+body.fa-theme { overflow: hidden; }

@@ -1,6 +1,7 @@
 /* === Grundlayout: kein horizontales Scrollen === */
 html, body {
   overflow-x: hidden; /* verhindert links/rechts Scrollen */
+  overflow: hidden;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -53,7 +54,7 @@ html, body {
 .kontakt-wrapper {
   margin: 120px auto 40px auto; /* Abstand zur Navbar */
   padding: 3px;
-  border-radius: 10px;
+  border-radius: 18px;
   background: transparent;
   width: 70%;
   max-width: 500px;
@@ -172,3 +173,51 @@ footer {
   }
 }
 
+/* === Kontakt Container NUR im Frutiger-Aero Style === */
+body.fa-theme .kontakt-container {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.35)
+  );
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+/* Kein Scrollen auf Kontakt-Seite */
+body.fa-theme {
+  overflow: hidden;
+}
+/* === Frutiger Aero: Senden Button Animation + leicht abdunkeln === */
+body.fa-theme .kontakt-form button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+body.fa-theme .kontakt-form button:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(235, 245, 255, 0.85),
+    rgba(150, 205, 235, 0.55)
+  ) !important;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  transform: translateY(-30px); /* mini hoch */
+}
+
+body.fa-theme .kontakt-form button:active {
+  transform: translateY(0px);
+}
+/* Aero: Button soll hoch gehen (überschreibt das normale hover-scale) */
+body.fa-theme .kontakt-form button:hover {
+  transform: translateY(-3px) !important; /* stärker hoch */
+}
