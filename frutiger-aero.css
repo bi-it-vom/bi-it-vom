@@ -137,3 +137,15 @@ body.fa-theme #passwort-overlay {
   12%  { opacity: 0.75; }
   100% { transform: translateY(calc(-1 * var(--rise))) translateX(var(--drift)) scale(1.05); opacity: 0; }
 }
+/* Kontakt-Senden Button soll NICHT schwarz werden */
+body.fa-theme .kontakt-form button {
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(170, 230, 255, 0.55)) !important;
+  color: #4a5562 !important;          /* oder #06233a wenn du es dunkler willst */
+  border: 1px solid rgba(255,255,255,0.75) !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.85) !important;
+}
+
+body.fa-theme .kontakt-form button:hover {
+  background: linear-gradient(180deg, rgba(216, 216, 216, 0.95), rgba(140, 210, 255, 0.65)) !important;
+  transform: translateY(-1px) scale(1.02);
+}
